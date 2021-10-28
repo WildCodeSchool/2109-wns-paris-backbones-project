@@ -1,0 +1,10 @@
+{
+  "name": "backbones",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/WildCodeSchool/2109-wns-paris-backbones-project.git",
+  "author": "Nathanaël Labreuil <nathanael.labreuil@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
