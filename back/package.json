@@ -1,6 +1,32 @@
 {
-  "name": "backbones-back",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+   "name": "backbones-back",
+   "version": "1.0.0",
+   "main": "index.js",
+   "license": "MIT",
+   "scripts": {
+      "build": "tsc",
+      "start": "ts-node src/index.ts",
+      "lint": "eslint . "
+   },
+   "devDependencies": {
+      "@types/node": "^8.0.29",
+      "@typescript-eslint/eslint-plugin": "^5.2.0",
+      "@typescript-eslint/parser": "^5.2.0",
+      "eslint": "^8.1.0",
+      "eslint-config-prettier": "^8.3.0",
+      "eslint-plugin-prettier": "^4.0.0",
+      "prettier": "^2.4.1",
+      "ts-node": "3.3.0",
+      "ts-node-dev": "^1.1.8",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "apollo-server": "^3.4.0",
+      "class-validator": "^0.13.1",
+      "graphql": "^15.7.1",
+      "pg": "^8.4.0",
+      "reflect-metadata": "^0.1.10",
+      "type-graphql": "^1.1.1",
+      "typeorm": "0.2.38"
+   }
 }
