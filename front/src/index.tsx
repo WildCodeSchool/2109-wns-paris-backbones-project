@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
+import GlobalStateProvider from "./state/GlobalStateProvider";
 import {
 	ApolloClient,
 	InMemoryCache,
@@ -29,7 +29,7 @@ client
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<GlobalStateProvider />
 	</React.StrictMode>,
 	document.getElementById("root")
 );

@@ -1,22 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { TasksList } from "./components/TasksList";
+import { StateProvider } from "./state/GlobalStateProvider";
+import AuthenticationHeader from "./components/AuthenticationHeader";
 
 function App() {
+	const { userId } = useContext(StateProvider);
 	return (
 		<div className="App bg-pink-700">
-			<header className="App-header">
-				<p>
-					Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-			</header>
+			<AuthenticationHeader />
 			<TasksList />
 		</div>
 	);
