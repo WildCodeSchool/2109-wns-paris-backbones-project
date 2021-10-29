@@ -2,13 +2,20 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "admin",
+  "username": "laura",
+  "password": "1234",
   "database": "test",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/entity/**/*.ts"],
-  "migrations": ["src/migration/**/*.ts"],
-  "subscribers": ["src/subscriber/**/*.ts"],
+  "entities": [
+    "src/entity/**/*.ts"
+  ],
+  "migrations": [
+    "src/migration/**/*.ts"
+  ],
+  "subscribers": [
+    "src/subscriber/**/*.ts"
+  ],
   "cli": {
     "entitiesDir": "src/entity",
     "migrationsDir": "src/migration",

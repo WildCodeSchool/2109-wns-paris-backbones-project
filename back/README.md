@@ -3,12 +3,14 @@
 Steps to run this project:
 
 1. Run `yarn` command
-2. Create `admin` user in `test` database (in postgresql) :
+2. Create `admin` user in `ticketapp` database (in postgresql) :
+3. Creer un  mot de passe
 
 ```
-createdb test
-psql test
+createdb ticketapp
+psql ticketapp
 CREATE USER admin;
+ALTER USER admin PASSWORD 'ticketapp_password';
 ```
 
-3. Run `yarn start` command
+4. Run `yarn start` command
