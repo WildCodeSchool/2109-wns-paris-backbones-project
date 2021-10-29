@@ -1,4 +1,5 @@
 import React from "react";
+import { TasksList } from "./components/TasksList";
 
 function App() {
 	return (
@@ -16,6 +17,7 @@ function App() {
 					Learn React
 				</a>
 			</header>
+			<TasksList />
 		</div>
 	);
 }
