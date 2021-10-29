@@ -2,9 +2,9 @@
   "type": "postgres",
   "host": "localhost",
   "port": 5432,
-  "username": "laura",
-  "password": "1234",
-  "database": "test",
+  "username": "admin",
+  "password": "ticketapp_password",
+  "database": "ticketapp",
   "synchronize": true,
   "logging": false,
   "entities": [
