@@ -37,7 +37,9 @@ export class Task {
 	@JoinColumn()
 	role: Status;
 
-	@ManyToMany(() => BackBonesUser)
+	@ManyToMany((type) => BackBonesUser, (user) => user.tasks, {
+		cascade: true,
+	})
 	@JoinTable()
 	users: BackBonesUser[];
 }
