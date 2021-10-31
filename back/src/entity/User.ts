@@ -1,10 +1,4 @@
-import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	OneToOne,
-	JoinColumn,
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { Role } from "./Role";
 @Entity()
 export class BackBonesUser {
@@ -26,7 +20,6 @@ export class BackBonesUser {
 	@Column({ nullable: true })
 	password: string;
 
-	@OneToOne(() => Role)
-	@JoinColumn()
+	@ManyToOne(() => Role, (role) => role.users, { eager: true })
 	role: Role;
 }

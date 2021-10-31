@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { BackBonesUser } from "./User";
 
 @Entity()
 export class Role {
@@ -7,4 +8,7 @@ export class Role {
 
 	@Column()
 	title: string;
+
+	@OneToMany(() => BackBonesUser, (user) => user.role)
+	users: BackBonesUser[];
 }
