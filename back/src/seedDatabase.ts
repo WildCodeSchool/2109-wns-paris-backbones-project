@@ -48,10 +48,10 @@ createConnection()
 		await connection.manager.remove(prevUsers);
 		const prevRoles = await connection.manager.find(Role);
 		await connection.manager.remove(prevRoles);
-		const prevStatus = await connection.manager.find(Status);
-		await connection.manager.remove(prevStatus);
 		const prevTasks = await connection.manager.find(Task);
 		await connection.manager.remove(prevTasks);
+		const prevStatus = await connection.manager.find(Status);
+		await connection.manager.remove(prevStatus);
 
 		// CREATE ROLES
 		for (const role of rolesName) {
