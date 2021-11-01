@@ -2,8 +2,7 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-	OneToOne,
-	JoinColumn,
+	ManyToOne,
 	ManyToMany,
 	JoinTable,
 } from "typeorm";
@@ -33,9 +32,8 @@ export class Task {
 	@Column()
 	end_date: Date;
 
-	@OneToOne(() => Status)
-	@JoinColumn()
-	role: Status;
+	@ManyToOne(() => Status, (status) => status.tasks, { eager: true })
+	status: Status;
 
 	@ManyToMany((type) => BackBonesUser, (user) => user.tasks, {
 		cascade: true,
