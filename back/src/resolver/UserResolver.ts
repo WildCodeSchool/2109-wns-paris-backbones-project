@@ -3,18 +3,14 @@ import { BackBonesUser } from "../entity/User";
 
 @Resolver()
 export class UserResolver {
-	@Query(() => String)
-	hello() {
-		return "world";
-	}
 	@Query(() => [BackBonesUser])
-	books() {
+	users() {
 		return BackBonesUser.find();
 	}
-	@Mutation(() => BackBonesUser)
-	async createBook(@Arg("data") data: CreateBookInput) {
-		const user = BackBonesUser.create(data);
-		await user.save();
-		return user;
-	}
+	// @Mutation(() => BackBonesUser)
+	// async createBook(@Arg("data") data: CreateBookInput) {
+	// 	const user = BackBonesUser.create(data);
+	// 	await user.save();
+	// 	return user;
+	// }
 }
