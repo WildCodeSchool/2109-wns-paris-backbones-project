@@ -95,6 +95,8 @@ createConnection()
 			u.email = user.email;
 			u.role = roles.find((role) => role.title === user.role) || roles[0];
 			u.tasks = tasks;
+			u.avatar = "https://tooommm.github.io/profile/images/profile.jpg";
+			u.password = "azerty";
 			await connection.manager.save(u);
 			console.log("Saved a new user with named: " + u.firstName);
 		}

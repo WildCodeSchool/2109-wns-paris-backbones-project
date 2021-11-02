@@ -37,9 +37,11 @@ export class BackBonesUser extends BaseEntity {
 	@Column({ nullable: true })
 	password: string;
 
+	@Field((type) => Role)
 	@ManyToOne(() => Role, (role) => role.users, { eager: true })
 	role: Role;
 
+	@Field(() => [Task])
 	@ManyToMany((type) => Task, (task) => task.users, { eager: true })
 	@JoinTable()
 	tasks: Task[];

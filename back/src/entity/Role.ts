@@ -1,11 +1,21 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Field, ID, ObjectType } from "type-graphql";
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	OneToMany,
+	BaseEntity,
+} from "typeorm";
 import { BackBonesUser } from "./User";
 
 @Entity()
-export class Role {
+@ObjectType()
+export class Role extends BaseEntity {
+	@Field(() => ID)
 	@PrimaryGeneratedColumn()
 	id: number;
 
+	@Field()
 	@Column()
 	title: string;
 
