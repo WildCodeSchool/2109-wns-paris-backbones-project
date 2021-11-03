@@ -25,3 +25,9 @@ export class TaskInput {
 	@Field((input) => StatusInput, { nullable: true })
 	status: Status;
 }
+
+@InputType()
+export class UpdateTaskInput extends TaskInput {
+	@Field()
+	id: number;
+}

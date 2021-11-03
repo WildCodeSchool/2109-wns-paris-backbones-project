@@ -27,3 +27,9 @@ export class UserInput {
 	@Field((input) => [TaskInput], { nullable: true })
 	tasks: [Task];
 }
+
+@InputType()
+export class UpdateUserInput extends UserInput {
+	@Field()
+	id: number;
+}

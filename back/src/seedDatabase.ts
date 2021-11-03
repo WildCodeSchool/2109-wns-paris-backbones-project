@@ -43,15 +43,14 @@ const statusName = ["in progress", "to do", "done"];
 createConnection()
 	.then(async (connection) => {
 		// DELETING DB
-		console.log("deleting database");
-		const prevUsers = await connection.manager.find(BackBonesUser);
-		await connection.manager.remove(prevUsers);
-		const prevRoles = await connection.manager.find(Role);
-		await connection.manager.remove(prevRoles);
-		const prevTasks = await connection.manager.find(Task);
-		await connection.manager.remove(prevTasks);
-		const prevStatus = await connection.manager.find(Status);
-		await connection.manager.remove(prevStatus);
+		// const entities = connection.entityMetadatas;
+
+		// for (const entity of entities) {
+		// 	const repository = connection.getRepository(entity.name);
+		// 	await repository.delete({});
+		// }
+		await connection.dropDatabase();
+		await connection.synchronize();
 
 		// CREATE ROLES
 		for (const role of rolesName) {
