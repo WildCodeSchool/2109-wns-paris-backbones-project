@@ -1,18 +1,19 @@
-import { Resolver, Query, Arg } from "type-graphql";
+import { Resolver, Query, Arg, Mutation, ID } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
+import { UserInput } from "../inputs/UserInput";
 
 @Resolver()
 export class UserResolver {
-	@Query(() => [BackBonesUser], { name: "getUsers" })
-	async users() {
+	@Query(() => [BackBonesUser])
+	async getUsers() {
 		try {
 			return await BackBonesUser.find();
 		} catch (error) {
 			console.log(error);
 		}
 	}
-	@Query(() => BackBonesUser, { name: "getUserById" })
-	async user(@Arg("id") id: string) {
+	@Query(() => BackBonesUser)
+	async getUserById(@Arg("id") id: string) {
 		try {
 			return (await BackBonesUser.findOne(id))
 				? BackBonesUser.findOne(id)
@@ -22,10 +23,23 @@ export class UserResolver {
 		}
 	}
 
-	// @Mutation(() => BackBonesUser)
-	// async createBook(@Arg("data") data: CreateBookInput) {
-	// 	const user = BackBonesUser.create(data);
-	// 	await user.save();
-	// 	return user;
-	// }
+	@Mutation(() => BackBonesUser)
+	async addUser(@Arg("UserInput") UserInput: UserInput) {
+		let newUserId = 0;
+		try {
+			await BackBonesUser.create(UserInput)
+				.save()
+				.then((result) => {
+					if (result.id) {
+						newUserId = result.id;
+						console.log("Succesfully create: ", result);
+					} else {
+						console.log("ERROR: We can't create this User", result);
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+		return await BackBonesUser.findOne(newUserId);
+	}
 }

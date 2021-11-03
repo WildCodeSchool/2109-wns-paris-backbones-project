@@ -1,5 +1,7 @@
-import { Resolver, Query, Arg } from "type-graphql";
+import { UserInput } from "src/inputs/UserInput";
+import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
+import { TaskInput } from "../inputs/TaskInput";
 
 @Resolver()
 export class TaskResolver {
@@ -20,5 +22,24 @@ export class TaskResolver {
 		} catch (error) {
 			console.log(error);
 		}
+	}
+	@Mutation(() => Task)
+	async addTask(@Arg("TaskInput") TaskInput: TaskInput) {
+		let newTaskId = 0;
+		try {
+			await Task.create(TaskInput)
+				.save()
+				.then((result) => {
+					if (result.id) {
+						newTaskId = result.id;
+						console.log("Succesfully create: ", result);
+					} else {
+						console.log("ERROR: We can't create this Task", result);
+					}
+				});
+		} catch (error) {
+			console.log(error);
+		}
+		return await Task.findOne(newTaskId);
 	}
 }

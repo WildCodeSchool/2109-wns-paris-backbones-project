@@ -22,33 +22,36 @@ export class Task extends BaseEntity {
 	@Column()
 	title: string;
 
-	@Field()
-	@Column()
+	@Field({ nullable: true })
+	@Column({ nullable: true })
 	description: string;
 
-	@Field()
-	@Column()
+	@Field({ nullable: true })
+	@Column({ nullable: true })
 	effective_time: Date;
 
-	@Field()
-	@Column()
+	@Field({ nullable: true })
+	@Column({ nullable: true })
 	estimated_time: Date;
 
-	@Field()
-	@Column()
+	@Field({ nullable: true })
+	@Column({ nullable: true })
 	start_date: Date;
 
-	@Field()
-	@Column()
+	@Field({ nullable: true })
+	@Column({ nullable: true })
 	end_date: Date;
 
-	@Field(() => Status)
-	@ManyToOne(() => Status, (status) => status.tasks, { eager: true })
+	@Field(() => Status, { nullable: true })
+	@ManyToOne(() => Status, (status) => status.tasks, {
+		eager: true,
+		nullable: true,
+	})
 	status: Status;
 
-	@Field(() => [BackBonesUser])
+	@Field(() => [BackBonesUser], { nullable: true })
 	@ManyToMany((type) => BackBonesUser, (user) => user.tasks, {
-		cascade: true,
+		nullable: true,
 	})
 	@JoinTable()
 	users: BackBonesUser[];

@@ -17,32 +17,39 @@ export class BackBonesUser extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Field(() => String)
+	@Field()
 	@Column()
 	firstName: string;
 
-	@Field(() => String)
+	@Field()
 	@Column()
 	lastName: string;
 
-	@Field(() => String)
-	@Column()
+	@Field()
+	@Column({ unique: true })
 	email: string;
 
-	@Field(() => String)
+	@Field({ nullable: true })
 	@Column({ nullable: true })
 	avatar: string;
 
-	@Field(() => String)
-	@Column({ nullable: true })
+	@Field({ nullable: true })
+	@Column()
 	password: string;
 
-	@Field((type) => Role)
-	@ManyToOne(() => Role, (role) => role.users, { eager: true })
+	@Field((type) => Role, { nullable: true })
+	@ManyToOne(() => Role, (role) => role.users, {
+		eager: true,
+		nullable: true,
+	})
 	role: Role;
 
-	@Field(() => [Task])
-	@ManyToMany((type) => Task, (task) => task.users, { eager: true })
+	@Field(() => [Task], { nullable: true })
+	@ManyToMany((type) => Task, (task) => task.users, {
+		eager: true, //Eager relations are loaded automatically each time you load entities from the database
+		nullable: true,
+		cascade: ["insert"], //you can create a new Task in DB by doing something like this: newuser.tasks = [Task]
+	})
 	@JoinTable()
 	tasks: Task[];
 }

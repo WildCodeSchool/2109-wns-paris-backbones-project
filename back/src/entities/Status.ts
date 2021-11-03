@@ -19,7 +19,7 @@ export class Status extends BaseEntity {
 	@Column()
 	title: string;
 
-	@Field(() => [Task])
+	@Field(() => [Task], { nullable: true })
 	@OneToMany(() => Task, (task) => task.status)
 	tasks: Task[];
 }

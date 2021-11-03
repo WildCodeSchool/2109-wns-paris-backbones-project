@@ -19,6 +19,7 @@ export class Role extends BaseEntity {
 	@Column()
 	title: string;
 
+	@Field(() => [BackBonesUser], { nullable: true })
 	@OneToMany(() => BackBonesUser, (user) => user.role)
 	users: BackBonesUser[];
 }
