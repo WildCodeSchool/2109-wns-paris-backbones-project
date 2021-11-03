@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import { createConnection } from "typeorm";
-import { BackBonesUser } from "./entity/User";
-import { Role } from "./entity/Role";
-import { Task } from "./entity/Task";
-import { Status } from "./entity/Status";
+import { BackBonesUser } from "./entities/User";
+import { Role } from "./entities/Role";
+import { Task } from "./entities/Task";
+import { Status } from "./entities/Status";
 
 const rolesName = ["CTO", "Project Manager", "Product Owner", "Developer"];
 const usersName = [

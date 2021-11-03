@@ -1,10 +1,9 @@
-import { Resolver, Query, FieldResolver, Root } from "type-graphql";
-import { BackBonesUser } from "../entity/User";
-import { Role } from "../entity/Role";
+import { Resolver, Query, Arg } from "type-graphql";
+import { BackBonesUser } from "../entities/User";
 
 @Resolver()
 export class UserResolver {
-	@Query(() => [BackBonesUser])
+	@Query(() => [BackBonesUser], { name: "getUsers" })
 	async users() {
 		try {
 			return await BackBonesUser.find();
@@ -12,11 +11,12 @@ export class UserResolver {
 			console.log(error);
 		}
 	}
-
-	@Query(() => [Role])
-	async roles() {
+	@Query(() => BackBonesUser, { name: "getUserById" })
+	async user(@Arg("id") id: string) {
 		try {
-			return await Role.find();
+			return (await BackBonesUser.findOne(id))
+				? BackBonesUser.findOne(id)
+				: console.log("there is no user with id: " + id);
 		} catch (error) {
 			console.log(error);
 		}
