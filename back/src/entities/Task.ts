@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 import {
 	Entity,
 	PrimaryGeneratedColumn,
@@ -44,13 +44,14 @@ export class Task extends BaseEntity {
 
 	@Field(() => Status, { nullable: true })
 	@ManyToOne(() => Status, (status) => status.tasks, {
-		eager: true,
+		lazy: true,
 		nullable: true,
 	})
 	status: Status;
 
 	@Field(() => [BackBonesUser], { nullable: true })
 	@ManyToMany((type) => BackBonesUser, (user) => user.tasks, {
+		lazy: true,
 		nullable: true,
 	})
 	@JoinTable()

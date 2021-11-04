@@ -20,6 +20,9 @@ export class Status extends BaseEntity {
 	title: string;
 
 	@Field(() => [Task], { nullable: true })
-	@OneToMany(() => Task, (task) => task.status)
+	@OneToMany(() => Task, (task) => task.status, {
+		lazy: true,
+		nullable: true,
+	})
 	tasks: Task[];
 }

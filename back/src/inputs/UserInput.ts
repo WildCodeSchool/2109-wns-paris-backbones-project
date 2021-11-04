@@ -7,6 +7,11 @@ import { Role } from "../entities/Role";
 @InputType()
 export class UserInput {
 	@Field()
+	id: number;
+}
+@InputType()
+export class CreateUserInput {
+	@Field()
 	firstName: string;
 
 	@Field()
@@ -26,10 +31,4 @@ export class UserInput {
 
 	@Field((input) => [TaskInput], { nullable: true })
 	tasks: [Task];
-}
-
-@InputType()
-export class UpdateUserInput extends UserInput {
-	@Field()
-	id: number;
 }

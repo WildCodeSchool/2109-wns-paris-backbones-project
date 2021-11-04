@@ -1,9 +1,16 @@
 import { Status } from "../entities/Status";
 import { InputType, Field } from "type-graphql";
 import { StatusInput } from "./StatusInput";
+import { UserInput } from "./UserInput";
+import { BackBonesUser } from "../entities/User";
 
 @InputType()
 export class TaskInput {
+	@Field()
+	id: number;
+}
+@InputType()
+export class CreateTaskInput {
 	@Field()
 	title: string;
 
@@ -24,10 +31,7 @@ export class TaskInput {
 
 	@Field((input) => StatusInput, { nullable: true })
 	status: Status;
-}
 
-@InputType()
-export class UpdateTaskInput extends TaskInput {
-	@Field()
-	id: number;
+	@Field((input) => [UserInput], { nullable: true })
+	users: [BackBonesUser];
 }

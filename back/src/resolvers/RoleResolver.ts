@@ -3,8 +3,8 @@ import { Role } from "../entities/Role";
 
 @Resolver()
 export class RoleResolver {
-	@Query(() => [Role], { name: "getRoles" })
-	async roles() {
+	@Query(() => [Role])
+	async getRoles() {
 		try {
 			return await Role.find();
 		} catch (error) {

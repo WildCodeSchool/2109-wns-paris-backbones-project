@@ -3,8 +3,8 @@ import { Status } from "../entities/Status";
 
 @Resolver()
 export class StatusResolver {
-	@Query(() => [Status], { name: "getStatuses" })
-	async statuses() {
+	@Query(() => [Status])
+	async getStatuses() {
 		try {
 			return await Status.find();
 		} catch (error) {

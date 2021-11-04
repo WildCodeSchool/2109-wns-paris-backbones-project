@@ -1,7 +1,6 @@
-import { UserInput } from "src/inputs/UserInput";
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
-import { TaskInput, UpdateTaskInput } from "../inputs/TaskInput";
+import { CreateTaskInput } from "../inputs/TaskInput";
 
 @Resolver()
 export class TaskResolver {
@@ -22,10 +21,11 @@ export class TaskResolver {
 		}
 	}
 	@Mutation(() => Task)
-	async addTask(@Arg("TaskInput") TaskInput: TaskInput) {
+	async addTask(@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
+		console.log(CreateTaskInput);
 		try {
-			Task.create(TaskInput)
+			await Task.create(CreateTaskInput)
 				.save()
 				.then((result) => {
 					if (result.id) {
@@ -43,9 +43,12 @@ export class TaskResolver {
 
 	//UPDATE
 	@Mutation(() => Task)
-	async updateTask(@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput) {
+	async updateTask(
+		@Arg("taskId") taskId: number,
+		@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput
+	) {
 		try {
-			Task.update(UpdateTaskInput.id, UpdateTaskInput).then((result) => {
+			await Task.update(taskId, CreateTaskInput).then((result) => {
 				if (result) {
 					console.log("Succesfully update: ", result);
 				} else {
@@ -55,6 +58,6 @@ export class TaskResolver {
 		} catch (error) {
 			console.log(error);
 		}
-		return await Task.findOne(UpdateTaskInput.id);
+		return await Task.findOne(taskId);
 	}
 }

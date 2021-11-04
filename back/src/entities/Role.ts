@@ -11,7 +11,7 @@ import { BackBonesUser } from "./User";
 @Entity()
 @ObjectType()
 export class Role extends BaseEntity {
-	@Field(() => ID)
+	@Field()
 	@PrimaryGeneratedColumn()
 	id: number;
 
@@ -20,6 +20,9 @@ export class Role extends BaseEntity {
 	title: string;
 
 	@Field(() => [BackBonesUser], { nullable: true })
-	@OneToMany(() => BackBonesUser, (user) => user.role)
+	@OneToMany(() => BackBonesUser, (user) => user.role, {
+		lazy: true,
+		nullable: true,
+	})
 	users: BackBonesUser[];
 }
