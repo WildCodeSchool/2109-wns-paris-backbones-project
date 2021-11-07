@@ -54,6 +54,5 @@ export class Task extends BaseEntity {
 		lazy: true,
 		nullable: true,
 	})
-	@JoinTable()
 	users: BackBonesUser[];
 }
