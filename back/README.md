@@ -15,3 +15,7 @@ ALTER USER admin PASSWORD 'ticketapp_password';
 
 4. Run `yarn seed` command
 5. Run `yarn start` command
+   if fail for a TS reason. Please don't give up.
+   `yarn remove ts-node typescript`
+   `yarn add ts-node typescript`
+   `yarn start`
