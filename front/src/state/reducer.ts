@@ -1,11 +1,7 @@
 import { SET_USERID } from "./actions";
+import { IState, IAction } from "./types";
 
-interface IAction {
-	type: string;
-	payload?: string | object;
-}
-
-const reducer = (state: {}, action: IAction) => {
+const reducer = (state: IState, action: IAction) => {
 	switch (action.type) {
 		case SET_USERID:
 			console.log(action.payload);

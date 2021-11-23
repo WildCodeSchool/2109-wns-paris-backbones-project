@@ -1,8 +1,8 @@
-export const SET_USERID = "SET_USERID";
+export const SET_USERID = "SET_USERID" as const;
 
-export const setUserId = (value: string) => {
+export const setUserId = (newId: string) => {
 	return {
 		type: SET_USERID,
-		payload: value,
+		payload: newId,
 	};
 };
