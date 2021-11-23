@@ -31,8 +31,8 @@ export class Project extends BaseEntity {
     @Column({ nullable: true })
     description: string;
 
-    @Field()
-    @Column()
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     photo: string;
 
     @Field({ nullable: true })

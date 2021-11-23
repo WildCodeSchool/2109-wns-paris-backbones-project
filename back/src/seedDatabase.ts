@@ -4,6 +4,7 @@ import { BackBonesUser } from "./entities/User";
 import { Role } from "./entities/Role";
 import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
+import { Project } from "./entities/Project";
 
 const rolesName = ["CTO", "Project Manager", "Product Owner", "Developer"];
 const usersName = [
@@ -39,6 +40,18 @@ const usersName = [
 	},
 ];
 const statusName = ["in progress", "to do", "done"];
+const projectName = [
+	{
+		title: 'Appli',
+		description: 'blablabla',
+
+	},
+	{
+		title: 'Appli-2',
+		description: 'blobloblo',
+	}
+]
+
 
 createConnection()
 	.then(async (connection) => {
@@ -104,5 +117,22 @@ createConnection()
 		const users = await connection.manager.find(BackBonesUser);
 		console.log("Loaded users: ", users);
 		console.log("first user tasks", users[0].tasks);
+
+
+		// CREATE PROJECTS
+
+		for (const project of projectName) {
+			console.log("Inserting a new project into the database...");
+			const p = new Project();
+			p.title = project.title;
+			p.description = project.description;
+			p.photo = project.photo;
+			p.start_date = new Date();
+			p.end_date = new Date();
+			await connection.manager.save(p);
+			console.log("Saved a new project with named: " + p.title);
+
+
+		}
 	})
 	.catch((error) => console.log(error));
