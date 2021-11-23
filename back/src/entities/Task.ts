@@ -55,4 +55,5 @@ export class Task extends BaseEntity {
 		nullable: true,
 	})
 	users: BackBonesUser[];
+
 }
