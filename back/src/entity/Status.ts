@@ -1,14 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { BackBonesUser } from "./User";
+import { Task } from "./Task";
 
 @Entity()
-export class Role {
+export class Status {
 	@PrimaryGeneratedColumn()
 	id: number;
 
 	@Column()
 	title: string;
 
-	@OneToMany(() => BackBonesUser, (user) => user.role)
-	users: BackBonesUser[];
+	@OneToMany(() => Task, (task) => task.status)
+	tasks: Task[];
 }

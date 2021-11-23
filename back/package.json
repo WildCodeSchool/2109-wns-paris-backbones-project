@@ -6,6 +6,7 @@
    "scripts": {
       "build": "tsc",
       "start": "ts-node src/index.ts",
+      "seed": "ts-node src/seedDatabase.ts",
       "lint": "eslint . "
    },
    "devDependencies": {

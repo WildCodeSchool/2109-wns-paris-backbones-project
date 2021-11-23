@@ -2,10 +2,12 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-	OneToOne,
-	JoinColumn,
+	ManyToOne,
+	ManyToMany,
+	JoinTable,
 } from "typeorm";
 import { Role } from "./Role";
+import { Task } from "./Task";
 @Entity()
 export class BackBonesUser {
 	@PrimaryGeneratedColumn()
@@ -26,7 +28,10 @@ export class BackBonesUser {
 	@Column({ nullable: true })
 	password: string;
 
-	@OneToOne(() => Role)
-	@JoinColumn()
+	@ManyToOne(() => Role, (role) => role.users, { eager: true })
 	role: Role;
+
+	@ManyToMany((type) => Task, (task) => task.users, { eager: true })
+	@JoinTable()
+	tasks: Task[];
 }
