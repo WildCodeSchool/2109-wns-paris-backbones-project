@@ -164,7 +164,7 @@ const usersData = [
 //   title varchar
 // }
 
-const rolesData = [{ id: 1, title: "Développeur" }];
+const rolesData = [{ id: 1, title: "Développeuse" }];
 
 // Table status {
 //   id int [pk,ref: < projects_status.status_id]
@@ -174,21 +174,31 @@ const rolesData = [{ id: 1, title: "Développeur" }];
 const statusData = [{ id: 1, title: "En cours" }];
 
 interface IProps {
-	userId: string;
+	connectedUserId: string;
 }
 
-export const TasksList = ({ userId }: IProps) => (
+export const TasksList = ({ connectedUserId }: IProps) => (
 	<ul className="flex">
 		{tasksData
-			.filter(({ user_id }) => !userId || user_id === Number(userId))
-			.map(({ title, status_id, user_id }) => {
+			.filter(
+				// NOTE: FOR NOW: if user is not connected, by default, we still want to display all tasks
+				// TODO: when authentication is implemented, change the default behaviour: user should not see tasks unless they are logged in
+				({ user_id }) =>
+					!connectedUserId || user_id === Number(connectedUserId)
+			)
+			.map(({ title, status_id, user_id, id: taskId }) => {
+				// display the status text instead of its id
 				const currStatus = statusData.find(
 					({ id }) => id === status_id
 				);
 				return (
-					<li className="flex-1 border border-purple-800 p-2">
+					<li
+						className="flex-1 border border-purple-800 p-2"
+						key={taskId}
+					>
 						<header className="flex justify-between">
 							<span>
+								{/* TODO: remove user_id later // only used to check if properly fetched from db */}
 								<strong>{title}</strong> (user {user_id})
 							</span>{" "}
 							{currStatus && <span>{currStatus.title}</span>}
