@@ -126,12 +126,12 @@ createConnection()
 			const p = new Project();
 			p.title = project.title;
 			p.description = project.description;
-			p.photo = project.photo;
 			p.start_date = new Date();
 			p.end_date = new Date();
+			p.users = users;
+			p.tasks = tasks;
 			await connection.manager.save(p);
 			console.log("Saved a new project with named: " + p.title);
-
 
 		}
 	})

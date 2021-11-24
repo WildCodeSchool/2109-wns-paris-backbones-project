@@ -60,7 +60,7 @@ export class Project extends BaseEntity {
 
 
     @Field(() => [Task], { nullable: true })
-    @OneToMany(() => Task, (task) => task.status, {
+    @OneToMany(() => Task, (task) => task.project, {
         lazy: true,
         nullable: true,
     })
