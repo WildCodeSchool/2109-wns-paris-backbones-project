@@ -8,6 +8,7 @@
 		"start": "ts-node src/index.ts",
 		"seed": "ts-node src/seedDatabase.ts",
 		"test": "jest --detectOpenHandles",
+		"test:coverage": "jest --coverage --detectOpenHandles",
 		"lint": "eslint . "
 	},
 	"devDependencies": {

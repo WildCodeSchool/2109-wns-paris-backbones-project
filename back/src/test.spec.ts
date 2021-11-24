@@ -11,6 +11,7 @@ import { Task } from "./entities/Task";
 import { Role } from "./entities/Role";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
+import { ADD_USER, GET_USERS, GET_USER_BY_ID } from "./gqlQueries";
 
 let server: ApolloServer;
 
@@ -36,27 +37,6 @@ afterAll(() => {
 	server.stop();
 });
 
-const userId = gql`
-	query Query($userId: Float!) {
-		getUserById(UserId: $userId) {
-			id
-			firstName
-			lastName
-			email
-			avatar
-			password
-			role {
-				title
-			}
-			tasks {
-				id
-				title
-				description
-			}
-		}
-	}
-`;
-
 describe("test data base", () => {
 	it("user with id 1 is 'Myriam'", async () => {
 		const user = await BackBonesUser.findOne(1);
@@ -80,12 +60,39 @@ describe("test data base", () => {
 	});
 });
 
-describe("test resolvers", () => {
-	it("getUserById'", async () => {
-		const response = await server.executeOperation({
-			query: userId,
-			variables: { userId: 1 },
+describe("test Resolvers", () => {
+	describe("test UserResolvers", () => {
+		it("test query getUsers comparing data in db  ", async () => {
+			const users = await BackBonesUser.find();
+			const response = await server.executeOperation(GET_USERS());
+			expect(response.data?.getUsers.length).toEqual(users.length);
 		});
-		expect(response.data?.getUserById.firstName).toBe("Myriam");
+
+		it("test query getUserById expect user id 1 to be 'Myriam'", async () => {
+			const response = await server.executeOperation(GET_USER_BY_ID());
+			expect(response.data?.getUserById.firstName).toBe("Myriam");
+		});
+
+		it("test mutation addUser expect createdUser id equal to user with same id", async () => {
+			const response = await server.executeOperation(ADD_USER());
+			console.log(response);
+			const createdUser = await BackBonesUser.findOne(
+				response.data?.addUser.id
+			);
+			let id = createdUser?.id;
+			await createdUser?.remove();
+			expect(response.data?.addUser.id).toBe(id);
+		});
+
+		// it("test mutation updateUser expect updatedUser name equal to user name with same id", async () => {
+		// 	const response = await server.executeOperation(ADD_USER());
+		// 	console.log(response);
+		// 	const createdUser = await BackBonesUser.findOne(
+		// 		response.data?.addUser.id
+		// 	);
+		// 	let id = createdUser?.id;
+		// 	await createdUser?.remove();
+		// 	expect(response.data?.addUser.id).toBe(id);
+		// });
 	});
 });
