@@ -35,14 +35,6 @@ export class UserResolver {
 			} else {
 				console.log("ERROR: We can't create this User", user);
 			}
-			// .then((result) => {
-			// 	if (result.id) {
-			// 		newUserId = result.id;
-			// 		console.log("Succesfully create: ", result);
-			// 	} else {
-			// 		console.log("ERROR: We can't create this User", result);
-			// 	}
-			// });
 		} catch (error) {
 			console.log(error);
 		}
@@ -52,11 +44,11 @@ export class UserResolver {
 	//UPDATE
 	@Mutation(() => BackBonesUser)
 	async updateUser(
-		@Arg("userId") userId: number,
+		@Arg("UserId") UserId: number,
 		@Arg("CreateUserInput") CreateUserInput: CreateUserInput
 	) {
 		try {
-			await BackBonesUser.update(userId, CreateUserInput).then(
+			await BackBonesUser.update(UserId, CreateUserInput).then(
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);
@@ -68,6 +60,6 @@ export class UserResolver {
 		} catch (error) {
 			console.log(error);
 		}
-		return await BackBonesUser.findOne(userId);
+		return await BackBonesUser.findOne(UserId);
 	}
 }
