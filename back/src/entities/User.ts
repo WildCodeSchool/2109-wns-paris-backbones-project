@@ -8,6 +8,7 @@ import {
 	JoinTable,
 	BaseEntity,
 } from "typeorm";
+import { Project } from "./Project";
 import { Role } from "./Role";
 import { Task } from "./Task";
 @Entity()
@@ -51,4 +52,14 @@ export class BackBonesUser extends BaseEntity {
 	})
 	@JoinTable()
 	tasks: Task[];
+
+	@Field(() => [Project], { nullable: true })
+	@ManyToMany((type) => Project, (project) => project.users, {
+		lazy: true,
+		nullable: true,
+	})
+	@JoinTable()
+	projects: Project[];
+
+
 }
