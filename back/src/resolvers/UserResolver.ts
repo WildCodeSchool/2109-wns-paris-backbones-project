@@ -28,16 +28,21 @@ export class UserResolver {
 		let newUserId = 0;
 		console.log(CreateUserInput);
 		try {
-			await BackBonesUser.create(CreateUserInput)
-				.save()
-				.then((result) => {
-					if (result.id) {
-						newUserId = result.id;
-						console.log("Succesfully create: ", result);
-					} else {
-						console.log("ERROR: We can't create this User", result);
-					}
-				});
+			const user = await BackBonesUser.create(CreateUserInput).save();
+			if (user.id) {
+				newUserId = user.id;
+				console.log("Succesfully create: ", user);
+			} else {
+				console.log("ERROR: We can't create this User", user);
+			}
+			// .then((result) => {
+			// 	if (result.id) {
+			// 		newUserId = result.id;
+			// 		console.log("Succesfully create: ", result);
+			// 	} else {
+			// 		console.log("ERROR: We can't create this User", result);
+			// 	}
+			// });
 		} catch (error) {
 			console.log(error);
 		}
