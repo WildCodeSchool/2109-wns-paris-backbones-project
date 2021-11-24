@@ -58,7 +58,7 @@ export class Task extends BaseEntity {
 	})
 	users: BackBonesUser[];
 
-	@Field(() => [Project], { nullable: true })
+	@Field(() => Project, { nullable: true })
 	@ManyToOne((type) => Project, (project) => project.tasks, {
 		lazy: true,
 		nullable: true,
