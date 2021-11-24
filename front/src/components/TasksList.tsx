@@ -173,18 +173,28 @@ const rolesData = [{ id: 1, title: "Développeur" }];
 
 const statusData = [{ id: 1, title: "En cours" }];
 
-export const TasksList = () => (
+interface IProps {
+	userId: string;
+}
+
+export const TasksList = ({ userId }: IProps) => (
 	<ul className="flex">
-		{tasksData.map(({ title, status_id }) => {
-			const currStatus = statusData.find(({ id }) => id === status_id);
-			return (
-				<li className="flex-1 p-2">
-					<header className="flex justify-between">
-						<strong>{title}</strong>{" "}
-						{currStatus && <span>{currStatus.title}</span>}
-					</header>
-				</li>
-			);
-		})}
+		{tasksData
+			.filter(({ user_id }) => !userId || user_id === Number(userId))
+			.map(({ title, status_id, user_id }) => {
+				const currStatus = statusData.find(
+					({ id }) => id === status_id
+				);
+				return (
+					<li className="flex-1 border border-purple-800 p-2">
+						<header className="flex justify-between">
+							<span>
+								<strong>{title}</strong> (user {user_id})
+							</span>{" "}
+							{currStatus && <span>{currStatus.title}</span>}
+						</header>
+					</li>
+				);
+			})}
 	</ul>
 );

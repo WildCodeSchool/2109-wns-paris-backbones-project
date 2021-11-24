@@ -8,7 +8,7 @@ function App() {
 	return (
 		<div className="App bg-pink-700">
 			<AuthenticationHeader />
-			<TasksList />
+			<TasksList userId={userId} />
 		</div>
 	);
 }
