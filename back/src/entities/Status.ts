@@ -6,6 +6,7 @@ import {
 	OneToMany,
 	BaseEntity,
 } from "typeorm";
+import { Project } from "./Project";
 import { Task } from "./Task";
 
 @Entity()
@@ -25,4 +26,11 @@ export class Status extends BaseEntity {
 		nullable: true,
 	})
 	tasks: Task[];
+
+	@Field(() => [Project], { nullable: true })
+	@OneToMany(() => Project, (project) => project.status, {
+		lazy: true,
+		nullable: true,
+	})
+	projects: Project[];
 }
