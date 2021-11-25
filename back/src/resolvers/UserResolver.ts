@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
-import { CreateUserInput } from "../inputs/UserInput";
+import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
 
 @Resolver()
 export class UserResolver {
@@ -47,11 +47,11 @@ export class UserResolver {
 	//UPDATE
 	@Mutation(() => BackBonesUser)
 	async updateUser(
-		@Arg("userId") userId: number,
-		@Arg("CreateUserInput") CreateUserInput: CreateUserInput
+		@Arg("UserId") UserId: number,
+		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
 	) {
 		try {
-			await BackBonesUser.update(userId, CreateUserInput).then(
+			await BackBonesUser.update(UserId, UpdateUserInput).then(
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);
@@ -63,6 +63,6 @@ export class UserResolver {
 		} catch (error) {
 			console.log(error);
 		}
-		return await BackBonesUser.findOne(userId);
+		return await BackBonesUser.findOne(UserId);
 	}
 }

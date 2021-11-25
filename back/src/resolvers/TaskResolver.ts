@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
-import { CreateTaskInput } from "../inputs/TaskInput";
+import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 
 @Resolver()
 export class TaskResolver {
@@ -44,11 +44,11 @@ export class TaskResolver {
 	//UPDATE
 	@Mutation(() => Task)
 	async updateTask(
-		@Arg("taskId") taskId: number,
-		@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput
+		@Arg("TaskId") TaskId: number,
+		@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput
 	) {
 		try {
-			await Task.update(taskId, CreateTaskInput).then((result) => {
+			await Task.update(TaskId, UpdateTaskInput).then((result) => {
 				if (result) {
 					console.log("Succesfully update: ", result);
 				} else {
@@ -58,6 +58,6 @@ export class TaskResolver {
 		} catch (error) {
 			console.log(error);
 		}
-		return await Task.findOne(taskId);
+		return await Task.findOne(TaskId);
 	}
 }

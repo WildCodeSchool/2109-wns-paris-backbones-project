@@ -32,3 +32,27 @@ export class CreateUserInput {
 	@Field((input) => [TaskInput], { nullable: true })
 	tasks: [Task];
 }
+
+@InputType()
+export class UpdateUserInput {
+	@Field({ nullable: true })
+	firstName: string;
+
+	@Field({ nullable: true })
+	lastName: string;
+
+	@Field({ nullable: true })
+	email: string;
+
+	@Field({ nullable: true })
+	password: string;
+
+	@Field({ nullable: true })
+	avatar: string;
+
+	@Field((input) => RoleInput, { nullable: true })
+	role: Role;
+
+	@Field((input) => [TaskInput], { nullable: true })
+	tasks: [Task];
+}
