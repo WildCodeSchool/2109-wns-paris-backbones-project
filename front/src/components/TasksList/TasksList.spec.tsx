@@ -7,13 +7,13 @@ const tasksData = [
 		title: "Tâche A",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 1,
+		users: [{ id: 1 }],
 		project_id: 1,
 	},
 	{
@@ -21,13 +21,13 @@ const tasksData = [
 		title: "Tâche B",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 2,
+		users: [{ id: 2 }],
 		project_id: 1,
 	},
 	{
@@ -35,13 +35,13 @@ const tasksData = [
 		title: "Tâche C",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 1,
+		users: [{ id: 1 }],
 		project_id: 1,
 	},
 	{
@@ -49,13 +49,13 @@ const tasksData = [
 		title: "Tâche D",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 2,
+		users: [{ id: 2 }],
 		project_id: 1,
 	},
 	{
@@ -63,13 +63,13 @@ const tasksData = [
 		title: "Tâche E",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 2,
+		users: [{ id: 2 }],
 		project_id: 1,
 	},
 	{
@@ -77,13 +77,13 @@ const tasksData = [
 		title: "Tâche F",
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
-		status_id: 1,
+		status: { title: "A faire" },
 		// effective_time:,
 		// estimated_date:,
 		// start_date:,
 		// end_date:,
 		// created_at:,
-		user_id: 1,
+		users: [{ id: 1 }],
 		project_id: 1,
 	},
 ];
@@ -93,7 +93,7 @@ describe("TasksList", () => {
 	describe("no connected user", () => {
 		// TODO: (authentication) for now, it has to display all tasks but ultimately, no task should be displayed if user is not connected
 		it("displays all tasks", () => {
-			render(<TasksList connectedUserId={""} />);
+			render(<TasksList connectedUserId={""} tasks={tasksData} />);
 			tasksData.forEach(({ title }) =>
 				expect(screen.getByText(title)).toBeInTheDocument()
 			);
@@ -101,16 +101,16 @@ describe("TasksList", () => {
 	});
 	describe("connected user with no task", () => {
 		it("displays no task", () => {
-			render(<TasksList connectedUserId={"-1"} />);
+			render(<TasksList connectedUserId={"-1"} tasks={tasksData} />);
 			expect(screen.queryAllByRole("listitem")).toHaveLength(0);
 		});
 	});
 	describe("connected user with task(s)", () => {
 		it("display the connected user's task(s)", () => {
-			render(<TasksList connectedUserId={"1"} />);
+			render(<TasksList connectedUserId={"1"} tasks={tasksData} />);
 			// fetches tasks assigned to connectedUserId
-			const currentUserTasks = tasksData.filter(
-				({ user_id }) => user_id === 1
+			const currentUserTasks = tasksData.filter(({ users }) =>
+				users.some(({ id }) => id === 1)
 			);
 
 			// checks that all tasks are rendered

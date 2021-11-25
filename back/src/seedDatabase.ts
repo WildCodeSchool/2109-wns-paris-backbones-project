@@ -99,6 +99,7 @@ createConnection()
 		const tasks = await connection.manager.find(Task);
 
 		// CREATE USERS
+		let i = 1;
 		for (const user of usersName) {
 			console.log("Inserting a new user into the database...");
 			const u = new BackBonesUser();
@@ -106,11 +107,12 @@ createConnection()
 			u.lastName = user.lastName;
 			u.email = user.email;
 			u.role = roles.find((role) => role.title === user.role) || roles[0];
-			u.tasks = tasks;
+			u.tasks = tasks.filter((task, index) => index % i === 0);
 			u.avatar = "https://tooommm.github.io/profile/images/profile.jpg";
 			u.password = "azerty";
 			await connection.manager.save(u);
 			console.log("Saved a new user with named: " + u.firstName);
+			i++;
 		}
 
 		console.log("Loading users from the database...");
