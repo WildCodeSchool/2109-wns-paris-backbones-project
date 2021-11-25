@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { DispatchProvider } from "../state/GlobalStateProvider";
-import { setUserId } from "../state/actions";
+import { DispatchProvider } from "../../state/GlobalStateProvider";
+import { setUserId } from "../../state/actions";
 
 const AuthenticationHeader = () => {
 	const [input, setInput] = React.useState("");
