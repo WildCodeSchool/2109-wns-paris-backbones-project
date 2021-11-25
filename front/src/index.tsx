@@ -11,25 +11,16 @@ import {
 } from "@apollo/client";
 
 const client = new ApolloClient({
-	uri: "https://48p1r2roz4.sse.codesandbox.io",
+	// TODO: replace uri with env var later
+	uri: "http://localhost:4000/",
 	cache: new InMemoryCache(),
 });
 
-client
-	.query({
-		query: gql`
-			query GetRates {
-				rates(currency: "USD") {
-					currency
-				}
-			}
-		`,
-	})
-	.then((result) => console.log(result));
-
 ReactDOM.render(
 	<React.StrictMode>
-		<GlobalStateProvider />
+		<ApolloProvider client={client}>
+			<GlobalStateProvider />
+		</ApolloProvider>
 	</React.StrictMode>,
 	document.getElementById("root")
 );
