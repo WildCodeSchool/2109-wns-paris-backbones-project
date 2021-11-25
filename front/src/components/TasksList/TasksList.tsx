@@ -11,18 +11,7 @@ import React from "react";
 //   user_id int [not null]
 // }
 
-const projectsData = [
-	{
-		id: 1,
-		title: "Mon super projet",
-		description: "Projet de fou furieux lel",
-		photo: "https://via.placeholder.com/150",
-		start_date: Date.now(),
-		end_date: null,
-		created_at: Date.now(),
-		user_id: 1,
-	},
-];
+
 
 // Table tasks {
 //   id int [pk]
