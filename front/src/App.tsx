@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { TasksList } from "./components/TasksList/TasksList";
 import { StateProvider } from "./state/GlobalStateProvider";
 import AuthenticationHeader from "./components/AuthenticationHeader/AuthenticationHeader";
@@ -67,7 +67,6 @@ function App() {
 		getUsers: users,
 		getTasks: tasks,
 	} = data ?? {};
-	useEffect(() => console.log(data));
 
 	return (
 		<div className="App bg-pink-700">
