@@ -1,16 +1,16 @@
 import { ApolloServer, gql } from "apollo-server";
 import { createConnection } from "typeorm";
-import { UserResolver } from "./resolvers/UserResolver";
-import { TaskResolver } from "./resolvers/TaskResolver";
-import { StatusResolver } from "./resolvers/StatusResolver";
-import { RoleResolver } from "./resolvers/RoleResolver";
-import { ProjectResolver } from "./resolvers/ProjectResolver";
+import { UserResolver } from "../resolvers/UserResolver";
+import { TaskResolver } from "../resolvers/TaskResolver";
+import { StatusResolver } from "../resolvers/StatusResolver";
+import { RoleResolver } from "../resolvers/RoleResolver";
+import { ProjectResolver } from "../resolvers/ProjectResolver";
 import { buildSchema } from "type-graphql";
-import { BackBonesUser } from "./entities/User";
-import { Task } from "./entities/Task";
-import { Role } from "./entities/Role";
-import { Status } from "./entities/Status";
-import { Project } from "./entities/Project";
+import { BackBonesUser } from "../entities/User";
+import { Task } from "../entities/Task";
+import { Role } from "../entities/Role";
+import { Status } from "../entities/Status";
+import { Project } from "../entities/Project";
 import {
 	ADD_PROJECT,
 	ADD_TASK,
@@ -26,7 +26,7 @@ import {
 	UPDATE_PROJECT,
 	UPDATE_TASK,
 	UPDATE_USER,
-} from "./gqlQueries";
+} from "./gqlQueries/gqlQueries";
 
 let server: ApolloServer;
 
