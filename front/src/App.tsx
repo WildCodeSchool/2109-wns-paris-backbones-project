@@ -72,7 +72,11 @@ function App() {
 	return (
 		<div className="App bg-pink-700">
 			<AuthenticationHeader />
-			<TasksList connectedUserId={userId} />
+			{loading && <div>Loading, plz wait :D</div>}
+			{error && <div>Oops, something went wrong :'(</div>}
+			{!loading && !error && (
+				<TasksList connectedUserId={userId} tasks={tasks} />
+			)}
 		</div>
 	);
 }
