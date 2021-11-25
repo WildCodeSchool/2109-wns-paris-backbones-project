@@ -25,16 +25,13 @@ export class TaskResolver {
 		let newTaskId = 0;
 		console.log(CreateTaskInput);
 		try {
-			await Task.create(CreateTaskInput)
-				.save()
-				.then((result) => {
-					if (result.id) {
-						newTaskId = result.id;
-						console.log("Succesfully create: ", result);
-					} else {
-						console.log("ERROR: We can't create this Task", result);
-					}
-				});
+			const task = await Task.create(CreateTaskInput).save();
+			if (task.id) {
+				newTaskId = task.id;
+				console.log("Succesfully create: ", task);
+			} else {
+				console.log("ERROR: We can't create this Task", task);
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -44,11 +41,11 @@ export class TaskResolver {
 	//UPDATE
 	@Mutation(() => Task)
 	async updateTask(
-		@Arg("taskId") taskId: number,
+		@Arg("TaskId") TaskId: number,
 		@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput
 	) {
 		try {
-			await Task.update(taskId, CreateTaskInput).then((result) => {
+			await Task.update(TaskId, CreateTaskInput).then((result) => {
 				if (result) {
 					console.log("Succesfully update: ", result);
 				} else {
@@ -58,6 +55,6 @@ export class TaskResolver {
 		} catch (error) {
 			console.log(error);
 		}
-		return await Task.findOne(taskId);
+		return await Task.findOne(TaskId);
 	}
 }
