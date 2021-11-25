@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server";
-import { createConnection } from "typeorm";
+import { createConnection, getConnectionOptions } from "typeorm";
 import { UserResolver } from "../resolvers/UserResolver";
 import { TaskResolver } from "../resolvers/TaskResolver";
 import { StatusResolver } from "../resolvers/StatusResolver";
@@ -31,6 +31,7 @@ import {
 let server: ApolloServer;
 
 beforeAll(async () => {
+	// const connectionOptions = await getConnectionOptions("test");
 	await createConnection();
 	const schema = await buildSchema({
 		resolvers: [

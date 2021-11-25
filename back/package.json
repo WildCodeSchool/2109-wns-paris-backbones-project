@@ -22,8 +22,10 @@
 		"ts-node-dev": "^1.1.8"
 	},
 	"dependencies": {
+		"@types/better-sqlite3": "^7.4.1",
 		"@types/jest": "^27.0.3",
 		"apollo-server": "^3.4.0",
+		"better-sqlite3": "^7.4.5",
 		"class-validator": "^0.13.1",
 		"graphql": "^15.7.1",
 		"jest": "^27.3.1",
