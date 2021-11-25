@@ -1,4 +1,4 @@
-import { ApolloServer, gql } from "apollo-server";
+import { ApolloServer } from "apollo-server";
 import { createConnection } from "typeorm";
 import { UserResolver } from "../resolvers/UserResolver";
 import { TaskResolver } from "../resolvers/TaskResolver";
