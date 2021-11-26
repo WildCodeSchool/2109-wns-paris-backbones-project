@@ -1,6 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { Project } from "../entities/Project";
-import { CreateProjectInput } from "../inputs/ProjectInput";
+import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
 
 @Resolver()
 export class ProjectResolver {
@@ -30,13 +30,17 @@ export class ProjectResolver {
 	) {
 		let newProjectId = 0;
 		try {
-			const project = await Project.create(CreateProjectInput).save();
-			if (project.id) {
-				newProjectId = project.id;
-				console.log("Succesfully create: ", project);
-			} else {
-				console.log("ERROR: We can't create project", project);
-			}
+			await Project.create(CreateProjectInput)
+				.save()
+				.then((result) => {
+					if (result.id) {
+						newProjectId = result.id;
+						console.log("Succesfully create: ", result);
+					} else {
+						console.log("ERROR: We can't create project", result);
+					}
+				});
+
 		} catch (error) {
 			console.log(error);
 		}
@@ -47,10 +51,12 @@ export class ProjectResolver {
 	@Mutation(() => Project)
 	async updateProject(
 		@Arg("ProjectId") ProjectId: number,
-		@Arg("CreateProjectInput") CreateProjectInput: CreateProjectInput
+
+		@Arg("UpdateProjectInput") UpdateProjectInput: UpdateProjectInput
 	) {
 		try {
-			await Project.update(ProjectId, CreateProjectInput).then(
+			await Project.update(ProjectId, UpdateProjectInput).then(
+
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);

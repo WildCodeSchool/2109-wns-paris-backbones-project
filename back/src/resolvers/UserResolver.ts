@@ -1,6 +1,6 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
-import { CreateUserInput } from "../inputs/UserInput";
+import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
 
 @Resolver()
 export class UserResolver {
@@ -45,10 +45,12 @@ export class UserResolver {
 	@Mutation(() => BackBonesUser)
 	async updateUser(
 		@Arg("UserId") UserId: number,
-		@Arg("CreateUserInput") CreateUserInput: CreateUserInput
+
+		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
 	) {
 		try {
-			await BackBonesUser.update(UserId, CreateUserInput).then(
+			await BackBonesUser.update(UserId, UpdateUserInput).then(
+
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);

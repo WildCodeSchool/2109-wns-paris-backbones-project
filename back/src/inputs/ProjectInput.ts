@@ -8,37 +8,66 @@ import { UserInput } from "./UserInput";
 
 @InputType()
 export class ProjectInput {
-    @Field()
-    id: number;
+	@Field()
+	id: number;
 }
 
 @InputType()
 export class CreateProjectInput {
-    //Simple
+	//Simple
 
-    @Field()
-    title: string;
+	@Field()
+	title: string;
 
-    @Field({ nullable: true })
-    description: string;
+	@Field({ nullable: true })
+	description: string;
 
-    @Field({ nullable: true })
-    photo: string;
+	@Field({ nullable: true })
+	photo: string;
 
-    @Field({ nullable: true })
-    start_date: Date;
+	@Field({ nullable: true })
+	start_date: Date;
 
-    @Field({ nullable: true })
-    end_date: Date;
+	@Field({ nullable: true })
+	end_date: Date;
 
-    // Relations
-    @Field((input) => StatusInput, { nullable: true })
-    status: Status;
+	// Relations
+	@Field((input) => StatusInput, { nullable: true })
+	status: Status;
 
-    @Field((input) => [TaskInput], { nullable: true })
-    tasks: [Task];
+	@Field((input) => [TaskInput], { nullable: true })
+	tasks: [Task];
 
-    @Field((input) => [UserInput], { nullable: true })
-    users: [BackBonesUser];
+	@Field((input) => [UserInput], { nullable: true })
+	users: [BackBonesUser];
+}
 
+@InputType()
+export class UpdateProjectInput {
+	//Simple
+
+	@Field({ nullable: true })
+	title: string;
+
+	@Field({ nullable: true })
+	description: string;
+
+	@Field({ nullable: true })
+	photo: string;
+
+	@Field({ nullable: true })
+	start_date: Date;
+
+	@Field({ nullable: true })
+	end_date: Date;
+
+	// Relations
+	@Field((input) => StatusInput, { nullable: true })
+	status: Status;
+
+	@Field((input) => [TaskInput], { nullable: true })
+	tasks: [Task];
+
+	@Field((input) => [UserInput], { nullable: true })
+	users: [BackBonesUser];
 }
