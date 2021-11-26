@@ -13,9 +13,10 @@ CREATE USER admin;
 ALTER USER admin PASSWORD 'ticketapp_password';
 ```
 
-4. Run `yarn seed` command
+4. Run `yarn seed:prod` command to seed prod environment
 5. Run `yarn start` command
    if fail for a TS reason. Please don't give up.
    `yarn remove ts-node typescript`
    `yarn add ts-node typescript`
    `yarn start`
+6. Run `yarn test` command will run test suite and create and seed the test db
