@@ -27,12 +27,11 @@ import {
 	UPDATE_TASK,
 	UPDATE_USER,
 } from "./gqlQueries/gqlQueries";
-
 let server: ApolloServer;
 
 beforeAll(async () => {
-	// const connectionOptions = await getConnectionOptions("test");
-	await createConnection();
+	const connectionOptions = await getConnectionOptions("test");
+	await createConnection({ ...connectionOptions, name: "default" });
 	const schema = await buildSchema({
 		resolvers: [
 			UserResolver,

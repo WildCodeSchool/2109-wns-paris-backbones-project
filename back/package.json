@@ -5,8 +5,9 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "tsc",
-		"start": "ts-node src/index.ts",
-		"seed": "ts-node src/seedDatabase.ts",
+		"start": "NODE_ENV=prod ts-node src/index.ts",
+		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",
+		"seed:prod": "NODE_ENV=prod ts-node src/seedDatabase.ts",
 		"test": "jest --detectOpenHandles",
 		"test:coverage": "jest --coverage --detectOpenHandles",
 		"lint": "eslint . "
@@ -27,6 +28,7 @@
 		"apollo-server": "^3.4.0",
 		"better-sqlite3": "^7.4.5",
 		"class-validator": "^0.13.1",
+		"dotenv": "^10.0.0",
 		"graphql": "^15.7.1",
 		"jest": "^27.3.1",
 		"pg": "^8.4.0",

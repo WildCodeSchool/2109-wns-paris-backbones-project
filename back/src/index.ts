@@ -6,9 +6,13 @@ import { StatusResolver } from "./resolvers/StatusResolver";
 import { RoleResolver } from "./resolvers/RoleResolver";
 import { ProjectResolver } from "./resolvers/ProjectResolver";
 import { buildSchema } from "type-graphql";
+import { config } from "dotenv";
+config({ path: `.env.${process.env.NODE_ENV}` });
+
+console.log(`You are in ${process.env.NODE_ENV} environement`);
 
 async function main() {
-	const connectionOptions = await getConnectionOptions("prod");
+	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
 	await createConnection({ ...connectionOptions, name: "default" });
 
 	const schema = await buildSchema({
