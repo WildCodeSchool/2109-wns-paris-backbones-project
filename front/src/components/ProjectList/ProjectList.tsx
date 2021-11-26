@@ -62,10 +62,10 @@ export const ProjectList = ({ connectedUserId }: IProps) => (
                 console.log(connectedUserId)
 
                 return (
-                    <li
+                    <li id="projectList"
                         className="flex-1 bg-gray-500 border-purple-600 p-2"
 
-                    > <span>{project.title} {project.user_id}</span>
+                    > <span id={project.user_id === 1 ? "first_user" : "second_user"}>{project.title} {project.user_id}</span>
                     </li>
                 );
             })}

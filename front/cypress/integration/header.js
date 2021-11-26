@@ -1,9 +1,8 @@
 import React from 'react';
-import { ProjectList } from '../../src/components/ProjectList/ProjectList'
 
 describe("renders home", () => {
     it("renders correctly", () => {
-        cy.visit('http:localhost:3000ss');
+        cy.visit('http:localhost:3000');
     })
 })
 
@@ -13,13 +12,27 @@ describe("submit header form", () => {
     })
 })
 
-describe("displays all projects despite connection", () => {
+describe("displays all projects despite connexion", () => {
     it("displays correctly", () => {
-        cy.get('#projectList').should('have.length', 4)
+        cy.get('li').filter('#projectList')
+            .should('have.length', 4)
+            .each(($li, index, $lis) => {
+                return 'all project displays'
+            })
+            .then(($lis) => {
+                expect($lis).to.have.length(4)
+            })
+    });
+})
+
+describe("displays project regarding user", () => {
+    it("corresponding project", () => {
+        cy.get('span').filter('#first_user')
+        cy.get('span').filter('#second_user')
+
+
     });
 });
-
-
 
 
 
