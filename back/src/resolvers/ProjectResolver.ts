@@ -40,6 +40,7 @@ export class ProjectResolver {
 						console.log("ERROR: We can't create project", result);
 					}
 				});
+
 		} catch (error) {
 			console.log(error);
 		}
@@ -50,10 +51,12 @@ export class ProjectResolver {
 	@Mutation(() => Project)
 	async updateProject(
 		@Arg("ProjectId") ProjectId: number,
+
 		@Arg("UpdateProjectInput") UpdateProjectInput: UpdateProjectInput
 	) {
 		try {
 			await Project.update(ProjectId, UpdateProjectInput).then(
+
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);

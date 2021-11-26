@@ -28,16 +28,13 @@ export class UserResolver {
 		let newUserId = 0;
 		console.log(CreateUserInput);
 		try {
-			await BackBonesUser.create(CreateUserInput)
-				.save()
-				.then((result) => {
-					if (result.id) {
-						newUserId = result.id;
-						console.log("Succesfully create: ", result);
-					} else {
-						console.log("ERROR: We can't create this User", result);
-					}
-				});
+			const user = await BackBonesUser.create(CreateUserInput).save();
+			if (user.id) {
+				newUserId = user.id;
+				console.log("Succesfully create: ", user);
+			} else {
+				console.log("ERROR: We can't create this User", user);
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -48,10 +45,12 @@ export class UserResolver {
 	@Mutation(() => BackBonesUser)
 	async updateUser(
 		@Arg("UserId") UserId: number,
+
 		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
 	) {
 		try {
 			await BackBonesUser.update(UserId, UpdateUserInput).then(
+
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);
