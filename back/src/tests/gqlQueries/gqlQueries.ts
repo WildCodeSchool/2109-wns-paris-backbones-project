@@ -52,7 +52,7 @@ export const ADD_USER = (email: String) => {
 	};
 };
 
-export const UPDATE_USER = () => {
+export const UPDATE_USER = (userId: Number) => {
 	const mutationUpdateUser: DocumentNode = gql`
 		mutation UpdateUser(
 			$updateUserInput: UpdateUserInput!
@@ -77,7 +77,7 @@ export const UPDATE_USER = () => {
 					id: 1,
 				},
 			},
-			userId: 5,
+			userId: userId,
 		},
 	};
 };
@@ -110,7 +110,7 @@ export const GET_TASK_BY_ID = () => {
 	};
 };
 
-export const ADD_TASK = () => {
+export const ADD_TASK = (taskName: String) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
 			addTask(CreateTaskInput: $createTaskInput) {
@@ -123,7 +123,7 @@ export const ADD_TASK = () => {
 		query: mutationAddTask,
 		variables: {
 			createTaskInput: {
-				title: "brand new task",
+				title: taskName,
 				description: "woooow what a task !!!",
 			},
 		},

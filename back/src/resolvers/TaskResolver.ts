@@ -42,8 +42,13 @@ export class TaskResolver {
 		@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput
 	) {
 		try {
-			const updatedTask = await Task.update(TaskId, UpdateTaskInput);
-			console.log("Succesfully update: ", updatedTask);
+			const task = await Task.findOne(TaskId);
+			if (task) {
+				await Task.update(TaskId, UpdateTaskInput);
+				console.log("Succesfully update: ", task);
+			} else {
+				throw `Task with id : ${TaskId} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}

@@ -9,7 +9,7 @@
 		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",
 		"seed:prod": "NODE_ENV=prod ts-node src/seedDatabase.ts",
 		"test": "yarn seed:test ; jest --detectOpenHandles",
-		"test:coverage": "jest --coverage --detectOpenHandles",
+		"test:coverage": "yarn seed:test ; jest --coverage --detectOpenHandles",
 		"lint": "eslint . "
 	},
 	"devDependencies": {

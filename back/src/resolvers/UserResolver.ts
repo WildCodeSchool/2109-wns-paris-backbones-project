@@ -26,7 +26,6 @@ export class UserResolver {
 	@Mutation(() => BackBonesUser)
 	async addUser(@Arg("CreateUserInput") CreateUserInput: CreateUserInput) {
 		let newUserId = 0;
-		console.log(CreateUserInput);
 		try {
 			const user = await BackBonesUser.create(CreateUserInput).save();
 			newUserId = user.id;
@@ -45,11 +44,13 @@ export class UserResolver {
 		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
 	) {
 		try {
-			const updatedUser = await BackBonesUser.update(
-				UserId,
-				UpdateUserInput
-			);
-			console.log("Succesfully update: ", updatedUser);
+			const user = await BackBonesUser.findOne(UserId);
+			if (user) {
+				await BackBonesUser.update(UserId, UpdateUserInput);
+				console.log("Succesfully update: ", user);
+			} else {
+				throw `User with id : ${UserId} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}

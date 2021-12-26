@@ -73,7 +73,7 @@ describe("test data base", () => {
 	});
 	it("project with id 1 is 'Appli'", async () => {
 		const project = await Project.findOne(1);
-		expect(project?.title).toBe("Appli");
+		await expect(project?.title).toBe("Appli");
 	});
 });
 
@@ -107,13 +107,11 @@ describe("test Resolvers", () => {
 			const response = await server.executeOperation(
 				ADD_USER("myriam@gmail.com")
 			);
-			console.log(response);
 			expect(response.errors).toBeTruthy();
-			//expect(response.data?.addUser.id).toBe(id);
 		});
 
 		it("test mutation updateUser expect updatedUser name equal to user name with same id", async () => {
-			const response = await server.executeOperation(UPDATE_USER());
+			const response = await server.executeOperation(UPDATE_USER(5));
 			const updatedUser = await BackBonesUser.findOne(
 				response.data?.updateUser.id
 			);
@@ -122,6 +120,15 @@ describe("test Resolvers", () => {
 
 			expect(response.data?.updateUser.firstName).toBe(firstName);
 			expect(response.data?.updateUser.role.title).toBe(role?.title);
+		});
+
+		it("test mutation updateUser expect updatedUser can't be updated because not found", async () => {
+			const response = await server.executeOperation(UPDATE_USER(1900));
+			const user = await BackBonesUser.findOne(1900);
+			console.log("UPDATE USER RESPONSE", response);
+			console.log("UPDATE USER ID 1900", user);
+
+			expect(response.errors).toBeTruthy();
 		});
 	});
 
@@ -139,12 +146,22 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addTask expect createdTask id equal to task with same id", async () => {
-			const response = await server.executeOperation(ADD_TASK());
+			const response = await server.executeOperation(
+				ADD_TASK("brand new task")
+			);
 			const createdTask = await Task.findOne(response.data?.addTask.id);
 			const id = createdTask?.id;
 			await createdTask?.remove();
 			expect(response.data?.addTask.id).toBe(id);
 		});
+
+		// it("test mutation addTask expect createdTask id equal to task with same id", async () => {
+		// 	const response = await server.executeOperation(
+		// 		ADD_TASK("task title 0")
+		// 	);
+
+		// 	expect(response.errors).toBeTruthy();
+		// }); TO TEST UNIQUENESS OF TITLE FOR A PROJECT
 
 		it("test mutation updateTask expect updatedTask title equal to task title with same id", async () => {
 			const response = await server.executeOperation(UPDATE_TASK());

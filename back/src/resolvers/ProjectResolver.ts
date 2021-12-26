@@ -47,18 +47,13 @@ export class ProjectResolver {
 		@Arg("UpdateProjectInput") UpdateProjectInput: UpdateProjectInput
 	) {
 		try {
-			await Project.update(ProjectId, UpdateProjectInput).then(
-				(result) => {
-					if (result) {
-						console.log("Succesfully update: ", result);
-					} else {
-						console.log(
-							"ERROR: We can't update this Project",
-							result
-						);
-					}
-				}
-			);
+			const project = await Project.findOne(ProjectId);
+			if (project) {
+				await Project.update(ProjectId, UpdateProjectInput);
+				console.log("Succesfully update: ", project);
+			} else {
+				throw `Project with id : ${ProjectId} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
