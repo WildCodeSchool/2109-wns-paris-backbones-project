@@ -29,12 +29,8 @@ export class UserResolver {
 		console.log(CreateUserInput);
 		try {
 			const user = await BackBonesUser.create(CreateUserInput).save();
-			if (user.id) {
-				newUserId = user.id;
-				console.log("Succesfully create: ", user);
-			} else {
-				console.log("ERROR: We can't create this User", user);
-			}
+			newUserId = user.id;
+			console.log("Succesfully create: ", user);
 		} catch (error) {
 			console.log(error);
 		}
@@ -49,16 +45,11 @@ export class UserResolver {
 		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
 	) {
 		try {
-			await BackBonesUser.update(UserId, UpdateUserInput).then(
-
-				(result) => {
-					if (result) {
-						console.log("Succesfully update: ", result);
-					} else {
-						console.log("ERROR: We can't update this User", result);
-					}
-				}
+			const updatedUser = await BackBonesUser.update(
+				UserId,
+				UpdateUserInput
 			);
+			console.log("Succesfully update: ", updatedUser);
 		} catch (error) {
 			console.log(error);
 		}

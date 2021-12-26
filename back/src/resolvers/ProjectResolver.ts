@@ -30,17 +30,9 @@ export class ProjectResolver {
 	) {
 		let newProjectId = 0;
 		try {
-			await Project.create(CreateProjectInput)
-				.save()
-				.then((result) => {
-					if (result.id) {
-						newProjectId = result.id;
-						console.log("Succesfully create: ", result);
-					} else {
-						console.log("ERROR: We can't create project", result);
-					}
-				});
-
+			const project = await Project.create(CreateProjectInput);
+			newProjectId = project.id;
+			console.log("Succesfully create: ", project);
 		} catch (error) {
 			console.log(error);
 		}
@@ -56,7 +48,6 @@ export class ProjectResolver {
 	) {
 		try {
 			await Project.update(ProjectId, UpdateProjectInput).then(
-
 				(result) => {
 					if (result) {
 						console.log("Succesfully update: ", result);

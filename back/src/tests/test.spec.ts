@@ -92,13 +92,24 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addUser expect createdUser id equal to user with same id", async () => {
-			const response = await server.executeOperation(ADD_USER());
+			const response = await server.executeOperation(
+				ADD_USER("timtim@gmail.com")
+			);
 			const createdUser = await BackBonesUser.findOne(
 				response.data?.addUser.id
 			);
 			const id = createdUser?.id;
 			await createdUser?.remove();
 			expect(response.data?.addUser.id).toBe(id);
+		});
+
+		it("test mutation addUser expect user rejected because email conflict", async () => {
+			const response = await server.executeOperation(
+				ADD_USER("myriam@gmail.com")
+			);
+			console.log(response);
+			expect(response.errors).toBeTruthy();
+			//expect(response.data?.addUser.id).toBe(id);
 		});
 
 		it("test mutation updateUser expect updatedUser name equal to user name with same id", async () => {

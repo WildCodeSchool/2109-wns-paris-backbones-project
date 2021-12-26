@@ -29,7 +29,7 @@ export const GET_USER_BY_ID = () => {
 	};
 };
 
-export const ADD_USER = () => {
+export const ADD_USER = (email: String) => {
 	const mutationAddUser: DocumentNode = gql`
 		mutation AddUser($createUserInput: CreateUserInput!) {
 			addUser(CreateUserInput: $createUserInput) {
@@ -44,7 +44,7 @@ export const ADD_USER = () => {
 			createUserInput: {
 				firstName: "Tim",
 				lastName: "Cook",
-				email: "timtim@gmail.com",
+				email: email,
 				password: "azerty",
 				avatar: "iznogoud.jpeg",
 			},

@@ -26,12 +26,8 @@ export class TaskResolver {
 		console.log(CreateTaskInput);
 		try {
 			const task = await Task.create(CreateTaskInput).save();
-			if (task.id) {
-				newTaskId = task.id;
-				console.log("Succesfully create: ", task);
-			} else {
-				console.log("ERROR: We can't create this Task", task);
-			}
+			newTaskId = task.id;
+			console.log("Succesfully create: ", task);
 		} catch (error) {
 			console.log(error);
 		}
@@ -42,17 +38,12 @@ export class TaskResolver {
 	@Mutation(() => Task)
 	async updateTask(
 		@Arg("TaskId") TaskId: number,
-     
+
 		@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput
 	) {
 		try {
-			await Task.update(TaskId, UpdateTaskInput).then((result) => {
-				if (result) {
-					console.log("Succesfully update: ", result);
-				} else {
-					console.log("ERROR: We can't update this Task", result);
-				}
-			});
+			const updatedTask = await Task.update(TaskId, UpdateTaskInput);
+			console.log("Succesfully update: ", updatedTask);
 		} catch (error) {
 			console.log(error);
 		}
