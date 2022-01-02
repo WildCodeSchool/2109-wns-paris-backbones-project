@@ -30,9 +30,13 @@ export class ProjectResolver {
 	) {
 		let newProjectId = 0;
 		try {
-			const project = await Project.create(CreateProjectInput);
+			const project = await Project.create(CreateProjectInput).save();
+			if (project.id) {
+				console.log("Succesfully create: ", project);
+			} else {
+				throw `Project can't be created`;
+			}
 			newProjectId = project.id;
-			console.log("Succesfully create: ", project);
 		} catch (error) {
 			console.log(error);
 		}

@@ -6,6 +6,7 @@ import {
 	ManyToOne,
 	ManyToMany,
 	BaseEntity,
+	JoinTable,
 	Unique,
 } from "typeorm";
 import { Status } from "./Status";
@@ -63,5 +64,6 @@ export class Task extends BaseEntity {
 		lazy: true,
 		nullable: true,
 	})
+	@JoinTable()
 	project: Project;
 }

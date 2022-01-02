@@ -1,5 +1,9 @@
 import "reflect-metadata";
-import { createConnection, getConnectionOptions } from "typeorm";
+import {
+	ConnectionManager,
+	createConnection,
+	getConnectionOptions,
+} from "typeorm";
 import { BackBonesUser } from "./entities/User";
 import { Role } from "./entities/Role";
 import { Task } from "./entities/Task";
@@ -91,46 +95,25 @@ const runSeed = async () => {
 			}
 			const status = await connection.manager.find(Status);
 
+			// CREATE USERS
 
-			// CREATE TASKS
-			for (let index = 0; index < 5; index++) {
-				const t = new Task();
-				t.title = "task title " + index;
-				t.description = "task description " + index;
-				t.status = status.sort((a, b) => 0.5 - Math.random())[0]; // Shuffle maison des familles
-				t.effective_time = new Date();
-				t.estimated_time = new Date();
-				t.start_date = new Date();
-				t.end_date = new Date();
-				await connection.manager.save(t);
-				console.log("Saved a new task: " + t.title);
+			for (const user of usersName) {
+				console.log("Inserting a new user into the database...");
+				const u = new BackBonesUser();
+				u.firstName = user.firstName;
+				u.lastName = user.lastName;
+				u.email = user.email;
+				u.role =
+					roles.find((role) => role.title === user.role) || roles[0];
+				u.avatar =
+					"https://tooommm.github.io/profile/images/profile.jpg";
+				u.password = "azerty";
+				await connection.manager.save(u);
+				console.log("Saved a new user with named: " + u.firstName);
 			}
-			const tasks = await connection.manager.find(Task);
-
-		// CREATE USERS
-		let i = 1;
-		for (const user of usersName) {
-			console.log("Inserting a new user into the database...");
-			const u = new BackBonesUser();
-			u.firstName = user.firstName;
-			u.lastName = user.lastName;
-			u.email = user.email;
-			u.role = roles.find((role) => role.title === user.role) || roles[0];
-			u.tasks = tasks.filter((task, index) => index % i === 0);
-			u.avatar = "https://tooommm.github.io/profile/images/profile.jpg";
-			u.password = "azerty";
-			await connection.manager.save(u);
-			console.log("Saved a new user with named: " + u.firstName);
-			i++;
-		}
-
-			console.log("Loading users from the database...");
 			const users = await connection.manager.find(BackBonesUser);
-			console.log("Loaded users: ", users);
-			console.log("first user tasks", users[0].tasks);
 
 			// CREATE PROJECTS
-
 			for (const project of projectName) {
 				console.log("Inserting a new project into the database...");
 				const p = new Project();
@@ -138,11 +121,33 @@ const runSeed = async () => {
 				p.description = project.description;
 				p.start_date = new Date();
 				p.end_date = new Date();
+				p.status = status.sort((a, b) => 0.5 - Math.random())[0]; // Shuffle maison des familles
 				p.users = users;
-				p.tasks = tasks;
 				await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
 			}
+			const projects = await connection.manager.find(Project);
+
+			// CREATE TASKS
+			projects.forEach(async (project) => {
+				let i = 1;
+				for (let index = 0; index < 5; index++) {
+					const t = new Task();
+					t.title = "task title " + index;
+					t.description = "task description " + index;
+					t.status = status.sort((a, b) => 0.5 - Math.random())[0]; // Shuffle maison des familles
+					t.project = project;
+					t.users = users.filter((user, index) => index % i === 0);
+					t.effective_time = new Date();
+					t.estimated_time = new Date();
+					t.start_date = new Date();
+					t.end_date = new Date();
+					await connection.manager.save(t);
+					console.log("Saved a new task: " + t.title);
+					i++;
+				}
+			});
+			const tasks = await connection.manager.find(Task);
 		})
 		.catch((error) => console.log(error));
 };
