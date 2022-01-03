@@ -5,10 +5,6 @@ import { Status } from "../entities/Status";
 export class StatusResolver {
 	@Query(() => [Status])
 	async getStatuses() {
-		try {
-			return await Status.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await Status.find();
 	}
 }

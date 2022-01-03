@@ -12,7 +12,7 @@ export const GET_USERS = () => {
 	return { query: queryGetUsers };
 };
 
-export const GET_USER_BY_ID = () => {
+export const GET_USER_BY_ID = (id: Number) => {
 	const queryGetUserById: DocumentNode = gql`
 		query GetUserById($userId: Float!) {
 			getUserById(UserId: $userId) {
@@ -24,7 +24,7 @@ export const GET_USER_BY_ID = () => {
 	return {
 		query: queryGetUserById,
 		variables: {
-			userId: 1,
+			userId: id,
 		},
 	};
 };
@@ -93,7 +93,7 @@ export const GET_TASKS = () => {
 	return { query: queryGetTasks };
 };
 
-export const GET_TASK_BY_ID = () => {
+export const GET_TASK_BY_ID = (id: Number) => {
 	const queryGetTaskById: DocumentNode = gql`
 		query GetTaskById($taskId: Float!) {
 			getTaskById(TaskId: $taskId) {
@@ -105,7 +105,7 @@ export const GET_TASK_BY_ID = () => {
 	return {
 		query: queryGetTaskById,
 		variables: {
-			taskId: 1,
+			taskId: id,
 		},
 	};
 };
@@ -123,14 +123,14 @@ export const ADD_TASK = (taskName: String) => {
 		query: mutationAddTask,
 		variables: {
 			createTaskInput: {
-				title: taskName,
+				title: taskName != "" ? taskName : null,
 				description: "woooow what a task !!!",
 			},
 		},
 	};
 };
 
-export const UPDATE_TASK = () => {
+export const UPDATE_TASK = (id: Number) => {
 	const mutationUpdateTask: DocumentNode = gql`
 		mutation UpdateTask(
 			$updateTaskInput: UpdateTaskInput!
@@ -154,7 +154,7 @@ export const UPDATE_TASK = () => {
 					id: 3,
 				},
 			},
-			TaskId: 3,
+			TaskId: id,
 		},
 	};
 };
@@ -170,7 +170,7 @@ export const GET_PROJECTS = () => {
 	return { query: queryGetProjects };
 };
 
-export const GET_PROJECT_BY_ID = () => {
+export const GET_PROJECT_BY_ID = (id: Number) => {
 	const queryGetProjectById: DocumentNode = gql`
 		query GetProjectById($projectId: Float!) {
 			getProjectById(ProjectId: $projectId) {
@@ -182,7 +182,7 @@ export const GET_PROJECT_BY_ID = () => {
 	return {
 		query: queryGetProjectById,
 		variables: {
-			projectId: 1,
+			projectId: id,
 		},
 	};
 };
@@ -207,7 +207,7 @@ export const ADD_PROJECT = () => {
 	};
 };
 
-export const UPDATE_PROJECT = () => {
+export const UPDATE_PROJECT = (id: Number) => {
 	const mutationUpdateProject: DocumentNode = gql`
 		mutation UpdateProject(
 			$updateProjectInput: UpdateProjectInput!
@@ -234,7 +234,7 @@ export const UPDATE_PROJECT = () => {
 					id: 2,
 				},
 			},
-			projectId: 2,
+			projectId: id,
 		},
 	};
 };

@@ -86,9 +86,14 @@ describe("test Resolvers", () => {
 		});
 
 		it("test query getUserById expect user id 1 to be 'Myriam'", async () => {
-			const response = await server.executeOperation(GET_USER_BY_ID());
+			const response = await server.executeOperation(GET_USER_BY_ID(1));
 			const user = await BackBonesUser.findOne(1);
 			expect(response.data?.getUserById.firstName).toBe(user?.firstName);
+		});
+
+		it("test query getUserById expect user id 100 throw an error", async () => {
+			const response = await server.executeOperation(GET_USER_BY_ID(100));
+			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation addUser expect createdUser id equal to user with same id", async () => {
@@ -124,10 +129,6 @@ describe("test Resolvers", () => {
 
 		it("test mutation updateUser expect updatedUser can't be updated because not found", async () => {
 			const response = await server.executeOperation(UPDATE_USER(1900));
-			const user = await BackBonesUser.findOne(1900);
-			console.log("UPDATE USER RESPONSE", response);
-			console.log("UPDATE USER ID 1900", user);
-
 			expect(response.errors).toBeTruthy();
 		});
 	});
@@ -140,9 +141,14 @@ describe("test Resolvers", () => {
 		});
 
 		it("test query getTaskById expect task id 1 to be 'task title 0'", async () => {
-			const response = await server.executeOperation(GET_TASK_BY_ID());
+			const response = await server.executeOperation(GET_TASK_BY_ID(1));
 			const task = await Task.findOne(1);
 			expect(response.data?.getTaskById.title).toBe(task?.title);
+		});
+
+		it("test query getTaskById expect task id 100 throw an error", async () => {
+			const response = await server.executeOperation(GET_TASK_BY_ID(100));
+			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation addTask expect createdTask id equal to task with same id", async () => {
@@ -155,16 +161,14 @@ describe("test Resolvers", () => {
 			expect(response.data?.addTask.id).toBe(id);
 		});
 
-		// it("test mutation addTask expect createdTask id equal to task with same id", async () => {
-		// 	const response = await server.executeOperation(
-		// 		ADD_TASK("task title 0")
-		// 	);
-
-		// 	expect(response.errors).toBeTruthy();
-		// }); TO TEST UNIQUENESS OF TITLE FOR A PROJECT
+		it("test mutation addTask expect createdTask with no title throw an error", async () => {
+			const response = await server.executeOperation(ADD_TASK(""));
+			console.log(response);
+			expect(response.errors).toBeTruthy();
+		});
 
 		it("test mutation updateTask expect updatedTask title equal to task title with same id", async () => {
-			const response = await server.executeOperation(UPDATE_TASK());
+			const response = await server.executeOperation(UPDATE_TASK(3));
 			const updatedTask = await Task.findOne(
 				response.data?.updateTask.id
 			);
@@ -173,6 +177,12 @@ describe("test Resolvers", () => {
 
 			expect(response.data?.updateTask.title).toBe(title);
 			expect(response.data?.updateTask.status.title).toBe(status?.title);
+		});
+
+		it("test mutation updateTask expect updatedTask can't be updated because not found", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(1900));
+
+			expect(response.errors).toBeTruthy();
 		});
 	});
 
@@ -184,9 +194,18 @@ describe("test Resolvers", () => {
 		});
 
 		it("test query getProjectById expect Project id 1 to be 'Appli'", async () => {
-			const response = await server.executeOperation(GET_PROJECT_BY_ID());
+			const response = await server.executeOperation(
+				GET_PROJECT_BY_ID(1)
+			);
 			const project = await Project.findOne(1);
 			expect(response.data?.getProjectById.title).toBe(project?.title);
+		});
+
+		it("test query getProjectById expect Project id 100 throw an error", async () => {
+			const response = await server.executeOperation(
+				GET_PROJECT_BY_ID(100)
+			);
+			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation addProject expect createdProject id equal to project with same id", async () => {
@@ -200,7 +219,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateProject expect updatedProject title equal to project title with same id", async () => {
-			const response = await server.executeOperation(UPDATE_PROJECT());
+			const response = await server.executeOperation(UPDATE_PROJECT(2));
 			const updatedProject = await Project.findOne(
 				response.data?.updateProject.id
 			);
@@ -211,6 +230,14 @@ describe("test Resolvers", () => {
 			expect(response.data?.updateProject.status.title).toBe(
 				status?.title
 			);
+		});
+
+		it("test mutation updateProject expect updatedProject can't be updated because not found", async () => {
+			const response = await server.executeOperation(
+				UPDATE_PROJECT(1900)
+			);
+
+			expect(response.errors).toBeTruthy();
 		});
 	});
 

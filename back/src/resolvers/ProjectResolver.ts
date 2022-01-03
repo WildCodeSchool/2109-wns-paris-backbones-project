@@ -7,17 +7,18 @@ export class ProjectResolver {
 	// READ
 	@Query(() => [Project])
 	async getProjects() {
-		try {
-			return Project.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await Project.find();
 	}
 
 	@Query(() => Project)
 	async getProjectById(@Arg("ProjectId") id: number) {
 		try {
-			return Project.findOne(id);
+			const project = await Project.findOne(id);
+			if (project) {
+				return project;
+			} else {
+				throw `there in no project with id: ${id}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -31,11 +32,7 @@ export class ProjectResolver {
 		let newProjectId = 0;
 		try {
 			const project = await Project.create(CreateProjectInput).save();
-			if (project.id) {
-				console.log("Succesfully create: ", project);
-			} else {
-				throw `Project can't be created`;
-			}
+			console.log("Succesfully create: ", project);
 			newProjectId = project.id;
 		} catch (error) {
 			console.log(error);

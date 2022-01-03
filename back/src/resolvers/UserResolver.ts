@@ -7,16 +7,17 @@ export class UserResolver {
 	//READ
 	@Query(() => [BackBonesUser])
 	async getUsers() {
-		try {
-			return BackBonesUser.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await BackBonesUser.find();
 	}
 	@Query(() => BackBonesUser)
 	async getUserById(@Arg("UserId") id: number) {
 		try {
-			return BackBonesUser.findOne(id);
+			const user = await BackBonesUser.findOne(id);
+			if (user) {
+				return user;
+			} else {
+				throw `there in no user with id: ${id}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}

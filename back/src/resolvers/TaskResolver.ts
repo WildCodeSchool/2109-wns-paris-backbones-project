@@ -6,16 +6,17 @@ import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 export class TaskResolver {
 	@Query(() => [Task])
 	async getTasks() {
-		try {
-			return Task.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await Task.find();
 	}
 	@Query(() => Task)
 	async getTaskById(@Arg("TaskId") id: number) {
 		try {
-			return Task.findOne(id);
+			const task = await Task.findOne(id);
+			if (task) {
+				return task;
+			} else {
+				throw `there in no task with id: ${id}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -23,7 +24,6 @@ export class TaskResolver {
 	@Mutation(() => Task)
 	async addTask(@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
-		console.log(CreateTaskInput);
 		try {
 			const task = await Task.create(CreateTaskInput).save();
 			newTaskId = task.id;

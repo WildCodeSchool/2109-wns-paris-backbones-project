@@ -22,7 +22,7 @@ export class Task extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column()
+	@Column({ nullable: false })
 	title: string;
 
 	@Field({ nullable: true })
