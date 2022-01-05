@@ -98,7 +98,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation addUser expect createdUser id equal to user with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_USER("timtim@gmail.com")
+				ADD_USER("timtim@gmail.com", "Cook")
 			);
 			const createdUser = await BackBonesUser.findOne(
 				response.data?.addUser.id
@@ -110,7 +110,14 @@ describe("test Resolvers", () => {
 
 		it("test mutation addUser expect user rejected because email conflict", async () => {
 			const response = await server.executeOperation(
-				ADD_USER("myriam@gmail.com")
+				ADD_USER("myriam@gmail.com", "Cook")
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addUser expect user rejected because no lastname", async () => {
+			const response = await server.executeOperation(
+				ADD_USER("myriam@gmail.com", "")
 			);
 			expect(response.errors).toBeTruthy();
 		});

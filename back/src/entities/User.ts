@@ -60,6 +60,4 @@ export class BackBonesUser extends BaseEntity {
 	})
 	@JoinTable()
 	projects: Project[];
-
-
 }

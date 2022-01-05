@@ -27,8 +27,12 @@ export class UserResolver {
 	@Mutation(() => BackBonesUser)
 	async addUser(@Arg("CreateUserInput") CreateUserInput: CreateUserInput) {
 		let newUserId = 0;
+		const user = BackBonesUser.create(CreateUserInput);
 		try {
-			const user = await BackBonesUser.create(CreateUserInput).save();
+			if (!user.firstName || !user.lastName || !user.email) {
+				throw "Firstname, lastname or email cannot be empty";
+			}
+			await BackBonesUser.save(user);
 			newUserId = user.id;
 			console.log("Succesfully create: ", user);
 		} catch (error) {

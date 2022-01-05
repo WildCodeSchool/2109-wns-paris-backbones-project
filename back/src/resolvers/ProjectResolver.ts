@@ -32,7 +32,7 @@ export class ProjectResolver {
 		let newProjectId = 0;
 		const project = Project.create(CreateProjectInput);
 		try {
-			if (project.title === "") {
+			if (!project.title) {
 				throw "project title can't be null";
 			}
 			await Project.save(project);

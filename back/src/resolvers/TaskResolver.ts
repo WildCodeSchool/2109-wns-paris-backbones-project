@@ -26,7 +26,7 @@ export class TaskResolver {
 		let newTaskId = 0;
 		const task = Task.create(CreateTaskInput);
 		try {
-			if (task.title === "") {
+			if (!task.title) {
 				throw "task title can't be null";
 			}
 			await Task.save(task);
