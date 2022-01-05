@@ -10,13 +10,13 @@ export class UserResolver {
 		return await BackBonesUser.find();
 	}
 	@Query(() => BackBonesUser)
-	async getUserById(@Arg("UserId") id: number) {
+	async getUserById(@Arg("userId") userId: number) {
 		try {
-			const user = await BackBonesUser.findOne(id);
+			const user = await BackBonesUser.findOne(userId);
 			if (user) {
 				return user;
 			} else {
-				throw `there in no user with id: ${id}`;
+				throw `there in no user with id: ${userId}`;
 			}
 		} catch (error) {
 			console.log(error);
@@ -25,9 +25,9 @@ export class UserResolver {
 
 	//CREATE
 	@Mutation(() => BackBonesUser)
-	async addUser(@Arg("CreateUserInput") CreateUserInput: CreateUserInput) {
+	async addUser(@Arg("createUserInput") createUserInput: CreateUserInput) {
 		let newUserId = 0;
-		const user = BackBonesUser.create(CreateUserInput);
+		const user = BackBonesUser.create(createUserInput);
 		try {
 			if (!user.firstName || !user.lastName || !user.email) {
 				throw "Firstname, lastname or email cannot be empty";
@@ -44,21 +44,21 @@ export class UserResolver {
 	//UPDATE
 	@Mutation(() => BackBonesUser)
 	async updateUser(
-		@Arg("UserId") UserId: number,
+		@Arg("userId") userId: number,
 
-		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
+		@Arg("updateUserInput") updateUserInput: UpdateUserInput
 	) {
 		try {
-			const user = await BackBonesUser.findOne(UserId);
+			const user = await BackBonesUser.findOne(userId);
 			if (user) {
-				await BackBonesUser.update(UserId, UpdateUserInput);
+				await BackBonesUser.update(userId, updateUserInput);
 				console.log("Succesfully update: ", user);
 			} else {
-				throw `User with id : ${UserId} doesn't exists`;
+				throw `User with id : ${userId} doesn't exists`;
 			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await BackBonesUser.findOne(UserId);
+		return await BackBonesUser.findOne(userId);
 	}
 }

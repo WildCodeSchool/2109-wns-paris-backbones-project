@@ -11,7 +11,7 @@ export class ProjectResolver {
 	}
 
 	@Query(() => Project)
-	async getProjectById(@Arg("ProjectId") id: number) {
+	async getProjectById(@Arg("projectId") id: number) {
 		try {
 			const project = await Project.findOne(id);
 			if (project) {
@@ -27,10 +27,10 @@ export class ProjectResolver {
 	// CREATE
 	@Mutation(() => Project)
 	async addProject(
-		@Arg("CreateProjectInput") CreateProjectInput: CreateProjectInput
+		@Arg("createProjectInput") createProjectInput: CreateProjectInput
 	) {
 		let newProjectId = 0;
-		const project = Project.create(CreateProjectInput);
+		const project = Project.create(createProjectInput);
 		try {
 			if (!project.title) {
 				throw "project title can't be null";
@@ -47,21 +47,21 @@ export class ProjectResolver {
 	//UPDATE
 	@Mutation(() => Project)
 	async updateProject(
-		@Arg("ProjectId") ProjectId: number,
+		@Arg("projectId") id: number,
 
-		@Arg("UpdateProjectInput") UpdateProjectInput: UpdateProjectInput
+		@Arg("updateProjectInput") updateProjectInput: UpdateProjectInput
 	) {
 		try {
-			const project = await Project.findOne(ProjectId);
+			const project = await Project.findOne(id);
 			if (project) {
-				await Project.update(ProjectId, UpdateProjectInput);
+				await Project.update(id, updateProjectInput);
 				console.log("Succesfully update: ", project);
 			} else {
-				throw `Project with id : ${ProjectId} doesn't exists`;
+				throw `Project with id : ${id} doesn't exists`;
 			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await Project.findOne(ProjectId);
+		return await Project.findOne(id);
 	}
 }

@@ -9,7 +9,7 @@ export class TaskResolver {
 		return await Task.find();
 	}
 	@Query(() => Task)
-	async getTaskById(@Arg("TaskId") id: number) {
+	async getTaskById(@Arg("taskId") id: number) {
 		try {
 			const task = await Task.findOne(id);
 			if (task) {
@@ -22,9 +22,9 @@ export class TaskResolver {
 		}
 	}
 	@Mutation(() => Task)
-	async addTask(@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput) {
+	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
-		const task = Task.create(CreateTaskInput);
+		const task = Task.create(createTaskInput);
 		try {
 			if (!task.title) {
 				throw "task title can't be null";
@@ -41,21 +41,21 @@ export class TaskResolver {
 	//UPDATE
 	@Mutation(() => Task)
 	async updateTask(
-		@Arg("TaskId") TaskId: number,
+		@Arg("taskId") taskId: number,
 
-		@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput
+		@Arg("updateTaskInput") updateTaskInput: UpdateTaskInput
 	) {
 		try {
-			const task = await Task.findOne(TaskId);
+			const task = await Task.findOne(taskId);
 			if (task) {
-				await Task.update(TaskId, UpdateTaskInput);
+				await Task.update(taskId, updateTaskInput);
 				console.log("Succesfully update: ", task);
 			} else {
-				throw `Task with id : ${TaskId} doesn't exists`;
+				throw `Task with id : ${taskId} doesn't exists`;
 			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await Task.findOne(TaskId);
+		return await Task.findOne(taskId);
 	}
 }

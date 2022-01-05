@@ -15,7 +15,7 @@ export const GET_USERS = () => {
 export const GET_USER_BY_ID = (id: Number) => {
 	const queryGetUserById: DocumentNode = gql`
 		query GetUserById($userId: Float!) {
-			getUserById(UserId: $userId) {
+			getUserById(userId: $userId) {
 				id
 				firstName
 			}
@@ -32,7 +32,7 @@ export const GET_USER_BY_ID = (id: Number) => {
 export const ADD_USER = (email: String, lastname: String) => {
 	const mutationAddUser: DocumentNode = gql`
 		mutation AddUser($createUserInput: CreateUserInput!) {
-			addUser(CreateUserInput: $createUserInput) {
+			addUser(createUserInput: $createUserInput) {
 				id
 				email
 			}
@@ -58,7 +58,7 @@ export const UPDATE_USER = (userId: Number) => {
 			$updateUserInput: UpdateUserInput!
 			$userId: Float!
 		) {
-			updateUser(UpdateUserInput: $updateUserInput, UserId: $userId) {
+			updateUser(updateUserInput: $updateUserInput, userId: $userId) {
 				id
 				firstName
 				email
@@ -96,7 +96,7 @@ export const GET_TASKS = () => {
 export const GET_TASK_BY_ID = (id: Number) => {
 	const queryGetTaskById: DocumentNode = gql`
 		query GetTaskById($taskId: Float!) {
-			getTaskById(TaskId: $taskId) {
+			getTaskById(taskId: $taskId) {
 				id
 				title
 			}
@@ -113,7 +113,7 @@ export const GET_TASK_BY_ID = (id: Number) => {
 export const ADD_TASK = (taskName: String) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
-			addTask(CreateTaskInput: $createTaskInput) {
+			addTask(createTaskInput: $createTaskInput) {
 				id
 				title
 			}
@@ -134,9 +134,9 @@ export const UPDATE_TASK = (id: Number) => {
 	const mutationUpdateTask: DocumentNode = gql`
 		mutation UpdateTask(
 			$updateTaskInput: UpdateTaskInput!
-			$TaskId: Float!
+			$taskId: Float!
 		) {
-			updateTask(UpdateTaskInput: $updateTaskInput, TaskId: $TaskId) {
+			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId) {
 				id
 				title
 				status {
@@ -154,7 +154,7 @@ export const UPDATE_TASK = (id: Number) => {
 					id: 3,
 				},
 			},
-			TaskId: id,
+			taskId: id,
 		},
 	};
 };
@@ -173,7 +173,7 @@ export const GET_PROJECTS = () => {
 export const GET_PROJECT_BY_ID = (id: Number) => {
 	const queryGetProjectById: DocumentNode = gql`
 		query GetProjectById($projectId: Float!) {
-			getProjectById(ProjectId: $projectId) {
+			getProjectById(projectId: $projectId) {
 				id
 				title
 			}
@@ -190,7 +190,7 @@ export const GET_PROJECT_BY_ID = (id: Number) => {
 export const ADD_PROJECT = (title: String) => {
 	const mutationAddProject: DocumentNode = gql`
 		mutation AddProject($createProjectInput: CreateProjectInput!) {
-			addProject(CreateProjectInput: $createProjectInput) {
+			addProject(createProjectInput: $createProjectInput) {
 				id
 				title
 			}
@@ -214,8 +214,8 @@ export const UPDATE_PROJECT = (id: Number) => {
 			$projectId: Float!
 		) {
 			updateProject(
-				UpdateProjectInput: $updateProjectInput
-				ProjectId: $projectId
+				updateProjectInput: $updateProjectInput
+				projectId: $projectId
 			) {
 				id
 				title
