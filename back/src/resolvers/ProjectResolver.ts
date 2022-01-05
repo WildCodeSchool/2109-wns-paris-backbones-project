@@ -30,8 +30,12 @@ export class ProjectResolver {
 		@Arg("CreateProjectInput") CreateProjectInput: CreateProjectInput
 	) {
 		let newProjectId = 0;
+		const project = Project.create(CreateProjectInput);
 		try {
-			const project = await Project.create(CreateProjectInput).save();
+			if (project.title === "") {
+				throw "project title can't be null";
+			}
+			await Project.save(project);
 			console.log("Succesfully create: ", project);
 			newProjectId = project.id;
 		} catch (error) {

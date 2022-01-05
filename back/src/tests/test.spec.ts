@@ -163,7 +163,6 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect createdTask with no title throw an error", async () => {
 			const response = await server.executeOperation(ADD_TASK(""));
-			console.log(response);
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -209,13 +208,20 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addProject expect createdProject id equal to project with same id", async () => {
-			const response = await server.executeOperation(ADD_PROJECT());
+			const response = await server.executeOperation(
+				ADD_PROJECT("brand new project")
+			);
 			const createdProject = await Project.findOne(
 				response.data?.addProject.id
 			);
 			const id = createdProject?.id;
 			await createdProject?.remove();
 			expect(response.data?.addProject.id).toBe(id);
+		});
+
+		it("test mutation addProject expect createdProject with no title throw an error", async () => {
+			const response = await server.executeOperation(ADD_PROJECT(""));
+			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateProject expect updatedProject title equal to project title with same id", async () => {

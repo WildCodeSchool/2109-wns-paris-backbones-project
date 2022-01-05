@@ -123,7 +123,7 @@ export const ADD_TASK = (taskName: String) => {
 		query: mutationAddTask,
 		variables: {
 			createTaskInput: {
-				title: taskName != "" ? taskName : null,
+				title: taskName,
 				description: "woooow what a task !!!",
 			},
 		},
@@ -187,7 +187,7 @@ export const GET_PROJECT_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_PROJECT = () => {
+export const ADD_PROJECT = (title: String) => {
 	const mutationAddProject: DocumentNode = gql`
 		mutation AddProject($createProjectInput: CreateProjectInput!) {
 			addProject(CreateProjectInput: $createProjectInput) {
@@ -200,7 +200,7 @@ export const ADD_PROJECT = () => {
 		query: mutationAddProject,
 		variables: {
 			createProjectInput: {
-				title: "brand new project",
+				title: title,
 				description: "woooow what a project !!!",
 			},
 		},

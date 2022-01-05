@@ -24,8 +24,12 @@ export class TaskResolver {
 	@Mutation(() => Task)
 	async addTask(@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
+		const task = Task.create(CreateTaskInput);
 		try {
-			const task = await Task.create(CreateTaskInput).save();
+			if (task.title === "") {
+				throw "task title can't be null";
+			}
+			await Task.save(task);
 			newTaskId = task.id;
 			console.log("Succesfully create: ", task);
 		} catch (error) {
