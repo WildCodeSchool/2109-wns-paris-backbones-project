@@ -4,6 +4,7 @@ import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 
 @Resolver()
 export class TaskResolver {
+	// READ
 	@Query(() => [Task])
 	async getTasks() {
 		return await Task.find();
@@ -21,6 +22,8 @@ export class TaskResolver {
 			console.log(error);
 		}
 	}
+
+	//CREATE
 	@Mutation(() => Task)
 	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
