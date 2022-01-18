@@ -7,17 +7,18 @@ export class ProjectResolver {
 	// READ
 	@Query(() => [Project])
 	async getProjects() {
-		try {
-			return Project.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await Project.find();
 	}
 
 	@Query(() => Project)
-	async getProjectById(@Arg("ProjectId") id: number) {
+	async getProjectById(@Arg("projectId") id: number) {
 		try {
-			return Project.findOne(id);
+			const project = await Project.findOne(id);
+			if (project) {
+				return project;
+			} else {
+				throw `there in no project with id: ${id}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -26,21 +27,17 @@ export class ProjectResolver {
 	// CREATE
 	@Mutation(() => Project)
 	async addProject(
-		@Arg("CreateProjectInput") CreateProjectInput: CreateProjectInput
+		@Arg("createProjectInput") createProjectInput: CreateProjectInput
 	) {
 		let newProjectId = 0;
+		const project = Project.create(createProjectInput);
 		try {
-			await Project.create(CreateProjectInput)
-				.save()
-				.then((result) => {
-					if (result.id) {
-						newProjectId = result.id;
-						console.log("Succesfully create: ", result);
-					} else {
-						console.log("ERROR: We can't create project", result);
-					}
-				});
-
+			if (!project.title) {
+				throw "project title can't be null";
+			}
+			await Project.save(project);
+			console.log("Successfully create: ", project);
+			newProjectId = project.id;
 		} catch (error) {
 			console.log(error);
 		}
@@ -50,27 +47,21 @@ export class ProjectResolver {
 	//UPDATE
 	@Mutation(() => Project)
 	async updateProject(
-		@Arg("ProjectId") ProjectId: number,
+		@Arg("projectId") id: number,
 
-		@Arg("UpdateProjectInput") UpdateProjectInput: UpdateProjectInput
+		@Arg("updateProjectInput") updateProjectInput: UpdateProjectInput
 	) {
 		try {
-			await Project.update(ProjectId, UpdateProjectInput).then(
-
-				(result) => {
-					if (result) {
-						console.log("Succesfully update: ", result);
-					} else {
-						console.log(
-							"ERROR: We can't update this Project",
-							result
-						);
-					}
-				}
-			);
+			const project = await Project.findOne(id);
+			if (project) {
+				await Project.update(id, updateProjectInput);
+				console.log("Successfully update: ", project);
+			} else {
+				throw `Project with id : ${id} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await Project.findOne(ProjectId);
+		return await Project.findOne(id);
 	}
 }

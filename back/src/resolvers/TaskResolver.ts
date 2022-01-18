@@ -4,34 +4,37 @@ import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 
 @Resolver()
 export class TaskResolver {
+	// READ
 	@Query(() => [Task])
 	async getTasks() {
-		try {
-			return Task.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await Task.find();
 	}
 	@Query(() => Task)
-	async getTaskById(@Arg("TaskId") id: number) {
+	async getTaskById(@Arg("taskId") id: number) {
 		try {
-			return Task.findOne(id);
+			const task = await Task.findOne(id);
+			if (task) {
+				return task;
+			} else {
+				throw `there in no task with id: ${id}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
 	}
+
+	//CREATE
 	@Mutation(() => Task)
-	async addTask(@Arg("CreateTaskInput") CreateTaskInput: CreateTaskInput) {
+	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
 		let newTaskId = 0;
-		console.log(CreateTaskInput);
+		const task = Task.create(createTaskInput);
 		try {
-			const task = await Task.create(CreateTaskInput).save();
-			if (task.id) {
-				newTaskId = task.id;
-				console.log("Succesfully create: ", task);
-			} else {
-				console.log("ERROR: We can't create this Task", task);
+			if (!task.title) {
+				throw "task title can't be null";
 			}
+			await Task.save(task);
+			newTaskId = task.id;
+			console.log("Successfully create: ", task);
 		} catch (error) {
 			console.log(error);
 		}
@@ -41,21 +44,21 @@ export class TaskResolver {
 	//UPDATE
 	@Mutation(() => Task)
 	async updateTask(
-		@Arg("TaskId") TaskId: number,
-     
-		@Arg("UpdateTaskInput") UpdateTaskInput: UpdateTaskInput
+		@Arg("taskId") taskId: number,
+
+		@Arg("updateTaskInput") updateTaskInput: UpdateTaskInput
 	) {
 		try {
-			await Task.update(TaskId, UpdateTaskInput).then((result) => {
-				if (result) {
-					console.log("Succesfully update: ", result);
-				} else {
-					console.log("ERROR: We can't update this Task", result);
-				}
-			});
+			const task = await Task.findOne(taskId);
+			if (task) {
+				await Task.update(taskId, updateTaskInput);
+				console.log("Successfully update: ", task);
+			} else {
+				throw `Task with id : ${taskId} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await Task.findOne(TaskId);
+		return await Task.findOne(taskId);
 	}
 }

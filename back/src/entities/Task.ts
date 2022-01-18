@@ -6,13 +6,15 @@ import {
 	ManyToOne,
 	ManyToMany,
 	BaseEntity,
-	OneToMany,
+	JoinTable,
+	Unique,
 } from "typeorm";
 import { Status } from "./Status";
 import { BackBonesUser } from "./User";
 import { Project } from "./Project";
 
 @Entity()
+// @Unique(["title", "project"]) TO MAKE title unique for one project, work with PG but not with SQLITE3
 @ObjectType()
 export class Task extends BaseEntity {
 	@Field()
@@ -20,7 +22,7 @@ export class Task extends BaseEntity {
 	id: number;
 
 	@Field()
-	@Column()
+	@Column({ nullable: false })
 	title: string;
 
 	@Field({ nullable: true })
@@ -62,6 +64,6 @@ export class Task extends BaseEntity {
 		lazy: true,
 		nullable: true,
 	})
-	project: Project
-
+	@JoinTable()
+	project: Project;
 }

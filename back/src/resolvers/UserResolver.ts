@@ -7,16 +7,17 @@ export class UserResolver {
 	//READ
 	@Query(() => [BackBonesUser])
 	async getUsers() {
-		try {
-			return BackBonesUser.find();
-		} catch (error) {
-			console.log(error);
-		}
+		return await BackBonesUser.find();
 	}
 	@Query(() => BackBonesUser)
-	async getUserById(@Arg("UserId") id: number) {
+	async getUserById(@Arg("userId") userId: number) {
 		try {
-			return BackBonesUser.findOne(id);
+			const user = await BackBonesUser.findOne(userId);
+			if (user) {
+				return user;
+			} else {
+				throw `there in no user with id: ${userId}`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
@@ -24,17 +25,16 @@ export class UserResolver {
 
 	//CREATE
 	@Mutation(() => BackBonesUser)
-	async addUser(@Arg("CreateUserInput") CreateUserInput: CreateUserInput) {
+	async addUser(@Arg("createUserInput") createUserInput: CreateUserInput) {
 		let newUserId = 0;
-		console.log(CreateUserInput);
+		const user = BackBonesUser.create(createUserInput);
 		try {
-			const user = await BackBonesUser.create(CreateUserInput).save();
-			if (user.id) {
-				newUserId = user.id;
-				console.log("Succesfully create: ", user);
-			} else {
-				console.log("ERROR: We can't create this User", user);
+			if (!user.firstName || !user.lastName || !user.email) {
+				throw "Firstname, lastname or email cannot be empty";
 			}
+			await BackBonesUser.save(user);
+			newUserId = user.id;
+			console.log("Successfully create: ", user);
 		} catch (error) {
 			console.log(error);
 		}
@@ -44,24 +44,21 @@ export class UserResolver {
 	//UPDATE
 	@Mutation(() => BackBonesUser)
 	async updateUser(
-		@Arg("UserId") UserId: number,
+		@Arg("userId") userId: number,
 
-		@Arg("UpdateUserInput") UpdateUserInput: UpdateUserInput
+		@Arg("updateUserInput") updateUserInput: UpdateUserInput
 	) {
 		try {
-			await BackBonesUser.update(UserId, UpdateUserInput).then(
-
-				(result) => {
-					if (result) {
-						console.log("Succesfully update: ", result);
-					} else {
-						console.log("ERROR: We can't update this User", result);
-					}
-				}
-			);
+			const user = await BackBonesUser.findOne(userId);
+			if (user) {
+				await BackBonesUser.update(userId, updateUserInput);
+				console.log("Successfully update: ", user);
+			} else {
+				throw `User with id : ${userId} doesn't exists`;
+			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await BackBonesUser.findOne(UserId);
+		return await BackBonesUser.findOne(userId);
 	}
 }

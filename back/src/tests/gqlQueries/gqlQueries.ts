@@ -12,10 +12,10 @@ export const GET_USERS = () => {
 	return { query: queryGetUsers };
 };
 
-export const GET_USER_BY_ID = () => {
+export const GET_USER_BY_ID = (id: Number) => {
 	const queryGetUserById: DocumentNode = gql`
 		query GetUserById($userId: Float!) {
-			getUserById(UserId: $userId) {
+			getUserById(userId: $userId) {
 				id
 				firstName
 			}
@@ -24,15 +24,15 @@ export const GET_USER_BY_ID = () => {
 	return {
 		query: queryGetUserById,
 		variables: {
-			userId: 1,
+			userId: id,
 		},
 	};
 };
 
-export const ADD_USER = () => {
+export const ADD_USER = (email: String, lastname: String) => {
 	const mutationAddUser: DocumentNode = gql`
 		mutation AddUser($createUserInput: CreateUserInput!) {
-			addUser(CreateUserInput: $createUserInput) {
+			addUser(createUserInput: $createUserInput) {
 				id
 				email
 			}
@@ -43,8 +43,8 @@ export const ADD_USER = () => {
 		variables: {
 			createUserInput: {
 				firstName: "Tim",
-				lastName: "Cook",
-				email: "timtim@gmail.com",
+				lastName: lastname,
+				email: email,
 				password: "azerty",
 				avatar: "iznogoud.jpeg",
 			},
@@ -52,13 +52,13 @@ export const ADD_USER = () => {
 	};
 };
 
-export const UPDATE_USER = () => {
+export const UPDATE_USER = (userId: Number) => {
 	const mutationUpdateUser: DocumentNode = gql`
 		mutation UpdateUser(
 			$updateUserInput: UpdateUserInput!
 			$userId: Float!
 		) {
-			updateUser(UpdateUserInput: $updateUserInput, UserId: $userId) {
+			updateUser(updateUserInput: $updateUserInput, userId: $userId) {
 				id
 				firstName
 				email
@@ -77,7 +77,7 @@ export const UPDATE_USER = () => {
 					id: 1,
 				},
 			},
-			userId: 5,
+			userId: userId,
 		},
 	};
 };
@@ -93,10 +93,10 @@ export const GET_TASKS = () => {
 	return { query: queryGetTasks };
 };
 
-export const GET_TASK_BY_ID = () => {
+export const GET_TASK_BY_ID = (id: Number) => {
 	const queryGetTaskById: DocumentNode = gql`
 		query GetTaskById($taskId: Float!) {
-			getTaskById(TaskId: $taskId) {
+			getTaskById(taskId: $taskId) {
 				id
 				title
 			}
@@ -105,15 +105,15 @@ export const GET_TASK_BY_ID = () => {
 	return {
 		query: queryGetTaskById,
 		variables: {
-			taskId: 1,
+			taskId: id,
 		},
 	};
 };
 
-export const ADD_TASK = () => {
+export const ADD_TASK = (taskName: String) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
-			addTask(CreateTaskInput: $createTaskInput) {
+			addTask(createTaskInput: $createTaskInput) {
 				id
 				title
 			}
@@ -123,20 +123,20 @@ export const ADD_TASK = () => {
 		query: mutationAddTask,
 		variables: {
 			createTaskInput: {
-				title: "brand new task",
+				title: taskName,
 				description: "woooow what a task !!!",
 			},
 		},
 	};
 };
 
-export const UPDATE_TASK = () => {
+export const UPDATE_TASK = (id: Number) => {
 	const mutationUpdateTask: DocumentNode = gql`
 		mutation UpdateTask(
 			$updateTaskInput: UpdateTaskInput!
-			$TaskId: Float!
+			$taskId: Float!
 		) {
-			updateTask(UpdateTaskInput: $updateTaskInput, TaskId: $TaskId) {
+			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId) {
 				id
 				title
 				status {
@@ -154,7 +154,7 @@ export const UPDATE_TASK = () => {
 					id: 3,
 				},
 			},
-			TaskId: 3,
+			taskId: id,
 		},
 	};
 };
@@ -170,10 +170,10 @@ export const GET_PROJECTS = () => {
 	return { query: queryGetProjects };
 };
 
-export const GET_PROJECT_BY_ID = () => {
+export const GET_PROJECT_BY_ID = (id: Number) => {
 	const queryGetProjectById: DocumentNode = gql`
 		query GetProjectById($projectId: Float!) {
-			getProjectById(ProjectId: $projectId) {
+			getProjectById(projectId: $projectId) {
 				id
 				title
 			}
@@ -182,15 +182,15 @@ export const GET_PROJECT_BY_ID = () => {
 	return {
 		query: queryGetProjectById,
 		variables: {
-			projectId: 1,
+			projectId: id,
 		},
 	};
 };
 
-export const ADD_PROJECT = () => {
+export const ADD_PROJECT = (title: String) => {
 	const mutationAddProject: DocumentNode = gql`
 		mutation AddProject($createProjectInput: CreateProjectInput!) {
-			addProject(CreateProjectInput: $createProjectInput) {
+			addProject(createProjectInput: $createProjectInput) {
 				id
 				title
 			}
@@ -200,22 +200,22 @@ export const ADD_PROJECT = () => {
 		query: mutationAddProject,
 		variables: {
 			createProjectInput: {
-				title: "brand new project",
+				title: title,
 				description: "woooow what a project !!!",
 			},
 		},
 	};
 };
 
-export const UPDATE_PROJECT = () => {
+export const UPDATE_PROJECT = (id: Number) => {
 	const mutationUpdateProject: DocumentNode = gql`
 		mutation UpdateProject(
 			$updateProjectInput: UpdateProjectInput!
 			$projectId: Float!
 		) {
 			updateProject(
-				UpdateProjectInput: $updateProjectInput
-				ProjectId: $projectId
+				updateProjectInput: $updateProjectInput
+				projectId: $projectId
 			) {
 				id
 				title
@@ -234,7 +234,7 @@ export const UPDATE_PROJECT = () => {
 					id: 2,
 				},
 			},
-			projectId: 2,
+			projectId: id,
 		},
 	};
 };
