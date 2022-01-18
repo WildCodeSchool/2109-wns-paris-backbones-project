@@ -34,7 +34,7 @@ export class TaskResolver {
 			}
 			await Task.save(task);
 			newTaskId = task.id;
-			console.log("Succesfully create: ", task);
+			console.log("Successfully create: ", task);
 		} catch (error) {
 			console.log(error);
 		}
@@ -52,7 +52,7 @@ export class TaskResolver {
 			const task = await Task.findOne(taskId);
 			if (task) {
 				await Task.update(taskId, updateTaskInput);
-				console.log("Succesfully update: ", task);
+				console.log("Successfully update: ", task);
 			} else {
 				throw `Task with id : ${taskId} doesn't exists`;
 			}

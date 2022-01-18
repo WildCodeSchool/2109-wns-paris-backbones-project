@@ -34,7 +34,7 @@ export class UserResolver {
 			}
 			await BackBonesUser.save(user);
 			newUserId = user.id;
-			console.log("Succesfully create: ", user);
+			console.log("Successfully create: ", user);
 		} catch (error) {
 			console.log(error);
 		}
@@ -52,7 +52,7 @@ export class UserResolver {
 			const user = await BackBonesUser.findOne(userId);
 			if (user) {
 				await BackBonesUser.update(userId, updateUserInput);
-				console.log("Succesfully update: ", user);
+				console.log("Successfully update: ", user);
 			} else {
 				throw `User with id : ${userId} doesn't exists`;
 			}

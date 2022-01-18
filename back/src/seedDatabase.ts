@@ -129,7 +129,7 @@ const runSeed = async () => {
 			const projects = await connection.manager.find(Project);
 
 			// CREATE TASKS
-			projects.forEach(async (project) => {
+			for (const project of projects) {
 				let i = 1;
 				for (let index = 0; index < 5; index++) {
 					const t = new Task();
@@ -146,7 +146,7 @@ const runSeed = async () => {
 					console.log("Saved a new task: " + t.title);
 					i++;
 				}
-			});
+			}
 			const tasks = await connection.manager.find(Task);
 		})
 		.catch((error) => console.log(error));

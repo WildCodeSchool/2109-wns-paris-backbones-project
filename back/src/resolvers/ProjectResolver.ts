@@ -36,7 +36,7 @@ export class ProjectResolver {
 				throw "project title can't be null";
 			}
 			await Project.save(project);
-			console.log("Succesfully create: ", project);
+			console.log("Successfully create: ", project);
 			newProjectId = project.id;
 		} catch (error) {
 			console.log(error);
@@ -55,7 +55,7 @@ export class ProjectResolver {
 			const project = await Project.findOne(id);
 			if (project) {
 				await Project.update(id, updateProjectInput);
-				console.log("Succesfully update: ", project);
+				console.log("Successfully update: ", project);
 			} else {
 				throw `Project with id : ${id} doesn't exists`;
 			}
