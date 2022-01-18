@@ -4,32 +4,16 @@
 	"private": true,
 	"dependencies": {
 		"@apollo/client": "^3.4.16",
-		"@testing-library/jest-dom": "^5.11.4",
-		"@testing-library/react": "^11.1.0",
-		"@testing-library/user-event": "^12.1.10",
-		"@types/jest": "^26.0.15",
-		"@types/node": "^12.0.0",
-		"@types/react": "^17.0.0",
-		"@types/react-dom": "^17.0.0",
 		"graphql": "^15.7.1",
 		"react": "^17.0.2",
-		"react-dom": "^17.0.2",
-		"react-scripts": "4.0.3",
-		"typescript": "^4.1.2",
-		"web-vitals": "^1.0.1"
+		"react-dom": "^17.0.2"
 	},
 	"scripts": {
-		"start": "TAILWIND_MODE=watch craco start",
-		"start:win": "craco start",
-		"build": "craco build",
-		"test": "craco test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+		"dev": "vite",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"test": "jest --testPathIgnorePatterns",
+		"test:coverage": "yarn test --coverage"
 	},
 	"browserslist": {
 		"production": [
@@ -44,10 +28,39 @@
 		]
 	},
 	"devDependencies": {
-		"@craco/craco": "^6.4.0",
-		"autoprefixer": "^9",
-		"postcss": "^7",
+		"@babel/preset-env": "^7.16.4",
+		"@babel/preset-react": "^7.16.0",
+		"@babel/preset-typescript": "^7.16.7",
+		"@testing-library/jest-dom": "^5.11.4",
+		"@testing-library/react": "^11.1.0",
+		"@testing-library/user-event": "^12.1.10",
+		"@types/jest": "^26.0.15",
+		"@types/node": "^12.0.0",
+		"@types/react": "^17.0.0",
+		"@types/react-dom": "^17.0.0",
+		"@typescript-eslint/eslint-plugin": "^4.5.0",
+		"@typescript-eslint/parser": "^4.5.0",
+		"@vitejs/plugin-react": "^1.1.4",
+		"autoprefixer": "^10.4.2",
+		"babel-jest": "^27.4.2",
+		"babel-plugin-transform-vite-meta-env": "^1.0.3",
+		"eslint": "^7.11.0",
+		"eslint-config-react-app": "^6.0.0",
+		"eslint-plugin-flowtype": "^5.2.0",
+		"eslint-plugin-import": "^2.22.1",
+		"eslint-plugin-jest": "^24.1.0",
+		"eslint-plugin-jsx-a11y": "^6.3.1",
+		"eslint-plugin-react": "^7.21.5",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"eslint-plugin-testing-library": "^3.9.2",
+		"jest": "26.6.0",
+		"jest-circus": "26.6.0",
+		"jest-resolve": "26.6.0",
+		"jest-watch-typeahead": "0.6.1",
+		"postcss": "^8.4.5",
 		"prettier": "^2.4.1",
-		"tailwindcss": "npm:@tailwindcss/postcss7-compat"
+		"tailwindcss": "^3.0.15",
+		"typescript": "^4.1.2",
+		"vite": "^2.7.12"
 	}
 }
