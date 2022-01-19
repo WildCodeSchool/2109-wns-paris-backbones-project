@@ -1,0 +1,29 @@
+services:
+  postgresDB:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./pg_data:/var/lib/postgres/data
+      - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+
+  back:
+    build: ./back
+    ports:
+      - 4000:4000
+    volumes:
+      - ./back/src:/back/src
+    depends_on:
+      - postgresDB
+    command: sh -c "yarn seed:prod && yarn start"
+
+  front:
+    build: ./front
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front/src:/front/src
+    depends_on:
+      - back

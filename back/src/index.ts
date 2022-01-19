@@ -13,7 +13,18 @@ console.log(`You are in ${process.env.NODE_ENV} environement`);
 
 async function main() {
 	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
-	await createConnection({ ...connectionOptions, name: "default" });
+
+	let retries = 3
+	while (retries) {
+		try {
+			await createConnection({ ...connectionOptions, name: "default" });
+			break;
+		} catch (err){
+			console.log(err)
+			retries -= 1;
+			await new Promise(res => setTimeout(res, 5000));
+		}
+	}
 
 	const schema = await buildSchema({
 		resolvers: [
