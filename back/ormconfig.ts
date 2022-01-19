@@ -2,10 +2,10 @@ export default [
 	{
 		name: "prod",
 		type: "postgres",
-		host: "0.0.0.0",
+		host: "postgresDB",
 		port: 5432,
-		username: "admin",
-		password: "ticketapp_password",
+		username: "postgres",
+		password: "postgres",
 		database: "ticketapp",
 		synchronize: true,
 		logging: false,

@@ -11,6 +11,8 @@ import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
 import { config } from "dotenv";
 
+
+console.log("DB NAAAAAAMMMME", process.env.DB_NAME)
 config({ path: `.env.${process.env.NODE_ENV}` });
 
 console.log(`You are in ${process.env.NODE_ENV} environement`);

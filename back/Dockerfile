@@ -3,9 +3,10 @@ FROM node:lts-alpine
 RUN mkdir /back
 WORKDIR /back
 
+COPY .env.test ./
+COPY .env.prod ./
 COPY package.json ./
 COPY yarn.lock ./
-COPY .env.prod ./
 COPY tsconfig.json ./
 COPY ormconfig.ts ./
 
