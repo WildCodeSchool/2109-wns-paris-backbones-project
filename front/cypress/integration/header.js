@@ -1,17 +1,20 @@
 import React from 'react';
 
+
+//TEST 1 - HOME RENDER
 describe("renders home", () => {
     it("renders correctly", () => {
-        cy.visit('http:localhost:3000');
+        cy.visit('/');
     })
 })
 
+//TEST 2 - SUBMIT FORM
 describe("submit header form", () => {
     it("submit correctly", () => {
         cy.get('form').submit()
     })
 })
-
+//TEST 3 - DISPLAYING ALL PROJECTS
 describe("displays all projects despite connexion", () => {
     it("displays correctly", () => {
         cy.get('li').filter('#projectList')
@@ -24,13 +27,11 @@ describe("displays all projects despite connexion", () => {
             })
     });
 })
-
+//TEST 4 - PROJECTS CORRESPONDIG TO USER
 describe("displays project regarding user", () => {
     it("corresponding project", () => {
         cy.get('span').filter('#first_user')
         cy.get('span').filter('#second_user')
-
-
     });
 });
 
