@@ -1,0 +1,37 @@
+FROM node as builder
+
+RUN mkdir /back
+WORKDIR /back
+
+
+# COPY .env.test ./
+COPY .env.prod ./
+COPY package.json ./
+COPY yarn.lock ./
+COPY tsconfig.json ./
+COPY ormconfig.json ./
+
+RUN yarn
+
+COPY src src
+
+RUN yarn build
+
+FROM node
+
+RUN mkdir /back
+WORKDIR /back
+
+
+COPY --from=builder /back/build /back/build
+
+COPY package.json ./
+COPY .env.prod ./
+COPY yarn.lock ./
+COPY ormconfig.json ./
+
+RUN yarn install --production
+
+CMD yarn start
+
+# ENTRYPOINT ["tail", "-f", "/dev/null"]

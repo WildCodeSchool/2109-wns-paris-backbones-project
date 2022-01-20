@@ -9,13 +9,13 @@
 		"database": "ticketapp",
 		"synchronize": true,
 		"logging": false,
-		"entities": ["src/entities/**/*.ts"],
-		"migrations": ["src/migration/**/*.ts"],
-		"subscribers": ["src/subscriber/**/*.ts"],
+		"entities": ["**/entities/**/*.js"],
+		"migrations": ["**/migration/**/*.js"],
+		"subscribers": ["**/subscriber/**/*.js"],
 		"cli": {
-			"entitiesDir": "src/entities",
-			"migrationsDir": "src/migration",
-			"subscribersDir": "src/subscriber"
+			"entitiesDir": "build/entities",
+			"migrationsDir": "build/migration",
+			"subscribersDir": "build/subscriber"
 		}
 	},
 	{
@@ -28,13 +28,13 @@
 		"synchronize": true,
 		"logging": false,
 		"database": "test.db",
-		"entities": ["src/entities/**/*.ts"],
-		"migrations": ["src/migration/**/*.ts"],
-		"subscribers": ["src/subscriber/**/*.ts"],
+		"entities": ["**/entities/**/*.js"],
+		"migrations": ["**/migration/**/*.js"],
+		"subscribers": ["**/subscriber/**/*.js"],
 		"cli": {
-			"entitiesDir": "src/entities",
-			"migrationsDir": "src/migration",
-			"subscribersDir": "src/subscriber"
+			"entitiesDir": "build/entities",
+			"migrationsDir": "build/migration",
+			"subscribersDir": "build/subscriber"
 		}
 	}
 ]

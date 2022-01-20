@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"target": "ES2018",
+		"target": "ES6",
 		"module": "commonjs",
 		"sourceMap": true,
 		"outDir": "./build",
@@ -13,7 +13,8 @@
 		"forceConsistentCasingInFileNames": true,
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"strictPropertyInitialization": false
+		"strictPropertyInitialization": false,
+		"allowJs": false
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["node_modules"]
