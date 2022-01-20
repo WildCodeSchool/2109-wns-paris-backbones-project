@@ -1,0 +1,19 @@
+name: tests
+
+on: pull_request
+
+jobs:
+  test-back:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Goto back and run tests
+        run: cd back && yarn && yarn test
+  test-front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Goto front and run tests
+        run: cd front && yarn && yarn test
