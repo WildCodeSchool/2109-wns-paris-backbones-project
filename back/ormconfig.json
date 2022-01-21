@@ -28,9 +28,9 @@
 		"synchronize": true,
 		"logging": false,
 		"database": "test.db",
-		"entities": ["**/entities/**/*.{ts,js}"],
-		"migrations": ["**/migration/**/*.{ts,js}"],
-		"subscribers": ["**/subscriber/**/*.{ts,js}"],
+		"entities": ["**/entities/**/*.ts"],
+		"migrations": ["**/migration/**/*.ts"],
+		"subscribers": ["**/subscriber/**/*.ts"],
 		"cli": {
 			"entitiesDir": "**/entities",
 			"migrationsDir": "**/migration",
