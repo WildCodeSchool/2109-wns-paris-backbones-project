@@ -7,9 +7,9 @@
 	"scripts": {
 		"build": "tsc",
 		"start": "cd build && NODE_ENV=prod node index.js",
-		"dev": "NODE_ENV=prod ts-node src/index.ts",
+		"dev": "cd src && NODE_ENV=prod ts-node index.ts",
 		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",
-		"seed:dev": "NODE_ENV=prod ts-node src/seedDatabase.ts",
+		"seed:dev": "cd src && export NODE_ENV=prod && ts-node seedDatabase.ts",
 		"seed:prod": "cd build && export NODE_ENV=prod && node seedDatabase.js",
 		"test": "yarn seed:test ; jest --detectOpenHandles",
 		"test:coverage": "yarn seed:test ; jest --coverage --detectOpenHandles",

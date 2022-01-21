@@ -1,5 +1,11 @@
 # Awesome Project Build with TypeORM
 
+
+New steps to run project !!!
+DEV = docker-compose up --build
+PROD = docker-compose -f docker-compose-dev.yml up --build
+
+
 Steps to run this project:
 
 1. Run `yarn` command

@@ -19,6 +19,7 @@ services:
       - ./back/src:/back/src
     depends_on:
       - postgresDB
+    command: sh -c "yarn seed:prod && yarn start"
 
   front:
     build: ./front
