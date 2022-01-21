@@ -6,11 +6,11 @@
 	"type": "commonjs",
 	"scripts": {
 		"build": "tsc",
-		"start": "NODE_ENV=prod node build/index.js",
+		"start": "cd build && NODE_ENV=prod node index.js",
 		"dev": "NODE_ENV=prod ts-node src/index.ts",
 		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",
 		"seed:dev": "NODE_ENV=prod ts-node src/seedDatabase.ts",
-		"seed:prod": "NODE_ENV=prod node build/seedDatabase.js",
+		"seed:prod": "cd build && export NODE_ENV=prod && node seedDatabase.js",
 		"test": "yarn seed:test ; jest --detectOpenHandles",
 		"test:coverage": "yarn seed:test ; jest --coverage --detectOpenHandles",
 		"lint": "eslint . "

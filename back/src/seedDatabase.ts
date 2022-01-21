@@ -1,3 +1,4 @@
+import { config } from "dotenv";
 import "reflect-metadata";
 import {
 	ConnectionManager,
@@ -9,7 +10,7 @@ import { Role } from "./entities/Role";
 import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
-import { config } from "dotenv";
+
 
 console.log("DB NAAAAAAMMMME", process.env.DB_NAME);
 config({ path: `.env.${process.env.NODE_ENV}` });
