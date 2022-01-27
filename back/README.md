@@ -1,28 +1,34 @@
-# Awesome Project Build with TypeORM
+# Ticket App | Project Manager
 
+The best ways to manage all your projects. JIRA and ASANA sucks.
 
-New steps to run project !!!
-DEV = docker-compose up --build
-PROD = docker-compose -f docker-compose-dev.yml up --build
+## Installation - dev
+### Follow those steps to run the project
 
-
-Steps to run this project:
-
-1. Run `yarn` command
-2. Create `admin` user in `ticketapp` database (in postgresql) :
-3. Creer un mot de passe
-
+Make sure you are at the origin of the folder and run:
+```bash
+docker-compose -f docker-compose-dev.yml up --build
 ```
-createdb ticketapp
-psql ticketapp
-CREATE USER admin;
-ALTER USER admin PASSWORD 'ticketapp_password';
+Back: http://localhost:4000/
+
+Front: http://localhost:3000/
+
+
+## Installation - prod
+### Follow those steps to run the project
+```bash
+docker-compose up --build
 ```
 
-4. Run `yarn seed:prod` command to seed prod environment
-5. Run `yarn start` command
-   if fail for a TS reason. Please don't give up.
-   `yarn remove ts-node typescript`
-   `yarn add ts-node typescript`
-   `yarn start`
-6. Run `yarn test` command will run test suite and create and seed the test db
+
+## Stacks
+### Back
+Node.js | TypeScript | Typrorm | TypeGraphql
+### Front
+React | TypeScript | Tailwind | Vite
+### DataBase
+Postgresql | BetterSqlite3
+### test
+Jest
+### CI
+Docker
