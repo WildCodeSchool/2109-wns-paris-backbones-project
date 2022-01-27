@@ -17,4 +17,5 @@ COPY src src
 COPY .env.test ./src
 COPY .env.prod ./src
 
+
 CMD yarn dev
