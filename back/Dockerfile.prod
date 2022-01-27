@@ -1,0 +1,33 @@
+FROM node:lts-alpine as builder
+WORKDIR /back
+
+
+COPY .env.test ./
+COPY .env.prod ./
+COPY package.json ./
+COPY yarn.lock ./
+COPY tsconfig.json ./
+COPY ormconfig.json ./
+
+RUN yarn
+
+COPY src src
+
+RUN yarn build
+
+FROM node:lts-alpine
+WORKDIR /back
+COPY --from=builder /back/build /back/build
+
+COPY .env.test ./
+COPY .env.prod ./
+COPY .env.test ./build
+COPY .env.prod ./build
+COPY package.json ./
+COPY yarn.lock ./
+COPY tsconfig.json ./
+COPY ormconfig.json ./
+
+RUN yarn install --production
+RUN yarn seed:prod
+CMD yarn start

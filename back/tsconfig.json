@@ -1,19 +1,21 @@
 {
-  "compilerOptions": {
-    "target": "ES2018",
-    "module": "commonjs",
-    "sourceMap": true,
-    "outDir": "./build",
-    "strict": true,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "strictPropertyInitialization": false
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules"]
+	"compilerOptions": {
+		"target": "ES6",
+		"module": "commonjs",
+		"sourceMap": true,
+		"outDir": "./build",
+		"rootDir": "./src",
+		"strict": true,
+		"noImplicitAny": true,
+		"moduleResolution": "node",
+		"baseUrl": "./",
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"strictPropertyInitialization": false,
+		"allowJs": false
+	},
+	"include": ["./src/**/*"],
+	"exclude": ["node_modules"]
 }

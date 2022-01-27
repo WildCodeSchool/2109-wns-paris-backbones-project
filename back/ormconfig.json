@@ -1,0 +1,40 @@
+[
+	{
+		"name": "prod",
+		"type": "postgres",
+		"host": "postgresDB",
+		"port": 5432,
+		"username": "postgres",
+		"password": "postgres",
+		"database": "ticketapp",
+		"synchronize": true,
+		"logging": false,
+		"entities": ["**/entities/**/*.{ts,js}"],
+		"migrations": ["**/migration/**/*.{ts,js}"],
+		"subscribers": ["**/subscriber/**/*.{ts,js}"],
+		"cli": {
+			"entitiesDir": "**/entities",
+			"migrationsDir": "**/migration",
+			"subscribersDir": "**/subscriber"
+		}
+	},
+	{
+		"name": "test",
+		"open": true,
+		"inTransaction": false,
+		"readonly": false,
+		"memory": false,
+		"type": "better-sqlite3",
+		"synchronize": true,
+		"logging": false,
+		"database": "test.db",
+		"entities": ["**/entities/**/*.ts"],
+		"migrations": ["**/migration/**/*.ts"],
+		"subscribers": ["**/subscriber/**/*.ts"],
+		"cli": {
+			"entitiesDir": "**/entities",
+			"migrationsDir": "**/migration",
+			"subscribersDir": "**/subscriber"
+		}
+	}
+]
