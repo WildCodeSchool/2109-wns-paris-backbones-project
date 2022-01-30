@@ -10,19 +10,19 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgres/data
       - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+
   back:
     build:
       context: ./back
       dockerfile: Dockerfile.dev
     ports:
       - "4000:4000"
-    expose:
-      - 4000
     volumes:
       - ./back/src:/back/src
     depends_on:
       - postgresDB
     command: sh -c "yarn seed:dev && yarn dev"
+
   front:
     build: ./front
     ports:

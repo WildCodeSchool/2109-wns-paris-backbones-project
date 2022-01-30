@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import "reflect-metadata";
 import {
-	ConnectionManager,
 	createConnection,
 	getConnectionOptions,
 } from "typeorm";
@@ -11,17 +10,14 @@ import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
 
-
-console.log("DB NAAAAAAMMMME", process.env.DB_NAME);
 config({ path: `.env.${process.env.NODE_ENV}` });
 
-console.log(`You are in ${process.env.NODE_ENV} environement`);
+console.log(`seedDatabase starting in ${process.env.NODE_ENV} environement`);
 
 //Create test DB
 const Database = require("better-sqlite3");
 function openDb(filename: string) {
 	const db = new Database(`${filename}.db`, { verbose: console.log });
-	console.log(db);
 }
 openDb("test");
 
@@ -72,16 +68,19 @@ const projectName = [
 
 const runSeed = async () => {
 	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
-	console.log(connectionOptions);
 
 	createConnection({ ...connectionOptions, name: "default" })
 		.then(async (connection) => {
 			// DELETING DB
-			console.log(connection);
+			console.log("deleting previous DB ...")
 			await connection.dropDatabase();
+			console.log("deleting previous DB ...Done")
+			console.log("synchronizing new DB...")
 			await connection.synchronize();
+			console.log("synchronizing new DB...Done")
 
 			// CREATE ROLES
+			console.log("CREATE ROLES")
 			for (const role of rolesName) {
 				const r = new Role();
 				r.title = role;
@@ -91,6 +90,7 @@ const runSeed = async () => {
 			const roles = await connection.manager.find(Role);
 
 			// CREATE STATUS
+			console.log("CREATE STATUS")
 			for (const status of statusName) {
 				const s = new Status();
 				s.title = status;
@@ -100,9 +100,8 @@ const runSeed = async () => {
 			const status = await connection.manager.find(Status);
 
 			// CREATE USERS
-
+			console.log("CREATE USERS")
 			for (const user of usersName) {
-				console.log("Inserting a new user into the database...");
 				const u = new BackBonesUser();
 				u.firstName = user.firstName;
 				u.lastName = user.lastName;
@@ -118,8 +117,8 @@ const runSeed = async () => {
 			const users = await connection.manager.find(BackBonesUser);
 
 			// CREATE PROJECTS
+			console.log("CREATE PROJECTS")
 			for (const project of projectName) {
-				console.log("Inserting a new project into the database...");
 				const p = new Project();
 				p.title = project.title;
 				p.description = project.description;
@@ -133,6 +132,7 @@ const runSeed = async () => {
 			const projects = await connection.manager.find(Project);
 
 			// CREATE TASKS
+			console.log("CREATE TASKS")
 			for (const project of projects) {
 				let i = 1;
 				for (let index = 0; index < 5; index++) {
@@ -151,7 +151,7 @@ const runSeed = async () => {
 					i++;
 				}
 			}
-			const tasks = await connection.manager.find(Task);
+			console.log("database seeded. 🚀")
 		})
 		.catch((error) => console.log(error));
 };

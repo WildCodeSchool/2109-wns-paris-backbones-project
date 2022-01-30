@@ -1,4 +1,4 @@
-[
+module.exports = [
 	{
 		"name": "prod",
 		"type": "postgres",
@@ -9,16 +9,16 @@
 		"database": "ticketapp",
 		"synchronize": true,
 		"logging": false,
-		"entities": ["**/entities/**/*.{ts,js}"],
-		"migrations": ["**/migration/**/*.{ts,js}"],
-		"subscribers": ["**/subscriber/**/*.{ts,js}"],
+		"entities": [__dirname + "/{src,build}/entities/**/*.{ts,js}"],
+		"migrations": [__dirname + "/{src,build}/migration/**/*.{ts,js}"],
+		"subscribers": [__dirname + "/{src,build}/subscriber/**/*.{ts,js}"],
 		"cli": {
 			"entitiesDir": "**/entities",
 			"migrationsDir": "**/migration",
 			"subscribersDir": "**/subscriber"
 		}
 	},
-	{
+ 	{
 		"name": "test",
 		"open": true,
 		"inTransaction": false,
@@ -28,9 +28,9 @@
 		"synchronize": true,
 		"logging": false,
 		"database": "test.db",
-		"entities": ["**/entities/**/*.ts"],
-		"migrations": ["**/migration/**/*.ts"],
-		"subscribers": ["**/subscriber/**/*.ts"],
+		"entities": [__dirname + "/{src,build}/entities/**/*.{ts,js}"],
+		"migrations": [__dirname + "/{src,build}/migration/**/*.{ts,js}"],
+		"subscribers": [__dirname + "/{src,build}/subscriber/**/*.{ts,js}"],
 		"cli": {
 			"entitiesDir": "**/entities",
 			"migrationsDir": "**/migration",
@@ -38,3 +38,4 @@
 		}
 	}
 ]
+
