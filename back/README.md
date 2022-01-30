@@ -20,6 +20,16 @@ Front: http://localhost:3000/
 docker-compose up --build
 ```
 
+## Tests
+### Back and Front tests are launched with github actions for validate each Pull Request
+#### To launch tests:
+```bash
+yarn test
+```
+#### To launch tests with coverage:
+```bash
+yarn test:coverage
+```
 
 ## Stacks
 ### Back
