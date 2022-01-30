@@ -1,12 +1,9 @@
 FROM node:lts-alpine AS builder
 WORKDIR /back
 
-COPY .env.test ./
-COPY .env.prod ./
 COPY package.json ./
 COPY yarn.lock ./
 COPY tsconfig.json ./
-COPY ormconfig.js ./
 
 RUN yarn
 
