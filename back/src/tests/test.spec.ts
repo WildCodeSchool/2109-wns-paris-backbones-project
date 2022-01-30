@@ -25,7 +25,7 @@ import {
 	GET_USER_BY_ID,
 	UPDATE_PROJECT,
 	UPDATE_TASK,
-	UPDATE_USER,
+	UPDATE_USER, GET_ROLE_BY_ID, ADD_ROLE, UPDATE_ROLE, GET_STATUS_BY_ID, ADD_STATUS, UPDATE_STATUS,
 } from "./gqlQueries/gqlQueries";
 let server: ApolloServer;
 
@@ -260,6 +260,55 @@ describe("test Resolvers", () => {
 			const response = await server.executeOperation(GET_ROLES());
 			expect(response.data?.getRoles.length).toEqual(roles.length);
 		});
+
+		it("test query getRoleById expect Role id 1 to be 'CTO'", async () => {
+			const response = await server.executeOperation(
+				GET_ROLE_BY_ID(1)
+			);
+			const role = await Role.findOne(1);
+			expect(response.data?.getRoleById.title).toBe(role?.title);
+		});
+
+		it("test query getProjectRoleById expect Role id 100 throw an error", async () => {
+			const response = await server.executeOperation(
+				GET_ROLE_BY_ID(100)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addRole expect created Role id equal to role with same id", async () => {
+			const response = await server.executeOperation(
+				ADD_ROLE("brand new role")
+			);
+			const createdRole = await Role.findOne(
+				response.data?.addRole.id
+			);
+			const id = createdRole?.id;
+			await createdRole?.remove();
+			expect(response.data?.addRole.id).toBe(id);
+		});
+
+		it("test mutation addRole expect created Role with no title throw an error", async () => {
+			const response = await server.executeOperation(ADD_ROLE(""));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateProject expect updatedROLE title equal to role title with same id", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(2));
+			const updatedRole = await Role.findOne(
+				response.data?.updateRole.id
+			);
+			const title = updatedRole?.title;
+
+			expect(response.data?.updateRole.title).toBe(title);
+		});
+
+		it("test mutation updateRole expect updatedRole can't be updated because not found", async () => {
+			const response = await server.executeOperation(
+				UPDATE_ROLE(1900)
+			);
+			expect(response.errors).toBeTruthy();
+		});
 	});
 
 	describe("test StatusResolver", () => {
@@ -267,6 +316,55 @@ describe("test Resolvers", () => {
 			const statuses = await Status.find();
 			const response = await server.executeOperation(GET_STATUSES());
 			expect(response.data?.getStatuses.length).toEqual(statuses.length);
+		});
+
+		it("test query getStatusById expect Status id 1 to be 'in progress'", async () => {
+			const response = await server.executeOperation(
+				GET_STATUS_BY_ID(1)
+			);
+			const status = await Status.findOne(1);
+			expect(response.data?.getStatusById.title).toBe(status?.title);
+		});
+
+		it("test query getStatusById expect Status id 100 throw an error", async () => {
+			const response = await server.executeOperation(
+				GET_STATUS_BY_ID(100)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status id equal to status with same id", async () => {
+			const response = await server.executeOperation(
+				ADD_STATUS("brand new status")
+			);
+			const createdStatus = await Status.findOne(
+				response.data?.addStatus.id
+			);
+			const id = createdStatus?.id;
+			await createdStatus?.remove();
+			expect(response.data?.addStatus.id).toBe(id);
+		});
+
+		it("test mutation addStatus expect created Status with no title throw an error", async () => {
+			const response = await server.executeOperation(ADD_STATUS(""));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updatedStatus title equal to status title with same id", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(2));
+			const updatedStatus = await Status.findOne(
+				response.data?.updateStatus.id
+			);
+			const title = updatedStatus?.title;
+
+			expect(response.data?.updateStatus.title).toBe(title);
+		});
+
+		it("test mutation updateStatus expect updatedStatus can't be updated because not found", async () => {
+			const response = await server.executeOperation(
+				UPDATE_STATUS(1900)
+			);
+			expect(response.errors).toBeTruthy();
 		});
 	});
 });

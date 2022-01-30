@@ -250,6 +250,62 @@ export const GET_ROLES = () => {
 	return { query: queryGetRoles };
 };
 
+export const GET_ROLE_BY_ID = (id: Number) => {
+	const queryGetRoleById: DocumentNode = gql`
+		query GetRolesById($roleId: Float!) {
+			getRoleById(roleId: $roleId) {
+				id
+				title
+			}
+		}
+	`;
+	return {
+		query: queryGetRoleById,
+		variables: {
+			roleId: id,
+		},
+	};
+};
+
+export const ADD_ROLE = (title: String) => {
+	const mutationAddRole: DocumentNode = gql`
+		mutation AddRole($createRoleInput: CreateRoleInput!) {
+			addRole(createRoleInput: $createRoleInput) {
+				id
+				title
+			}
+		}
+	`;
+	return {
+		query: mutationAddRole,
+		variables: {
+			createRoleInput: {
+				title: title,
+			},
+		},
+	};
+};
+
+export const UPDATE_ROLE = (id: Number) => {
+	const mutationUpdateRole: DocumentNode = gql`
+		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!) {
+			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId) {
+				id
+				title
+			}
+		}
+	`;
+	return {
+		query: mutationUpdateRole,
+		variables: {
+			updateRoleInput: {
+				title: "brand new role title",
+			},
+			roleId: id,
+		},
+	};
+};
+
 export const GET_STATUSES = () => {
 	const queryGetStatuses: DocumentNode = gql`
 		query GetStatuses {
@@ -259,4 +315,59 @@ export const GET_STATUSES = () => {
 		}
 	`;
 	return { query: queryGetStatuses };
+};
+
+export const GET_STATUS_BY_ID = (id: Number) => {
+	const queryGetStatusById: DocumentNode = gql`
+		query GetStatusById($statusId: Float!) {
+			getStatusById(statusId: $statusId) {
+				title
+			}
+		}
+	`;
+	return {
+		query: queryGetStatusById,
+		variables: {
+			statusId: id,
+		},
+	};
+};
+
+export const ADD_STATUS = (title: String) => {
+	const mutationAddStatus: DocumentNode = gql`
+		mutation AddStatus($createStatusInput: CreateStatusInput!) {
+			addStatus(createStatusInput: $createStatusInput) {
+				id
+				title
+			}
+		}
+	`;
+	return {
+		query: mutationAddStatus,
+		variables: {
+			createStatusInput: {
+				title: title,
+			},
+		},
+	};
+};
+
+export const UPDATE_STATUS = (id: Number) => {
+	const mutationUpdateStatus: DocumentNode = gql`
+		mutation UpdateStatus($updateStatusInput: UpdateStatusInput!, $statusId: Float!) {
+			updateStatus(updateStatusInput: $updateStatusInput, statusId: $statusId) {
+				title
+				id
+			}
+		}
+	`;
+	return {
+		query: mutationUpdateStatus,
+		variables: {
+			updateStatusInput: {
+				title: "brand new status title",
+			},
+			statusId: id,
+		},
+	};
 };
