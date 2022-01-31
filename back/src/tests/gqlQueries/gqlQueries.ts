@@ -133,7 +133,7 @@ export const ADD_TASK = (taskName: String, ProjectId: number = 1) => {
 	};
 };
 
-export const UPDATE_TASK = (id: Number) => {
+export const UPDATE_TASK = (taskId: Number, taskTitle: string | undefined, projectId: number = 1) => {
 	const mutationUpdateTask: DocumentNode = gql`
 		mutation UpdateTask(
 			$updateTaskInput: UpdateTaskInput!
@@ -152,12 +152,15 @@ export const UPDATE_TASK = (id: Number) => {
 		query: mutationUpdateTask,
 		variables: {
 			updateTaskInput: {
-				title: "brand new name",
+				title: taskTitle,
 				status: {
 					id: 3,
 				},
+				project: {
+					"id": projectId,
+				}
 			},
-			taskId: id,
+			taskId: taskId,
 		},
 	};
 };

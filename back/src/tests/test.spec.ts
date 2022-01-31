@@ -180,7 +180,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateTask expect updatedTask title equal to task title with same id", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(3));
+			const response = await server.executeOperation(UPDATE_TASK(3, "Brand new task name"));
 			const updatedTask = await Task.findOne(
 				response.data?.updateTask.id
 			);
@@ -192,8 +192,18 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateTask expect updatedTask can't be updated because not found", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(1900));
+			const response = await server.executeOperation(UPDATE_TASK(1900, "balek"));
 
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation Update Task expect updatedTask with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(2, "task title 0"));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation Update Task expect updatedTask project's destination contain a task with same title throw an error", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(2, undefined, 2));
 			expect(response.errors).toBeTruthy();
 		});
 	});

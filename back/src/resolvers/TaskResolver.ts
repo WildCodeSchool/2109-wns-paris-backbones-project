@@ -2,6 +2,7 @@ import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 import {Project} from "../entities/Project";
+import { UserInputError } from "apollo-server";
 
 @Resolver()
 export class TaskResolver {
@@ -17,7 +18,7 @@ export class TaskResolver {
 			if (task) {
 				return task;
 			} else {
-				throw `there in no task with id: ${id}`;
+				throw new UserInputError(`there in no task with id: ${id}`);
 			}
 		} catch (error) {
 			console.log(error);
@@ -32,14 +33,11 @@ export class TaskResolver {
 		try {
 			const project = await Project.findOne(task.project)
 			const tasks = await project?.tasks
+			const taskWithSameTitle = tasks?.find((t) => t.title === task?.title)
 			if (!task.title) {
-				throw "task title can't be null";
-			} else if (tasks) {
-				tasks?.forEach((t) => {
-					if (t.title === task.title) {
-						throw "a task with the same title already exists on this project"
-					}
-				})
+				throw new UserInputError("task title can't be null");
+			} else if (taskWithSameTitle) {
+				throw new UserInputError("a task with the same title already exists on this project");
 			}
 			await Task.save(task);
 			newTaskId = task.id;
@@ -60,10 +58,17 @@ export class TaskResolver {
 		try {
 			const task = await Task.findOne(taskId);
 			if (task) {
+				const project = await Project.findOne(updateTaskInput?.project)
+				const tasks = await project?.tasks
+				const title = updateTaskInput?.title ? updateTaskInput?.title : task.title;
+				const taskWithSameTitle = tasks?.find((t) => t.title === title)
+				if (taskWithSameTitle) {
+					throw new UserInputError("A task with the same title already exists on this project")
+				}
 				await Task.update(taskId, updateTaskInput);
 				console.log("Successfully update: ", task);
 			} else {
-				throw `Task with id : ${taskId} doesn't exists`;
+				throw new UserInputError(`Task with id : ${taskId} doesn't exists`);
 			}
 		} catch (error) {
 			console.log(error);
