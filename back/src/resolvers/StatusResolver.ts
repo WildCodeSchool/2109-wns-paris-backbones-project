@@ -1,6 +1,7 @@
 import {Resolver, Query, Arg, Mutation} from "type-graphql";
 import { Status } from "../entities/Status";
 import {CreateStatusInput, UpdateStatusInput} from "../inputs/StatusInput";
+import {Project} from "../entities/Project";
 
 @Resolver()
 export class StatusResolver {

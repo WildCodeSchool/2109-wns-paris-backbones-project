@@ -64,6 +64,5 @@ export class Task extends BaseEntity {
 		lazy: true,
 		nullable: true,
 	})
-	@JoinTable()
 	project: Project;
 }

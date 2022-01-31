@@ -162,6 +162,7 @@ describe("test Resolvers", () => {
 			const response = await server.executeOperation(
 				ADD_TASK("brand new task")
 			);
+			console.log(response);
 			const createdTask = await Task.findOne(response.data?.addTask.id);
 			const id = createdTask?.id;
 			await createdTask?.remove();
@@ -170,6 +171,11 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect createdTask with no title throw an error", async () => {
 			const response = await server.executeOperation(ADD_TASK(""));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addTask expect createdTask with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(ADD_TASK("task title 0"));
 			expect(response.errors).toBeTruthy();
 		});
 

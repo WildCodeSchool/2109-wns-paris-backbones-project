@@ -1,6 +1,7 @@
 import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
+import {Project} from "../entities/Project";
 
 @Resolver()
 export class TaskResolver {
@@ -29,8 +30,16 @@ export class TaskResolver {
 		let newTaskId = 0;
 		const task = Task.create(createTaskInput);
 		try {
+			const project = await Project.findOne(task.project)
+			const tasks = await project?.tasks
 			if (!task.title) {
 				throw "task title can't be null";
+			} else if (tasks) {
+				tasks?.forEach((t) => {
+					if (t.title === task.title) {
+						throw "a task with the same title already exists on this project"
+					}
+				})
 			}
 			await Task.save(task);
 			newTaskId = task.id;

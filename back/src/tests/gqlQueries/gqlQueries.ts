@@ -110,7 +110,7 @@ export const GET_TASK_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_TASK = (taskName: String) => {
+export const ADD_TASK = (taskName: String, ProjectId: number = 1) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
 			addTask(createTaskInput: $createTaskInput) {
@@ -125,6 +125,9 @@ export const ADD_TASK = (taskName: String) => {
 			createTaskInput: {
 				title: taskName,
 				description: "woooow what a task !!!",
+				project: {
+					"id": 1
+				}
 			},
 		},
 	};
