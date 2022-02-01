@@ -2,7 +2,7 @@ import { Resolver, Query, Arg, Mutation } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 import {Project} from "../entities/Project";
-import { UserInputError } from "apollo-server";
+import {errorHandler} from "../utils/errorHandler";
 
 @Resolver()
 export class TaskResolver {
@@ -15,37 +15,38 @@ export class TaskResolver {
 	async getTaskById(@Arg("taskId") id: number) {
 		try {
 			const task = await Task.findOne(id);
-			if (task) {
-				return task;
+			if (!task) {
+				errorHandler(`there in no task with id: ${id}`);
 			} else {
-				throw new UserInputError(`there in no task with id: ${id}`);
+				return task;
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
 	//CREATE
 	@Mutation(() => Task)
 	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
-		let newTaskId = 0;
+
 		const task = Task.create(createTaskInput);
 		try {
 			const project = await Project.findOne(task.project)
 			const tasks = await project?.tasks
 			const taskWithSameTitle = tasks?.find((t) => t.title === task?.title)
 			if (!task.title) {
-				throw new UserInputError("task title can't be null");
+				errorHandler("task title can't be null");
 			} else if (taskWithSameTitle) {
-				throw new UserInputError("a task with the same title already exists on this project");
+				errorHandler("a task with the same title already exists on this project");
+			} else {
+				await Task.save(task);
+				console.log("Successfully create: ", task);
+				return await Task.findOne(task.id);
 			}
-			await Task.save(task);
-			newTaskId = task.id;
-			console.log("Successfully create: ", task);
+
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Task.findOne(newTaskId);
 	}
 
 	//UPDATE
@@ -63,16 +64,17 @@ export class TaskResolver {
 				const title = updateTaskInput?.title ? updateTaskInput?.title : task.title;
 				const taskWithSameTitle = tasks?.find((t) => t.title === title)
 				if (taskWithSameTitle) {
-					throw new UserInputError("A task with the same title already exists on this project")
+					errorHandler("A task with the same title already exists on this project")
+				} else {
+					await Task.update(taskId, updateTaskInput);
+					console.log("Successfully update: ", task);
+					return await Task.findOne(taskId);
 				}
-				await Task.update(taskId, updateTaskInput);
-				console.log("Successfully update: ", task);
 			} else {
-				throw new UserInputError(`Task with id : ${taskId} doesn't exists`);
+				errorHandler(`Task with id ${taskId} doesn't exists`);
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Task.findOne(taskId);
 	}
 }
