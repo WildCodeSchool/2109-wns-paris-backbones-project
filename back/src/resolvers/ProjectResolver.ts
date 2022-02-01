@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { Project } from "../entities/Project";
 import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
+import {errorHandler} from "../utils/errorHandler";
 
 @Resolver()
 export class ProjectResolver {
@@ -14,13 +15,13 @@ export class ProjectResolver {
 	async getProjectById(@Arg("projectId") id: number) {
 		try {
 			const project = await Project.findOne(id);
-			if (project) {
-				return project;
+			if (!project) {
+				errorHandler(`there in no project with id: ${id}`);
 			} else {
-				throw `there in no project with id: ${id}`;
+				return project;
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
@@ -29,39 +30,38 @@ export class ProjectResolver {
 	async addProject(
 		@Arg("createProjectInput") createProjectInput: CreateProjectInput
 	) {
-		let newProjectId = 0;
-		const project = Project.create(createProjectInput);
 		try {
-			if (!project.title) {
-				throw "project title can't be null";
+			const createdProject = Project.create(createProjectInput);
+			if (!createdProject.title) {
+				errorHandler("project title can't be null");
+			} else {
+				await Project.save(createdProject);
+				console.log("Successfully create: ", createdProject);
+				return await Project.findOne(createdProject.id);
 			}
-			await Project.save(project);
-			console.log("Successfully create: ", project);
-			newProjectId = project.id;
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Project.findOne(newProjectId);
 	}
 
 	//UPDATE
 	@Mutation(() => Project)
 	async updateProject(
-		@Arg("projectId") id: number,
+		@Arg("projectId") projectId: number,
 
 		@Arg("updateProjectInput") updateProjectInput: UpdateProjectInput
 	) {
 		try {
-			const project = await Project.findOne(id);
-			if (project) {
-				await Project.update(id, updateProjectInput);
-				console.log("Successfully update: ", project);
+			const updatedProject = await Project.findOne(projectId);
+			if (!updatedProject) {
+				errorHandler(`Project with id : ${projectId} doesn't exists`);
 			} else {
-				throw `Project with id : ${id} doesn't exists`;
+				await Project.update(projectId, updateProjectInput);
+				console.log("Successfully update: ", updatedProject);
+				return await Project.findOne(projectId);
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Project.findOne(id);
 	}
 }

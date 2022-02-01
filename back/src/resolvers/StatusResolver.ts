@@ -1,7 +1,7 @@
 import {Resolver, Query, Arg, Mutation} from "type-graphql";
 import { Status } from "../entities/Status";
 import {CreateStatusInput, UpdateStatusInput} from "../inputs/StatusInput";
-import {Project} from "../entities/Project";
+import {errorHandler} from "../utils/errorHandler";
 
 @Resolver()
 export class StatusResolver {
@@ -11,35 +11,35 @@ export class StatusResolver {
 		return await Status.find();
 	}
 	@Query(() => Status)
-	async getStatusById(@Arg("statusId") id: number) {
+	async getStatusById(@Arg("statusId") statusId: number) {
 		try {
-			const status = await Status.findOne(id);
-			if (status) {
-				return status;
+			const status = await Status.findOne(statusId);
+			if (!status) {
+				errorHandler(`there in no task with id: ${statusId}`);
 			} else {
-				throw `there in no task with id: ${id}`;
+				return status;
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
 	//CREATE
 	@Mutation(() => Status)
 	async addStatus(@Arg("createStatusInput") createStatusInput: CreateStatusInput) {
-		let newStatusId = 0;
-		const status = Status.create(createStatusInput);
 		try {
-			if (!status.title) {
-				throw "status title can't be null";
+			const createdStatus = Status.create(createStatusInput);
+			if (!createdStatus.title) {
+				errorHandler("status title can't be null");
+			} else {
+				await Status.save(createdStatus);
+				console.log("Successfully create: ", createdStatus);
+				return await Status.findOne(createdStatus.id);
 			}
-			await Status.save(status);
-			newStatusId = status.id;
-			console.log("Successfully create: ", status);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Status.findOne(newStatusId);
+
 	}
 
 	//UPDATE
@@ -50,16 +50,16 @@ export class StatusResolver {
 		@Arg("updateStatusInput") updateStatusInput: UpdateStatusInput
 	) {
 		try {
-			const status = await Status.findOne(statusId);
-			if (status) {
-				await Status.update(statusId, updateStatusInput);
-				console.log("Successfully update: ", status);
+			const updatedStatus = await Status.findOne(statusId);
+			if (!updatedStatus) {
+				errorHandler(`Status with id : ${statusId} doesn't exists`);
 			} else {
-				throw `Status with id : ${statusId} doesn't exists`;
+				await Status.update(statusId, updateStatusInput);
+				console.log("Successfully update: ", updatedStatus);
+				return await Status.findOne(statusId);
 			}
 		} catch (error) {
 			console.log(error);
 		}
-		return await Status.findOne(statusId);
 	}
 }

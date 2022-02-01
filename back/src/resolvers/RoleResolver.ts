@@ -2,6 +2,7 @@ import {Resolver, Query, Arg, Mutation} from "type-graphql";
 import { Role } from "../entities/Role";
 import {Status} from "../entities/Status";
 import {CreateRoleInput, UpdateRoleInput} from "../inputs/RoleInput";
+import {errorHandler} from "../utils/errorHandler";
 
 @Resolver()
 export class RoleResolver {
@@ -11,35 +12,33 @@ export class RoleResolver {
 		return await Role.find();
 	}
 	@Query(() => Status)
-	async getRoleById(@Arg("roleId") id: number) {
+	async getRoleById(@Arg("roleId") roleId: number) {
 		try {
-			const role = await Role.findOne(id);
-			if (role) {
-				return role;
+			const role = await Role.findOne(roleId);
+			if (!role) {
+				errorHandler(`there in no role with id: ${roleId}`);
 			} else {
-				throw `there in no role with id: ${id}`;
+				return role;
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
 	//CREATE
 	@Mutation(() => Role)
 	async addRole(@Arg("createRoleInput") createRoleInput: CreateRoleInput) {
-		let newRoleId = 0;
-		const role = Role.create(createRoleInput);
 		try {
-			if (!role.title) {
-				throw "role title can't be null";
+			const createdRole = Role.create(createRoleInput);
+			if (!createdRole.title) {
+				errorHandler("role title can't be null");
 			}
-			await Role.save(role);
-			newRoleId = role.id;
-			console.log("Successfully create: ", role);
+			await Role.save(createdRole);
+			console.log("Successfully create: ", createdRole);
+			return await Role.findOne(createdRole.id);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Role.findOne(newRoleId);
 	}
 
 	//UPDATE
@@ -51,15 +50,15 @@ export class RoleResolver {
 	) {
 		try {
 			const role = await Role.findOne(roleId);
-			if (role) {
+			if (!role) {
+				errorHandler(`Role with id : ${roleId} doesn't exists`);
+			} else {
 				await Role.update(roleId, updateRoleInput);
 				console.log("Successfully update: ", role);
-			} else {
-				throw `Role with id : ${roleId} doesn't exists`;
+				return await Role.findOne(roleId);
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Role.findOne(roleId);
 	}
 }

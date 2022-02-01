@@ -28,22 +28,20 @@ export class TaskResolver {
 	//CREATE
 	@Mutation(() => Task)
 	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
-
-		const task = Task.create(createTaskInput);
 		try {
-			const project = await Project.findOne(task.project)
-			const tasks = await project?.tasks
-			const taskWithSameTitle = tasks?.find((t) => t.title === task?.title)
-			if (!task.title) {
+			const createdTask = Task.create(createTaskInput);
+			const project = await Project.findOne(createdTask.project)
+			const projectTasks = await project?.tasks
+			const taskWithSameTitle = projectTasks?.find((t) => t.title === createdTask?.title)
+			if (!createdTask.title) {
 				errorHandler("task title can't be null");
 			} else if (taskWithSameTitle) {
 				errorHandler("a task with the same title already exists on this project");
 			} else {
-				await Task.save(task);
-				console.log("Successfully create: ", task);
-				return await Task.findOne(task.id);
+				await Task.save(createdTask);
+				console.log("Successfully create: ", createdTask);
+				return await Task.findOne(createdTask.id);
 			}
-
 		} catch (error) {
 			throw error;
 		}
@@ -57,21 +55,21 @@ export class TaskResolver {
 		@Arg("updateTaskInput") updateTaskInput: UpdateTaskInput
 	) {
 		try {
-			const task = await Task.findOne(taskId);
-			if (task) {
+			const updatedTask = await Task.findOne(taskId);
+			if (!updatedTask) {
+				errorHandler(`Task with id ${taskId} doesn't exists`);
+			} else {
 				const project = await Project.findOne(updateTaskInput?.project)
 				const tasks = await project?.tasks
-				const title = updateTaskInput?.title ? updateTaskInput?.title : task.title;
+				const title = updateTaskInput?.title ? updateTaskInput?.title : updatedTask.title;
 				const taskWithSameTitle = tasks?.find((t) => t.title === title)
 				if (taskWithSameTitle) {
 					errorHandler("A task with the same title already exists on this project")
 				} else {
 					await Task.update(taskId, updateTaskInput);
-					console.log("Successfully update: ", task);
+					console.log("Successfully update: ", updatedTask);
 					return await Task.findOne(taskId);
 				}
-			} else {
-				errorHandler(`Task with id ${taskId} doesn't exists`);
 			}
 		} catch (error) {
 			throw error;
