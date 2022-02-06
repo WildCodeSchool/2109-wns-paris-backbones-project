@@ -59,7 +59,7 @@ export class StatusResolver {
 				return await Status.findOne(statusId);
 			}
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 }

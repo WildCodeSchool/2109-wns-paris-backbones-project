@@ -3,10 +3,12 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-	OneToMany,
 	BaseEntity,
+	ManyToOne,
+	ManyToMany,
 } from "typeorm";
 import { BackBonesUser } from "./User";
+import {Project} from "./Project";
 
 @Entity()
 @ObjectType()
@@ -20,9 +22,17 @@ export class Role extends BaseEntity {
 	title: string;
 
 	@Field(() => [BackBonesUser], { nullable: true })
-	@OneToMany(() => BackBonesUser, (user) => user.role, {
+	@ManyToMany(() => BackBonesUser, (user) => user.roles, {
 		lazy: true,
 		nullable: true,
 	})
 	users: BackBonesUser[];
+
+	@Field(() => Project, { nullable: true })
+	@ManyToOne(() => Project, (project) => project.roles, {
+		lazy: true,
+		nullable: true,
+	})
+	project: Project;
+
 }

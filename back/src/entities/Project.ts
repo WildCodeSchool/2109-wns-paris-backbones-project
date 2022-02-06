@@ -12,6 +12,7 @@ import {
 import { Status } from "./Status";
 import { Task } from "./Task";
 import { BackBonesUser } from "./User";
+import {Role} from "./Role";
 
 @Entity()
 @ObjectType()
@@ -50,7 +51,7 @@ export class Project extends BaseEntity {
 	status: Status;
 
 	@Field(() => [BackBonesUser], { nullable: true })
-	@ManyToMany((type) => BackBonesUser, (user) => user.projects, {
+	@ManyToMany(() => BackBonesUser, (user) => user.projects, {
 		lazy: true,
 		nullable: true,
 	})
@@ -62,4 +63,11 @@ export class Project extends BaseEntity {
 		nullable: true,
 	})
 	tasks: Task[];
+
+	@Field(() => [Role], { nullable: true })
+	@OneToMany(() => Role, (role) => role.project, {
+		lazy: true,
+		nullable: true,
+	})
+	roles: Role[];
 }

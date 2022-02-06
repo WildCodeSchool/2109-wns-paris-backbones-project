@@ -18,6 +18,13 @@ export const GET_USER_BY_ID = (id: Number) => {
 			getUserById(userId: $userId) {
 				id
 				firstName
+				roles {
+					title
+					project {
+						id
+						title
+					}
+				}
 			}
 		}
 	`;
@@ -62,7 +69,7 @@ export const UPDATE_USER = (userId: Number) => {
 				id
 				firstName
 				email
-				role {
+				roles {
 					title
 				}
 			}
@@ -73,9 +80,6 @@ export const UPDATE_USER = (userId: Number) => {
 		variables: {
 			updateUserInput: {
 				firstName: "Thomas de l'internet",
-				role: {
-					id: 1,
-				},
 			},
 			userId: userId,
 		},
@@ -110,7 +114,7 @@ export const GET_TASK_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_TASK = (taskName: String, ProjectId: number = 1) => {
+export const ADD_TASK = (taskName: String, projectId: number = 1) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
 			addTask(createTaskInput: $createTaskInput) {
@@ -126,7 +130,7 @@ export const ADD_TASK = (taskName: String, ProjectId: number = 1) => {
 				title: taskName,
 				description: "woooow what a task !!!",
 				project: {
-					"id": 1
+					id: projectId
 				}
 			},
 		},
@@ -273,7 +277,7 @@ export const GET_ROLE_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_ROLE = (title: String) => {
+export const ADD_ROLE = (title: String, projectId: number = 2) => {
 	const mutationAddRole: DocumentNode = gql`
 		mutation AddRole($createRoleInput: CreateRoleInput!) {
 			addRole(createRoleInput: $createRoleInput) {
@@ -287,17 +291,58 @@ export const ADD_ROLE = (title: String) => {
 		variables: {
 			createRoleInput: {
 				title: title,
+				project: {
+					id: projectId
+				}
 			},
 		},
-	};
+	}
 };
 
-export const UPDATE_ROLE = (id: Number) => {
-	const mutationUpdateRole: DocumentNode = gql`
-		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!) {
-			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId) {
+export const ADD_ROLE_WITH_USERS = (title: String, projectId: Number = 2, usersId: Number[] = [4,5] ) => {
+	const mutationAddRoleWithUsers: DocumentNode = gql`
+		mutation AddRole($createRoleInput: CreateRoleInput!) {
+			addRole(createRoleInput: $createRoleInput) {
 				id
 				title
+				users {
+					id
+					firstName
+				}
+			}
+		}
+	`;
+	return {
+		query: mutationAddRoleWithUsers,
+		variables: {
+			createRoleInput: {
+				title: title,
+				project: {
+					id: projectId
+				},
+				users: [
+					{
+						id: usersId[0]
+					},
+					{
+						id: usersId[1]
+					}
+				]
+			},
+		},
+	}
+};
+
+export const UPDATE_ROLE = (id: Number, userId: Number = 5, title: String = "brand new role for Thomas") => {
+	const mutationUpdateRole: DocumentNode = gql`
+		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!, $userId: Float) {
+			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId, userId: $userId) {
+				id
+				title
+				users {
+					id
+					firstName
+				}
 			}
 		}
 	`;
@@ -305,10 +350,11 @@ export const UPDATE_ROLE = (id: Number) => {
 		query: mutationUpdateRole,
 		variables: {
 			updateRoleInput: {
-				title: "brand new role title",
+				title: title
 			},
-			roleId: id,
-		},
+			userId: userId,
+			roleId: id
+		}
 	};
 };
 

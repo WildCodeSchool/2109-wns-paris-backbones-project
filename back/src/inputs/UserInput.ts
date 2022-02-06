@@ -1,8 +1,6 @@
 import { Task } from "../entities/Task";
 import { InputType, Field } from "type-graphql";
 import { TaskInput } from "./TaskInput";
-import { RoleInput } from "./RoleInput";
-import { Role } from "../entities/Role";
 import { ProjectInput } from "./ProjectInput";
 import { Project } from "src/entities/Project";
 
@@ -28,13 +26,10 @@ export class CreateUserInput {
 	@Field({ nullable: true })
 	avatar: string;
 
-	@Field((input) => RoleInput, { nullable: true })
-	role: Role;
-
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [ProjectInput], { nullable: true })
+	@Field(() => [ProjectInput], { nullable: true })
 	projects: [Project];
 }
 
@@ -55,12 +50,9 @@ export class UpdateUserInput {
 	@Field({ nullable: true })
 	avatar: string;
 
-	@Field((input) => RoleInput, { nullable: true })
-	role: Role;
-
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [ProjectInput], { nullable: true })
+	@Field(() => [ProjectInput], { nullable: true })
 	projects: [Project];
 }

@@ -23,7 +23,8 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"prettier": "^2.4.1",
-		"ts-node-dev": "^1.1.8"
+		"ts-node-dev": "^1.1.8",
+		"typeorm-uml": "^1.6.4"
 	},
 	"dependencies": {
 		"@types/better-sqlite3": "^7.4.1",

@@ -5,6 +5,8 @@ import { InputType, Field } from "type-graphql";
 import { StatusInput } from "./StatusInput";
 import { TaskInput } from "./TaskInput";
 import { UserInput } from "./UserInput";
+import {RoleInput} from "./RoleInput";
+import {Role} from "../entities/Role";
 
 @InputType()
 export class ProjectInput {
@@ -14,7 +16,6 @@ export class ProjectInput {
 
 @InputType()
 export class CreateProjectInput {
-	//Simple
 
 	@Field()
 	title: string;
@@ -32,19 +33,21 @@ export class CreateProjectInput {
 	end_date: Date;
 
 	// Relations
-	@Field((input) => StatusInput, { nullable: true })
+	@Field(() => StatusInput, { nullable: true })
 	status: Status;
 
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [UserInput], { nullable: true })
+	@Field(() => [UserInput], { nullable: true })
 	users: [BackBonesUser];
+
+	@Field(() => [RoleInput], { nullable: true })
+	roles: [Role];
 }
 
 @InputType()
 export class UpdateProjectInput {
-	//Simple
 
 	@Field({ nullable: true })
 	title: string;
@@ -62,12 +65,15 @@ export class UpdateProjectInput {
 	end_date: Date;
 
 	// Relations
-	@Field((input) => StatusInput, { nullable: true })
+	@Field(() => StatusInput, { nullable: true })
 	status: Status;
 
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [UserInput], { nullable: true })
+	@Field(() => [UserInput], { nullable: true })
 	users: [BackBonesUser];
+
+	@Field(() => [RoleInput], { nullable: true })
+	roles: [Role];
 }

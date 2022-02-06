@@ -25,8 +25,16 @@ import {
 	GET_USER_BY_ID,
 	UPDATE_PROJECT,
 	UPDATE_TASK,
-	UPDATE_USER, GET_ROLE_BY_ID, ADD_ROLE, UPDATE_ROLE, GET_STATUS_BY_ID, ADD_STATUS, UPDATE_STATUS,
+	UPDATE_USER,
+	GET_ROLE_BY_ID,
+	ADD_ROLE,
+	UPDATE_ROLE,
+	GET_STATUS_BY_ID,
+	ADD_STATUS,
+	UPDATE_STATUS,
+	ADD_ROLE_WITH_USERS,
 } from "./gqlQueries/gqlQueries";
+
 let server: ApolloServer;
 
 beforeAll(async () => {
@@ -91,6 +99,15 @@ describe("test Resolvers", () => {
 			expect(response.data?.getUserById.firstName).toBe(user?.firstName);
 		});
 
+		it("test query getUserById expect user id 1 role's on project id 1 to be 'CTO' and 'Developer' on project 2", async () => {
+			const response = await server.executeOperation(GET_USER_BY_ID(1));
+			const user = await BackBonesUser.findOne(1);
+			const responseRoleOnProject1 = await response.data?.getUserById.roles[0];
+			const userRoles = await user?.roles;
+			const userRoleOnProject1 = userRoles ? userRoles[0] : userRoles;
+			expect(responseRoleOnProject1.title).toBe(userRoleOnProject1?.title);
+		});
+
 		it("test query getUserById expect user id 100 throw an error", async () => {
 			const response = await server.executeOperation(GET_USER_BY_ID(100));
 			expect(response.errors).toBeTruthy();
@@ -124,14 +141,11 @@ describe("test Resolvers", () => {
 
 		it("test mutation updateUser expect updatedUser name equal to user name with same id", async () => {
 			const response = await server.executeOperation(UPDATE_USER(5));
-			const updatedUser = await BackBonesUser.findOne(
-				response.data?.updateUser.id
-			);
-			let firstName = updatedUser?.firstName;
-			const role = await updatedUser?.role;
 
-			expect(response.data?.updateUser.firstName).toBe(firstName);
-			expect(response.data?.updateUser.role.title).toBe(role?.title);
+			const updatedUser = await BackBonesUser.findOne(response.data?.updateUser.id);
+			const responseUser = await response.data?.updateUser;
+
+			expect(responseUser.firstName).toBe(updatedUser?.firstName);
 		});
 
 		it("test mutation updateUser expect updatedUser can't be updated because not found", async () => {
@@ -162,7 +176,6 @@ describe("test Resolvers", () => {
 			const response = await server.executeOperation(
 				ADD_TASK("brand new task")
 			);
-			console.log(response);
 			const createdTask = await Task.findOne(response.data?.addTask.id);
 			const id = createdTask?.id;
 			await createdTask?.remove();
@@ -294,7 +307,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation addRole expect created Role id equal to role with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_ROLE("brand new role")
+				ADD_ROLE("brand new role", 2)
 			);
 			const createdRole = await Role.findOne(
 				response.data?.addRole.id
@@ -305,11 +318,34 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addRole expect created Role with no title throw an error", async () => {
-			const response = await server.executeOperation(ADD_ROLE(""));
+			const response = await server.executeOperation(ADD_ROLE("", 2));
 			expect(response.errors).toBeTruthy();
 		});
 
-		it("test mutation updateProject expect updatedROLE title equal to role title with same id", async () => {
+		it("test mutation addRole expect created Role with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(ADD_ROLE("CTO"));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addRole expect addRole users return users added on a role", async () => {
+			const response = await server.executeOperation(ADD_ROLE_WITH_USERS("another new role for project 2", 2,));
+			const newRole = await Role.findOne(response.data?.addRole.id);
+			const roleUsers = await newRole?.users;
+			let expectedResponse: any[] = [];
+			if (roleUsers) {
+				for (const user of roleUsers) {
+					expectedResponse = [...expectedResponse, {firstName: user.firstName, id: user.id}]
+				}
+			}
+			expect(response.data?.addRole.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation addRole expect addRole users throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(ADD_ROLE_WITH_USERS("another new new role for project 2", 2, [4,6]));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateRole expect updatedRole title equal to role title with same id", async () => {
 			const response = await server.executeOperation(UPDATE_ROLE(2));
 			const updatedRole = await Role.findOne(
 				response.data?.updateRole.id
@@ -319,12 +355,35 @@ describe("test Resolvers", () => {
 			expect(response.data?.updateRole.title).toBe(title);
 		});
 
-		it("test mutation updateRole expect updatedRole can't be updated because not found", async () => {
-			const response = await server.executeOperation(
-				UPDATE_ROLE(1900)
-			);
+		it("test mutation updateRole expect updatedRole throw an error because role with id doesn't exists", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(500));
+
 			expect(response.errors).toBeTruthy();
 		});
+
+		it("test mutation updateRole expect updatedRole users return users updated on a role", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(2, 3, "Change role too"));
+			const updatedRole = await Role.findOne(2);
+			const roleUsers = await updatedRole?.users;
+			let expectedResponse: any[] = [];
+			if (roleUsers) {
+				for (const user of roleUsers) {
+					expectedResponse = [...expectedResponse, {firstName: user.firstName, id: user.id}]
+				}
+			}
+			expect(response.data?.updateRole.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation updateRole expect updatedRole user throw an error because this user is not on the project", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(1, 6));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateRole expect updatedRole with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(1, 5, "Product Owner" ));
+			expect(response.errors).toBeTruthy();
+		});
+
 	});
 
 	describe("test StatusResolver", () => {

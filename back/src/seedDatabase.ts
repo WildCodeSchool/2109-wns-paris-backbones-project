@@ -17,41 +17,41 @@ console.log(`seedDatabase starting in ${process.env.NODE_ENV} environement`);
 //Create test DB
 const Database = require("better-sqlite3");
 function openDb(filename: string) {
-	const db = new Database(`${filename}.db`, { verbose: console.log });
+	new Database(`${filename}.db`, { verbose: console.log });
 }
 openDb("test");
 
-const rolesName = ["CTO", "Project Manager", "Product Owner", "Developer"];
+const rolesName = ["CTO", "Project Manager", "Product Owner", "Developer", "Scrum Master"];
 const usersName = [
 	{
 		firstName: "Myriam",
 		lastName: "Test",
 		email: "myriam@gmail.com",
-		role: "CTO",
 	},
 	{
 		firstName: "Laura",
 		lastName: "Test",
 		email: "laura@gmail.com",
-		role: "Project Manager",
 	},
 	{
 		firstName: "Jonathan",
 		lastName: "Test",
 		email: "jonathan@gmail.com",
-		role: "Product Owner",
 	},
 	{
 		firstName: "Nate",
 		lastName: "Test",
 		email: "nate@gmail.com",
-		role: "Developer",
 	},
 	{
 		firstName: "Thomas",
 		lastName: "Test",
 		email: "thomas@gmail.com",
-		role: "Developer",
+	},
+	{
+		firstName: "Bad",
+		lastName: "Boy",
+		email: "badboy@gmail.com",
 	},
 ];
 const statusName = ["in progress", "to do", "done"];
@@ -79,16 +79,6 @@ const runSeed = async () => {
 			await connection.synchronize();
 			console.log("synchronizing new DB...Done")
 
-			// CREATE ROLES
-			console.log("CREATE ROLES")
-			for (const role of rolesName) {
-				const r = new Role();
-				r.title = role;
-				await connection.manager.save(r);
-				console.log("Saved a new role: " + r.title);
-			}
-			const roles = await connection.manager.find(Role);
-
 			// CREATE STATUS
 			console.log("CREATE STATUS")
 			for (const status of statusName) {
@@ -106,8 +96,6 @@ const runSeed = async () => {
 				u.firstName = user.firstName;
 				u.lastName = user.lastName;
 				u.email = user.email;
-				u.role =
-					roles.find((role) => role.title === user.role) || roles[0];
 				u.avatar =
 					"https://tooommm.github.io/profile/images/profile.jpg";
 				u.password = "azerty";
@@ -115,6 +103,7 @@ const runSeed = async () => {
 				console.log("Saved a new user with named: " + u.firstName);
 			}
 			const users = await connection.manager.find(BackBonesUser);
+			users.pop(); // remove Bad Boy for tests
 
 			// CREATE PROJECTS
 			console.log("CREATE PROJECTS")
@@ -130,6 +119,29 @@ const runSeed = async () => {
 				console.log("Saved a new project with named: " + p.title);
 			}
 			const projects = await connection.manager.find(Project);
+
+			// CREATE ROLES
+			console.log("CREATE ROLES")
+			let count = 0;
+			for (const role of rolesName) {
+				const r = new Role();
+				r.title = role;
+				r.project = projects[0]
+				r.users = [users[count]]
+				await connection.manager.save(r);
+				console.log("Saved a new role: " + r.title);
+				count ++;
+			}
+			count = 4
+			for (const role of rolesName) {
+				const r = new Role();
+				r.title = role;
+				r.project = projects[1]
+				r.users = [users[count]]
+				await connection.manager.save(r);
+				console.log("Saved a new role: " + r.title);
+				count --;
+			}
 
 			// CREATE TASKS
 			console.log("CREATE TASKS")

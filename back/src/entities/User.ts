@@ -3,7 +3,6 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-	ManyToOne,
 	ManyToMany,
 	JoinTable,
 	BaseEntity,
@@ -38,24 +37,25 @@ export class BackBonesUser extends BaseEntity {
 	@Column()
 	password: string;
 
-	@Field((type) => Role, { nullable: true })
-	@ManyToOne(() => Role, (role) => role.users, {
+	@Field(() => [Role], { nullable: true })
+	@ManyToMany(() => Role, (role) => role.users, {
 		lazy: true,
 		nullable: true,
 	})
-	role: Role;
+	@JoinTable()
+	roles: Role[];
 
 	@Field(() => [Task], { nullable: true })
-	@ManyToMany((type) => Task, (task) => task.users, {
-		lazy: true,
+	@ManyToMany(() => Task, (task) => task.users, {
+		eager: true,
 		nullable: true,
 	})
 	@JoinTable()
 	tasks: Task[];
 
 	@Field(() => [Project], { nullable: true })
-	@ManyToMany((type) => Project, (project) => project.users, {
-		lazy: true,
+	@ManyToMany(() => Project, (project) => project.users, {
+		eager: true,
 		nullable: true,
 	})
 	@JoinTable()
