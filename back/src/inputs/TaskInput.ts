@@ -31,13 +31,13 @@ export class CreateTaskInput {
 	@Field({ nullable: true })
 	end_date: Date;
 
-	@Field((input) => StatusInput, { nullable: true })
+	@Field(() => StatusInput, { nullable: true })
 	status: Status;
 
-	@Field((input) => [UserInput], { nullable: true })
+	@Field(() => [UserInput], { nullable: true })
 	users: [BackBonesUser];
 
-	@Field((input) => ProjectInput, { nullable: true })
+	@Field(() => ProjectInput, { nullable: true })
 	project: Project;
 }
 
@@ -61,12 +61,9 @@ export class UpdateTaskInput {
 	@Field({ nullable: true })
 	end_date: Date;
 
-	@Field((input) => StatusInput, { nullable: true })
+	@Field(() => StatusInput, { nullable: true })
 	status: Status;
 
-	@Field((input) => [UserInput], { nullable: true })
-	users: [BackBonesUser];
-
-	@Field((input) => ProjectInput, { nullable: true })
+	@Field(() => ProjectInput, { nullable: true })
 	project: Project;
 }

@@ -137,17 +137,52 @@ export const ADD_TASK = (taskName: String, projectId: number = 1) => {
 	};
 };
 
-export const UPDATE_TASK = (taskId: Number, taskTitle: string | undefined, projectId: number = 1) => {
+export const ADD_TASK_WITH_USERS = (title: String, projectId: Number = 2, usersId: Number[] = [4,5] ) => {
+	const mutationAddTaskWithUsers: DocumentNode = gql`
+		mutation AddTask($createTaskInput: CreateTaskInput!) {
+			addTask(createTaskInput: $createTaskInput) {
+				id
+				title
+				users {
+					id
+					firstName
+				}
+			}
+		}
+	`;
+	return {
+		query: mutationAddTaskWithUsers,
+		variables: {
+			createTaskInput: {
+				title: title,
+				project: {
+					id: projectId
+				},
+				users: [
+					{
+						id: usersId[0]
+					},
+					{
+						id: usersId[1]
+					}
+				]
+			},
+		},
+	}
+};
+
+export const UPDATE_TASK = (taskId: Number, taskTitle: string | undefined, userId: number | undefined = undefined) => {
 	const mutationUpdateTask: DocumentNode = gql`
-		mutation UpdateTask(
-			$updateTaskInput: UpdateTaskInput!
-			$taskId: Float!
-		) {
-			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId) {
+		mutation UpdateTask($updateTaskInput: UpdateTaskInput!, $taskId: Float!, $userId: Float) {
+			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId, userId: $userId) {
 				id
 				title
 				status {
 					title
+				}
+				users {
+					id
+					firstName
 				}
 			}
 		}
@@ -160,11 +195,9 @@ export const UPDATE_TASK = (taskId: Number, taskTitle: string | undefined, proje
 				status: {
 					id: 3,
 				},
-				project: {
-					"id": projectId,
-				}
 			},
 			taskId: taskId,
+			userId: userId
 		},
 	};
 };

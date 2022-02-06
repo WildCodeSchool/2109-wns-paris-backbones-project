@@ -58,18 +58,18 @@ export class RoleResolver {
 
 		@Arg('userId', { nullable: true }) userId: number,
 
-		@Arg("updateRoleInput") updateRoleInput: UpdateRoleInput
+		@Arg("updateRoleInput",{ nullable: true }) updateRoleInput: UpdateRoleInput
 	) {
 		try {
 			const role = await Role.findOne(roleId)
 			const roleProject = await role?.project;
 			const user = await BackBonesUser.findOne(userId)
 			const userProjects = await user?.projects
-			const isUserExistsOnRoleProjects = userProjects?.find((project) => roleProject?.id === project.id);
+			const isUserExistsOnRoleProject = userProjects?.find((project) => roleProject?.id === project.id);
 			const roles = await roleProject?.roles;
 			if (!role) {
 				errorHandler(`Role with id : ${roleId} doesn't exists`);
-			} else if (!isUserExistsOnRoleProjects) {
+			} else if (!isUserExistsOnRoleProject) {
 				errorHandler(`User with id ${userId} is not referenced on the project ${role.project?.id}`)
 			} else if (findSameTitle(roles, updateRoleInput.title, roleId)) {
 				errorHandler(`Role with title ${updateRoleInput.title} already exists on this project`)

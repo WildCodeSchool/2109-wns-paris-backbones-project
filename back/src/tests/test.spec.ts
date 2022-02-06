@@ -32,7 +32,7 @@ import {
 	GET_STATUS_BY_ID,
 	ADD_STATUS,
 	UPDATE_STATUS,
-	ADD_ROLE_WITH_USERS,
+	ADD_ROLE_WITH_USERS, ADD_TASK_WITH_USERS,
 } from "./gqlQueries/gqlQueries";
 
 let server: ApolloServer;
@@ -192,6 +192,24 @@ describe("test Resolvers", () => {
 			expect(response.errors).toBeTruthy();
 		});
 
+		it("test mutation addTask expect addTask users return users added on a task", async () => {
+			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another new task for project 2", 2,));
+			const newTask = await Task.findOne(response.data?.addTask.id);
+			const taskUsers = await newTask?.users;
+			let expectedResponse: any[] = [];
+			if (taskUsers) {
+				for (const user of taskUsers) {
+					expectedResponse = [...expectedResponse, {firstName: user.firstName, id: user.id}]
+				}
+			}
+			expect(response.data?.addTask.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation addTask expect addTask users throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another new new task for project 2", 2, [4,6]));
+			expect(response.errors).toBeTruthy();
+		});
+
 		it("test mutation updateTask expect updatedTask title equal to task title with same id", async () => {
 			const response = await server.executeOperation(UPDATE_TASK(3, "Brand new task name"));
 			const updatedTask = await Task.findOne(
@@ -215,8 +233,21 @@ describe("test Resolvers", () => {
 			expect(response.errors).toBeTruthy();
 		});
 
-		it("test mutation Update Task expect updatedTask project's destination contain a task with same title throw an error", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(2, undefined, 2));
+		it("test mutation updateTask expect updatedTask users return users updated on a task", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(4, "the task name", 4));
+			const updatedTask = await Task.findOne(4);
+			const taskUsers = await updatedTask?.users;
+			let expectedResponse: any[] = [];
+			if (taskUsers) {
+				for (const user of taskUsers) {
+					expectedResponse = [...expectedResponse, {id: user.id, firstName: user.firstName}]
+				}
+			}
+			expect(response.data?.updateTask.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation updateTask expect updatedTask user throw an error because this user is not on the project", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(1, "brand new task name 2", 6));
 			expect(response.errors).toBeTruthy();
 		});
 	});

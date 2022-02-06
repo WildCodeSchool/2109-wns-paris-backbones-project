@@ -102,8 +102,8 @@ const runSeed = async () => {
 				await connection.manager.save(u);
 				console.log("Saved a new user with named: " + u.firstName);
 			}
-			const users = await connection.manager.find(BackBonesUser);
-			users.pop(); // remove Bad Boy for tests
+			let users = await connection.manager.find(BackBonesUser);
+			users = users.filter(user => user.id < 6); // remove Bad Boy for tests
 
 			// CREATE PROJECTS
 			console.log("CREATE PROJECTS")
