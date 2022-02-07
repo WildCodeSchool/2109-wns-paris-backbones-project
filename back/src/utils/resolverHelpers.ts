@@ -7,7 +7,7 @@ export const findSameTitle = (array: any[] | undefined, title: String, id: Numbe
 
 export const resolveNotOnProject = (array: any[] | undefined, arrayToCompare: any[] | undefined) => {
    let result = [];
-   if (array && arrayToCompare) {
+   if (array && array[0] && arrayToCompare) {
       result = array.filter(element => {
          return !arrayToCompare.includes(element.id)
       })

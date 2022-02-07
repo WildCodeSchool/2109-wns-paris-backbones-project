@@ -33,14 +33,18 @@ export class TaskResolver {
 			const createdTask = Task.create(createTaskInput);
 			const project = await createdTask?.project;
 			const tasks = await project.tasks;
-			const usersProject = (await project.users).map(user => user.id)
+			const usersProject = (await project?.users).map(user => user.id)
+			const statusesProject = (await project?.statuses).map(status => status.id)
 			const userNotOnProject = resolveNotOnProject(createTaskInput?.users, usersProject);
+			const statusNotOnProject = resolveNotOnProject([createTaskInput?.status], statusesProject);
 			if (!createdTask.title) {
 				errorHandler("task title can't be null");
 			} else if (findSameTitle(tasks, createdTask.title)) {
-				errorHandler(`Role with title ${createdTask.title} already exists on this project`);
+				errorHandler(`Task with title ${createdTask.title} already exists on this project`);
 			} else if (userNotOnProject.length > 0) {
 				errorHandler(`User with id ${userNotOnProject[0].id} is not referenced on the project ${project.id}`)
+			} else if (statusNotOnProject.length > 0) {
+				errorHandler(`Status with id ${createTaskInput?.status.id} is not referenced on the project ${project.id}`)
 			}
 			await Task.save(createdTask);
 			console.log("Successfully create: ", createdTask);
@@ -63,16 +67,21 @@ export class TaskResolver {
 		try {
 			const task = await Task.findOne(taskId);
 			const taskProject = await task?.project;
-			const user = await BackBonesUser.findOne(userId)
+			const user = await BackBonesUser.findOne(userId);
+			const statuses = await taskProject?.statuses;
 			const userProjects = await user?.projects
 			const isUserExistsOnTaskProject = userProjects?.find((project) => taskProject?.id === project.id);
 			const tasks = await taskProject?.tasks;
+			const statusesProject = statuses?.map(status => status.id)
+			const statusNotOnProject = resolveNotOnProject([updateTaskInput?.status], statusesProject);
 			if (!task) {
 				errorHandler(`Task with id ${taskId} doesn't exists`);
 			} else if (!isUserExistsOnTaskProject) {
 				errorHandler(`User with id ${userId} is not referenced on the project ${task.project?.id}`)
 			} else if (findSameTitle(tasks, updateTaskInput.title, taskId)) {
-				errorHandler(`Role with title ${updateTaskInput.title} already exists on this project`)
+				errorHandler(`Status with title ${updateTaskInput.title} already exists on this project`)
+			} else if (statusNotOnProject.length > 0) {
+				errorHandler(`Status with id ${updateTaskInput?.status.id} is not referenced on the project ${taskProject?.id}`)
 			}  else {
 				const taskUsers = await task?.users;
 				const uniqueUser =  taskUsers?.find(u => u.id === user?.id)

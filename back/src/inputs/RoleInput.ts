@@ -26,7 +26,4 @@ export class CreateRoleInput {
 export class UpdateRoleInput {
 	@Field({ nullable: true })
 	title: string;
-
-	@Field(() => ProjectInput, { nullable: true })
-	project: Project;
 }
