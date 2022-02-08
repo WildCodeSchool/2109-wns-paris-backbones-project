@@ -58,8 +58,8 @@ beforeAll(async () => {
 	);
 });
 
-afterAll(() => {
-	server.stop();
+afterAll(async() => {
+	await server.stop();
 });
 
 describe("test data base", () => {
@@ -206,7 +206,12 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addTask expect addTask users throw an error because one user is not on project 2", async () => {
-			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another new new task for project 2", 2, [4,6]));
+			const response = await server.executeOperation(ADD_TASK("another new new task for project 2", 2, 4 ));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addTask expect addTask throw an error because one status is not on project 2", async () => {
+			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another brand new new task for project 2", 2, [4,6]));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -248,6 +253,11 @@ describe("test Resolvers", () => {
 
 		it("test mutation updateTask expect updatedTask user throw an error because this user is not on the project", async () => {
 			const response = await server.executeOperation(UPDATE_TASK(1, "brand new task name 2", 6));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateTask expect updatedTask status throw an error because this status is not on the project", async () => {
+			const response = await server.executeOperation(UPDATE_TASK(1, "brand new task name 2", undefined, 7));
 			expect(response.errors).toBeTruthy();
 		});
 	});
@@ -443,12 +453,21 @@ describe("test Resolvers", () => {
 				response.data?.addStatus.id
 			);
 			const id = createdStatus?.id;
-			await createdStatus?.remove();
 			expect(response.data?.addStatus.id).toBe(id);
 		});
 
 		it("test mutation addStatus expect created Status with no title throw an error", async () => {
 			const response = await server.executeOperation(ADD_STATUS("", undefined));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status with same title throw an error", async () => {
+			const response = await server.executeOperation(ADD_STATUS("done", undefined));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status with tasks not on throw an error", async () => {
+			const response = await server.executeOperation(ADD_STATUS("new status", undefined, 7));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -463,9 +482,12 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateStatus expect updatedStatus can't be updated because not found", async () => {
-			const response = await server.executeOperation(
-				UPDATE_STATUS(1900)
-			);
+			const response = await server.executeOperation(UPDATE_STATUS(1900));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updatedStatus with same title throw an error", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(1));
 			expect(response.errors).toBeTruthy();
 		});
 	});
