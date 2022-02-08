@@ -33,8 +33,8 @@ export class CreateProjectInput {
 	end_date: Date;
 
 	// Relations
-	@Field(() => StatusInput, { nullable: true })
-	status: Status;
+	@Field(() => [StatusInput], { nullable: true })
+	statuses: [Status];
 
 	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
@@ -65,8 +65,8 @@ export class UpdateProjectInput {
 	end_date: Date;
 
 	// Relations
-	@Field(() => StatusInput, { nullable: true })
-	status: Status;
+	@Field(() => [StatusInput], { nullable: true })
+	statuses: [Status];
 
 	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];

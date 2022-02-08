@@ -3,7 +3,6 @@ import {
 	Entity,
 	PrimaryGeneratedColumn,
 	Column,
-	ManyToOne,
 	ManyToMany,
 	OneToMany,
 	BaseEntity,
@@ -43,12 +42,12 @@ export class Project extends BaseEntity {
 	end_date: Date;
 
 	// Relations
-	@Field(() => Status, { nullable: true })
-	@ManyToOne(() => Status, (status) => status.projects, {
+	@Field(() => [Status], { nullable: true })
+	@OneToMany(() => Status, (status) => status.project, {
 		lazy: true,
 		nullable: true,
 	})
-	status: Status;
+	statuses: Status[];
 
 	@Field(() => [BackBonesUser], { nullable: true })
 	@ManyToMany(() => BackBonesUser, (user) => user.projects, {

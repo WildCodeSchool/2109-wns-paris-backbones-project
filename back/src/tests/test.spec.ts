@@ -297,12 +297,8 @@ describe("test Resolvers", () => {
 				response.data?.updateProject.id
 			);
 			const title = updatedProject?.title;
-			const status = await updatedProject?.status;
 
 			expect(response.data?.updateProject.title).toBe(title);
-			expect(response.data?.updateProject.status.title).toBe(
-				status?.title
-			);
 		});
 
 		it("test mutation updateProject expect updatedProject can't be updated because not found", async () => {
@@ -441,7 +437,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation addStatus expect created Status id equal to status with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_STATUS("brand new status")
+				ADD_STATUS("brand new status", undefined)
 			);
 			const createdStatus = await Status.findOne(
 				response.data?.addStatus.id
@@ -452,7 +448,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addStatus expect created Status with no title throw an error", async () => {
-			const response = await server.executeOperation(ADD_STATUS(""));
+			const response = await server.executeOperation(ADD_STATUS("", undefined));
 			expect(response.errors).toBeTruthy();
 		});
 

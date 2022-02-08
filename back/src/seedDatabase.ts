@@ -54,7 +54,7 @@ const usersName = [
 		email: "badboy@gmail.com",
 	},
 ];
-const statusName = ["in progress", "to do", "done"];
+const statusName = ["in progress", "to do", "done", "dev in progress", "to test"];
 const projectName = [
 	{
 		title: "Appli",
@@ -78,16 +78,6 @@ const runSeed = async () => {
 			console.log("synchronizing new DB...")
 			await connection.synchronize();
 			console.log("synchronizing new DB...Done")
-
-			// CREATE STATUS
-			console.log("CREATE STATUS")
-			for (const status of statusName) {
-				const s = new Status();
-				s.title = status;
-				await connection.manager.save(s);
-				console.log("Saved a new status: " + s.title);
-			}
-			const status = await connection.manager.find(Status);
 
 			// CREATE USERS
 			console.log("CREATE USERS")
@@ -113,34 +103,51 @@ const runSeed = async () => {
 				p.description = project.description;
 				p.start_date = new Date();
 				p.end_date = new Date();
-				p.status = status.sort((a, b) => 0.5 - Math.random())[0]; // Shuffle maison des familles
 				p.users = users;
 				await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
 			}
 			const projects = await connection.manager.find(Project);
 
+			// CREATE STATUS
+			console.log("CREATE STATUS")
+			for (const status of statusName) {
+				const s = new Status();
+				s.title = status;
+				s.project = projects[0];
+				await connection.manager.save(s);
+				console.log(`Saved a new status: ${s.title}. On project id: ${projects[0].id}`);
+			}
+			for (const status of statusName) {
+				const s = new Status();
+				s.title = status;
+				s.project = projects[1];
+				await connection.manager.save(s);
+				console.log(`Saved a new status: ${s.title}. On project id: ${projects[1].id}`);
+			}
+			const statuses = await connection.manager.find(Status);
+
 			// CREATE ROLES
 			console.log("CREATE ROLES")
-			let count = 0;
+			let rolesCount = 0;
 			for (const role of rolesName) {
 				const r = new Role();
 				r.title = role;
 				r.project = projects[0]
-				r.users = [users[count]]
+				r.users = [users[rolesCount]]
 				await connection.manager.save(r);
-				console.log("Saved a new role: " + r.title);
-				count ++;
+				console.log(`Saved a new role: ${r.title}. On project id: ${projects[0].id}`);
+				rolesCount ++;
 			}
-			count = 4
+			rolesCount = 4
 			for (const role of rolesName) {
 				const r = new Role();
 				r.title = role;
 				r.project = projects[1]
-				r.users = [users[count]]
+				r.users = [users[rolesCount]]
 				await connection.manager.save(r);
-				console.log("Saved a new role: " + r.title);
-				count --;
+				console.log(`Saved a new role: ${r.title}. On project id: ${projects[1].id}`);
+				rolesCount --;
 			}
 
 			// CREATE TASKS
@@ -151,7 +158,7 @@ const runSeed = async () => {
 					const t = new Task();
 					t.title = "task title " + index;
 					t.description = "task description " + index;
-					t.status = status.sort((a, b) => 0.5 - Math.random())[0]; // Shuffle maison des familles
+					t.status = statuses.filter((status) => status.project.id === project.id)[index]; // Shuffle maison des familles
 					t.project = project;
 					t.users = users.filter((user, index) => index % i === 0);
 					t.effective_time = new Date();
@@ -159,7 +166,7 @@ const runSeed = async () => {
 					t.start_date = new Date();
 					t.end_date = new Date();
 					await connection.manager.save(t);
-					console.log("Saved a new task: " + t.title);
+					console.log(`Saved a new Task: ${t.title}. On project id: ${project.id}`);
 					i++;
 				}
 			}

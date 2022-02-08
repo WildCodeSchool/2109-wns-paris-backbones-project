@@ -262,9 +262,6 @@ export const UPDATE_PROJECT = (id: Number) => {
 			) {
 				id
 				title
-				status {
-					title
-				}
 			}
 		}
 	`;
@@ -273,9 +270,6 @@ export const UPDATE_PROJECT = (id: Number) => {
 		variables: {
 			updateProjectInput: {
 				title: "brand new project name",
-				status: {
-					id: 2,
-				},
 			},
 			projectId: id,
 		},
@@ -418,7 +412,7 @@ export const GET_STATUS_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_STATUS = (title: String) => {
+export const ADD_STATUS = (title: String, projectId: Number = 1) => {
 	const mutationAddStatus: DocumentNode = gql`
 		mutation AddStatus($createStatusInput: CreateStatusInput!) {
 			addStatus(createStatusInput: $createStatusInput) {
@@ -432,6 +426,9 @@ export const ADD_STATUS = (title: String) => {
 		variables: {
 			createStatusInput: {
 				title: title,
+				project: {
+					id: projectId
+				}
 			},
 		},
 	};
