@@ -64,6 +64,10 @@ const projectName = [
 		title: "Appli-2",
 		description: "blobloblo",
 	},
+	{
+		title: "Appli-Test",
+		description: "bliblibli",
+	},
 ];
 
 const runSeed = async () => {
@@ -103,7 +107,7 @@ const runSeed = async () => {
 				p.description = project.description;
 				p.start_date = new Date();
 				p.end_date = new Date();
-				p.users = users;
+				p.users = project != projectName[2] ? users : [];
 				await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
 			}

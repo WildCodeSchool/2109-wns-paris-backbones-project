@@ -26,4 +26,7 @@ export class CreateRoleInput {
 export class UpdateRoleInput {
 	@Field({ nullable: true })
 	title: string;
+
+	@Field(() => [UserInput], { nullable: true })
+	users: [BackBonesUser];
 }

@@ -9,8 +9,8 @@ export const resolveNotOnProject = (array: any[] | undefined, arrayToCompare: an
    let result = [];
    if (array && array[0] && arrayToCompare) {
       result = array.filter(element => {
-         return !arrayToCompare.includes(element.id)
+         return !arrayToCompare?.map(el => el.id).includes(element.id)
       })
    }
-   return result
+   return result.length > 0 ? result : false
 }

@@ -26,4 +26,7 @@ export class CreateStatusInput {
 export class UpdateStatusInput {
 	@Field({ nullable: true })
 	title: string;
+
+	@Field(() => [TaskInput], { nullable: true })
+	tasks: [Task];
 }

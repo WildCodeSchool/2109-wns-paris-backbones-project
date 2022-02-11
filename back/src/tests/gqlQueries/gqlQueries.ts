@@ -1,5 +1,7 @@
 import { gql } from "apollo-server";
 import { DocumentNode } from "graphql";
+import {UserInput} from "../../inputs/UserInput";
+import {TaskInput} from "../../inputs/TaskInput";
 
 export const GET_USERS = () => {
 	const queryGetUsers: DocumentNode = gql`
@@ -114,12 +116,16 @@ export const GET_TASK_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_TASK = (taskName: String, projectId: number = 1, statusId: Number = 3) => {
+export const ADD_TASK = (taskName: String, projectId: number = 1, statusId: Number = 3, users: UserInput[] | undefined = undefined) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
 			addTask(createTaskInput: $createTaskInput) {
 				id
 				title
+				users {
+					id
+					firstName
+				}
 			}
 		}
 	`;
@@ -134,50 +140,17 @@ export const ADD_TASK = (taskName: String, projectId: number = 1, statusId: Numb
 				},
 				status: {
 					id: statusId
-				}
+				},
+				users: users
 			},
 		},
 	};
 };
 
-export const ADD_TASK_WITH_USERS = (title: String, projectId: Number = 2, usersId: Number[] = [4, 5] ) => {
-	const mutationAddTaskWithUsers: DocumentNode = gql`
-		mutation AddTask($createTaskInput: CreateTaskInput!) {
-			addTask(createTaskInput: $createTaskInput) {
-				id
-				title
-				users {
-					id
-					firstName
-				}
-			}
-		}
-	`;
-	return {
-		query: mutationAddTaskWithUsers,
-		variables: {
-			createTaskInput: {
-				title: title,
-				project: {
-					id: projectId
-				},
-				users: [
-					{
-						id: usersId[0]
-					},
-					{
-						id: usersId[1]
-					}
-				]
-			},
-		},
-	}
-};
-
-export const UPDATE_TASK = (taskId: Number, taskTitle: String | undefined, userId: Number | undefined = undefined, statusId: Number | undefined = 3) => {
+export const UPDATE_TASK = (taskId: Number, taskTitle: String | undefined, users: UserInput[] | undefined = undefined, statusId: Number | undefined = 3) => {
 	const mutationUpdateTask: DocumentNode = gql`
-		mutation UpdateTask($updateTaskInput: UpdateTaskInput!, $taskId: Float!, $userId: Float) {
-			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId, userId: $userId) {
+		mutation UpdateTask($updateTaskInput: UpdateTaskInput!, $taskId: Float!) {
+			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId) {
 				id
 				title
 				status {
@@ -198,9 +171,9 @@ export const UPDATE_TASK = (taskId: Number, taskTitle: String | undefined, userI
 				status: {
 					id: statusId,
 				},
+				users: users
 			},
 			taskId: taskId,
-			userId: userId
 		},
 	};
 };
@@ -307,30 +280,8 @@ export const GET_ROLE_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_ROLE = (title: String, projectId: number = 2) => {
+export const ADD_ROLE = (title: String, projectId: Number = 2, users: UserInput[] | undefined = [{id: 4},{id: 5}]) => {
 	const mutationAddRole: DocumentNode = gql`
-		mutation AddRole($createRoleInput: CreateRoleInput!) {
-			addRole(createRoleInput: $createRoleInput) {
-				id
-				title
-			}
-		}
-	`;
-	return {
-		query: mutationAddRole,
-		variables: {
-			createRoleInput: {
-				title: title,
-				project: {
-					id: projectId
-				}
-			},
-		},
-	}
-};
-
-export const ADD_ROLE_WITH_USERS = (title: String, projectId: Number = 2, usersId: Number[] = [4,5] ) => {
-	const mutationAddRoleWithUsers: DocumentNode = gql`
 		mutation AddRole($createRoleInput: CreateRoleInput!) {
 			addRole(createRoleInput: $createRoleInput) {
 				id
@@ -343,30 +294,23 @@ export const ADD_ROLE_WITH_USERS = (title: String, projectId: Number = 2, usersI
 		}
 	`;
 	return {
-		query: mutationAddRoleWithUsers,
+		query: mutationAddRole,
 		variables: {
 			createRoleInput: {
 				title: title,
 				project: {
 					id: projectId
 				},
-				users: [
-					{
-						id: usersId[0]
-					},
-					{
-						id: usersId[1]
-					}
-				]
+				users: users
 			},
 		},
 	}
 };
 
-export const UPDATE_ROLE = (id: Number, userId: Number = 5, title: String = "brand new role for Thomas") => {
+export const UPDATE_ROLE = (roleId: Number, users: UserInput[] = [{id: 5}], title: String = "brand new role for Thomas") => {
 	const mutationUpdateRole: DocumentNode = gql`
-		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!, $userId: Float) {
-			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId, userId: $userId) {
+		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!) {
+			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId) {
 				id
 				title
 				users {
@@ -380,10 +324,10 @@ export const UPDATE_ROLE = (id: Number, userId: Number = 5, title: String = "bra
 		query: mutationUpdateRole,
 		variables: {
 			updateRoleInput: {
-				title: title
+				title: title,
+				users: users
 			},
-			userId: userId,
-			roleId: id
+			roleId: roleId
 		}
 	};
 };
@@ -442,7 +386,7 @@ export const ADD_STATUS = (title: String, projectId: Number = 1, taskId: Number 
 	};
 };
 
-export const UPDATE_STATUS = (id: Number) => {
+export const UPDATE_STATUS = (id: Number, tasks: TaskInput[] | undefined = undefined, title: String = "brand new status title") => {
 	const mutationUpdateStatus: DocumentNode = gql`
 		mutation UpdateStatus($updateStatusInput: UpdateStatusInput!, $statusId: Float!) {
 			updateStatus(updateStatusInput: $updateStatusInput, statusId: $statusId) {
@@ -455,7 +399,8 @@ export const UPDATE_STATUS = (id: Number) => {
 		query: mutationUpdateStatus,
 		variables: {
 			updateStatusInput: {
-				title: "brand new status title",
+				title: title,
+				tasks: tasks
 			},
 			statusId: id,
 		},

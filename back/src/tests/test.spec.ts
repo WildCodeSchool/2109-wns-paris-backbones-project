@@ -32,7 +32,6 @@ import {
 	GET_STATUS_BY_ID,
 	ADD_STATUS,
 	UPDATE_STATUS,
-	ADD_ROLE_WITH_USERS, ADD_TASK_WITH_USERS,
 } from "./gqlQueries/gqlQueries";
 
 let server: ApolloServer;
@@ -193,7 +192,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addTask expect addTask users return users added on a task", async () => {
-			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another new task for project 2", 2,));
+			const response = await server.executeOperation(ADD_TASK("another new task for project 2", 2, 8));
 			const newTask = await Task.findOne(response.data?.addTask.id);
 			const taskUsers = await newTask?.users;
 			let expectedResponse: any[] = [];
@@ -210,8 +209,8 @@ describe("test Resolvers", () => {
 			expect(response.errors).toBeTruthy();
 		});
 
-		it("test mutation addTask expect addTask throw an error because one status is not on project 2", async () => {
-			const response = await server.executeOperation(ADD_TASK_WITH_USERS("another brand new new task for project 2", 2, [4,6]));
+		it("test mutation addTask expect addTask throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(ADD_TASK("another brand new new task for project 2", 2,3, [{id:4}, {id:6}]));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -239,7 +238,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateTask expect updatedTask users return users updated on a task", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(4, "the task name", 4));
+			const response = await server.executeOperation(UPDATE_TASK(4, "the task name", [{id: 4}]));
 			const updatedTask = await Task.findOne(4);
 			const taskUsers = await updatedTask?.users;
 			let expectedResponse: any[] = [];
@@ -252,7 +251,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateTask expect updatedTask user throw an error because this user is not on the project", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(1, "brand new task name 2", 6));
+			const response = await server.executeOperation(UPDATE_TASK(1, "brand new task name 2", [{id: 4}, {id: 6}]));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -365,7 +364,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addRole expect addRole users return users added on a role", async () => {
-			const response = await server.executeOperation(ADD_ROLE_WITH_USERS("another new role for project 2", 2,));
+			const response = await server.executeOperation(ADD_ROLE("another new role for project 2", 2,));
 			const newRole = await Role.findOne(response.data?.addRole.id);
 			const roleUsers = await newRole?.users;
 			let expectedResponse: any[] = [];
@@ -378,7 +377,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addRole expect addRole users throw an error because one user is not on project 2", async () => {
-			const response = await server.executeOperation(ADD_ROLE_WITH_USERS("another new new role for project 2", 2, [4,6]));
+			const response = await server.executeOperation(ADD_ROLE("another new new role for project 2", 2, [{id: 4},{id: 6}]));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -399,7 +398,7 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateRole expect updatedRole users return users updated on a role", async () => {
-			const response = await server.executeOperation(UPDATE_ROLE(2, 3, "Change role too"));
+			const response = await server.executeOperation(UPDATE_ROLE(2, [{id: 3}], "Change role too"));
 			const updatedRole = await Role.findOne(2);
 			const roleUsers = await updatedRole?.users;
 			let expectedResponse: any[] = [];
@@ -412,12 +411,12 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateRole expect updatedRole user throw an error because this user is not on the project", async () => {
-			const response = await server.executeOperation(UPDATE_ROLE(1, 6));
+			const response = await server.executeOperation(UPDATE_ROLE(1, [{id: 6}]));
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateRole expect updatedRole with same title on a project throw an error", async () => {
-			const response = await server.executeOperation(UPDATE_ROLE(1, 5, "Product Owner" ));
+			const response = await server.executeOperation(UPDATE_ROLE(1, [{id: 5}], "Product Owner" ));
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -488,6 +487,11 @@ describe("test Resolvers", () => {
 
 		it("test mutation updateStatus expect updatedStatus with same title throw an error", async () => {
 			const response = await server.executeOperation(UPDATE_STATUS(1));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updateStatus task throw an error because this task is not on the project", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(5, [{id: 8}], "a new status again"));
 			expect(response.errors).toBeTruthy();
 		});
 	});

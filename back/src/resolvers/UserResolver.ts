@@ -1,6 +1,6 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
-import { BackBonesUser } from "../entities/User";
-import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
+import {Arg, Mutation, Query, Resolver} from "type-graphql";
+import {BackBonesUser} from "../entities/User";
+import {CreateUserInput, UpdateUserInput} from "../inputs/UserInput";
 import {errorHandler} from "../utils/errorHandler";
 
 @Resolver()
@@ -13,12 +13,7 @@ export class UserResolver {
 	@Query(() => BackBonesUser)
 	async getUserById(@Arg("userId") userId: number) {
 		try {
-			const user = await BackBonesUser.findOne(userId);
-			if (!user) {
-				errorHandler(`there in no user with id: ${userId}`);
-			} else {
-				return user;
-			}
+			return await BackBonesUser.findOneOrFail(userId);
 		} catch (error) {
 			throw error;
 		}
@@ -26,16 +21,15 @@ export class UserResolver {
 
 	//CREATE
 	@Mutation(() => BackBonesUser)
-	async addUser(@Arg("createUserInput") createUserInput: CreateUserInput) {
+	async addUser(@Arg("createUserInput") input: CreateUserInput) {
 		try {
-			const createdUser = BackBonesUser.create(createUserInput);
-			if (!createdUser.firstName || !createdUser.lastName || !createdUser.email) {
+			const user = BackBonesUser.create(input);
+			if (!user.firstName || !user.lastName || !user.email) {
 				errorHandler("Firstname, lastname or email cannot be empty");
-			} else {
-				await BackBonesUser.save(createdUser);
-				console.log("Successfully create: ", createdUser);
-				return await BackBonesUser.findOne(createdUser.id);
 			}
+			await user.save();
+			console.log("Successfully create: ", user);
+			return user;
 		} catch (error) {
 			throw error;
 		}
@@ -46,17 +40,14 @@ export class UserResolver {
 	async updateUser(
 		@Arg("userId") userId: number,
 
-		@Arg("updateUserInput") updateUserInput: UpdateUserInput
+		@Arg("updateUserInput") input: UpdateUserInput
 	) {
 		try {
-			const updatedUser = await BackBonesUser.findOne(userId);
-			if (!updatedUser) {
-				errorHandler(`User with id : ${userId} doesn't exists`);
-			} else {
-				await BackBonesUser.update(userId, updateUserInput);
-				console.log("Successfully update: ", updatedUser);
-				return await BackBonesUser.findOne(userId);
-			}
+			const user = await BackBonesUser.findOneOrFail(userId);
+			Object.assign(user, input)
+			await user.save();
+			console.log("Successfully update: ", user);
+			return await BackBonesUser.findOne(userId);
 		} catch (error) {
 			throw error;
 		}
