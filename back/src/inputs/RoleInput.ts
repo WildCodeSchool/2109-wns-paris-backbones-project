@@ -1,8 +1,8 @@
 import { InputType, Field } from "type-graphql";
-import {UserInput} from "./UserInput";
-import {BackBonesUser} from "../entities/User";
-import {ProjectInput} from "./ProjectInput";
-import {Project} from "../entities/Project";
+import { UserInput } from "./UserInput";
+import { BackBonesUser } from "../entities/User";
+import { ProjectInput } from "./ProjectInput";
+import { Project } from "../entities/Project";
 
 @InputType()
 export class RoleInput {

@@ -1,7 +1,7 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
-import {Project} from "../entities/Project";
-import {CreateProjectInput, UpdateProjectInput} from "../inputs/ProjectInput";
-import {errorHandler} from "../utils/errorHandler";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Project } from "../entities/Project";
+import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
+import { errorHandler } from "../utils/errorHandler";
 
 @Resolver()
 export class ProjectResolver {
@@ -22,9 +22,7 @@ export class ProjectResolver {
 
 	// CREATE
 	@Mutation(() => Project)
-	async addProject(
-		@Arg("createProjectInput") input: CreateProjectInput
-	) {
+	async addProject(@Arg("createProjectInput") input: CreateProjectInput) {
 		try {
 			const project = Project.create(input);
 			if (!project.title) {

@@ -11,7 +11,7 @@ import {
 import { Status } from "./Status";
 import { Task } from "./Task";
 import { BackBonesUser } from "./User";
-import {Role} from "./Role";
+import { Role } from "./Role";
 
 @Entity()
 @ObjectType()

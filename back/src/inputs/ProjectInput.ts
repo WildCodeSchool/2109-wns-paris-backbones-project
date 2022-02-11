@@ -2,7 +2,6 @@ import { BackBonesUser } from "../entities/User";
 import { InputType, Field } from "type-graphql";
 import { UserInput } from "./UserInput";
 
-
 @InputType()
 export class ProjectInput {
 	@Field()
@@ -11,7 +10,6 @@ export class ProjectInput {
 
 @InputType()
 export class CreateProjectInput {
-
 	@Field()
 	title: string;
 
@@ -33,7 +31,6 @@ export class CreateProjectInput {
 
 @InputType()
 export class UpdateProjectInput {
-
 	@Field({ nullable: true })
 	title: string;
 

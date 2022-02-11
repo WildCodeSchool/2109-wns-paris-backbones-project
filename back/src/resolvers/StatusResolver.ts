@@ -1,8 +1,8 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
-import {Status} from "../entities/Status";
-import {CreateStatusInput, UpdateStatusInput} from "../inputs/StatusInput";
-import {errorHandler} from "../utils/errorHandler";
-import {findSameTitle, resolveNotOnProject} from "../utils/resolverHelpers";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Status } from "../entities/Status";
+import { CreateStatusInput, UpdateStatusInput } from "../inputs/StatusInput";
+import { errorHandler } from "../utils/errorHandler";
+import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
 
 @Resolver()
 export class StatusResolver {
@@ -26,14 +26,21 @@ export class StatusResolver {
 		try {
 			const status = await Status.create(input);
 			const project = await status?.project;
-			const {statuses, tasks} = await project
-			const taskNotOnProject = resolveNotOnProject(input.tasks, await tasks)
+			const { statuses, tasks } = await project;
+			const taskNotOnProject = resolveNotOnProject(
+				input.tasks,
+				await tasks
+			);
 			if (!status.title) {
 				errorHandler("status title can't be null");
 			} else if (findSameTitle(await statuses, status.title)) {
-				errorHandler(`Status with title ${status.title} already exists on this project`)
+				errorHandler(
+					`Status with title ${status.title} already exists on this project`
+				);
 			} else if (taskNotOnProject) {
-				errorHandler(`Task with id ${taskNotOnProject[0].id} is not referenced on the project ${project.id}`)
+				errorHandler(
+					`Task with id ${taskNotOnProject[0].id} is not referenced on the project ${project.id}`
+				);
 			}
 			await Status.save(status);
 			console.log("Successfully create: ", status);
@@ -52,13 +59,20 @@ export class StatusResolver {
 	) {
 		try {
 			const status = await Status.findOneOrFail(statusId);
-			const project= await status?.project;
-			const {statuses, tasks} = await project;
-			const taskNotOnProject = resolveNotOnProject(input.tasks, await tasks)
+			const project = await status?.project;
+			const { statuses, tasks } = await project;
+			const taskNotOnProject = resolveNotOnProject(
+				input.tasks,
+				await tasks
+			);
 			if (findSameTitle(await statuses, input.title, statusId)) {
-				errorHandler(`Status with title ${input.title} already exists on this project`)
+				errorHandler(
+					`Status with title ${input.title} already exists on this project`
+				);
 			} else if (taskNotOnProject) {
-				errorHandler(`Task with id ${taskNotOnProject[0].id} is not referenced on the project ${project.id}`)
+				errorHandler(
+					`Task with id ${taskNotOnProject[0].id} is not referenced on the project ${project.id}`
+				);
 			}
 			await Status.update(statusId, input);
 			console.log("Successfully update: ", status);

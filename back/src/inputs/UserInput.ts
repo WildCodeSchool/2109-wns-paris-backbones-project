@@ -3,8 +3,8 @@ import { InputType, Field } from "type-graphql";
 import { TaskInput } from "./TaskInput";
 import { ProjectInput } from "./ProjectInput";
 import { Project } from "src/entities/Project";
-import {Role} from "../entities/Role";
-import {RoleInput} from "./RoleInput";
+import { Role } from "../entities/Role";
+import { RoleInput } from "./RoleInput";
 
 @InputType()
 export class UserInput {

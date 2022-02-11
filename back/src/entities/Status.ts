@@ -4,7 +4,8 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	OneToMany,
-	BaseEntity, ManyToOne,
+	BaseEntity,
+	ManyToOne,
 } from "typeorm";
 import { Project } from "./Project";
 import { Task } from "./Task";

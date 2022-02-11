@@ -1,8 +1,8 @@
 import { InputType, Field } from "type-graphql";
-import {ProjectInput} from "./ProjectInput";
-import {Project} from "../entities/Project";
-import {TaskInput} from "./TaskInput";
-import {Task} from "../entities/Task";
+import { ProjectInput } from "./ProjectInput";
+import { Project } from "../entities/Project";
+import { TaskInput } from "./TaskInput";
+import { Task } from "../entities/Task";
 
 @InputType()
 export class StatusInput {

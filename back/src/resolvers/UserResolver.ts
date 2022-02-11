@@ -1,7 +1,7 @@
-import {Arg, Mutation, Query, Resolver} from "type-graphql";
-import {BackBonesUser} from "../entities/User";
-import {CreateUserInput, UpdateUserInput} from "../inputs/UserInput";
-import {errorHandler} from "../utils/errorHandler";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { BackBonesUser } from "../entities/User";
+import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
+import { errorHandler } from "../utils/errorHandler";
 
 @Resolver()
 export class UserResolver {
@@ -44,7 +44,7 @@ export class UserResolver {
 	) {
 		try {
 			const user = await BackBonesUser.findOneOrFail(userId);
-			Object.assign(user, input)
+			Object.assign(user, input);
 			await user.save();
 			console.log("Successfully update: ", user);
 			return await BackBonesUser.findOne(userId);

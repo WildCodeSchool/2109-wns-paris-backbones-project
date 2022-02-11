@@ -8,7 +8,7 @@ import {
 	ManyToMany,
 } from "typeorm";
 import { BackBonesUser } from "./User";
-import {Project} from "./Project";
+import { Project } from "./Project";
 
 @Entity()
 @ObjectType()
@@ -34,5 +34,4 @@ export class Role extends BaseEntity {
 		nullable: true,
 	})
 	project: Project;
-
 }

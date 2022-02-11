@@ -64,6 +64,6 @@ export class UpdateTaskInput {
 	@Field(() => StatusInput, { nullable: true })
 	status: Status;
 
-	@Field(() => [UserInput], {nullable: true})
-	users: [BackBonesUser]
+	@Field(() => [UserInput], { nullable: true })
+	users: [BackBonesUser];
 }

@@ -1,7 +1,7 @@
 import { gql } from "apollo-server";
 import { DocumentNode } from "graphql";
-import {UserInput} from "../../inputs/UserInput";
-import {TaskInput} from "../../inputs/TaskInput";
+import { UserInput } from "../../inputs/UserInput";
+import { TaskInput } from "../../inputs/TaskInput";
 
 export const GET_USERS = () => {
 	const queryGetUsers: DocumentNode = gql`
@@ -116,7 +116,12 @@ export const GET_TASK_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_TASK = (taskName: String, projectId: number = 1, statusId: Number = 3, users: UserInput[] | undefined = undefined) => {
+export const ADD_TASK = (
+	taskName: String,
+	projectId: number = 1,
+	statusId: Number = 3,
+	users: UserInput[] | undefined = undefined
+) => {
 	const mutationAddTask: DocumentNode = gql`
 		mutation AddTask($createTaskInput: CreateTaskInput!) {
 			addTask(createTaskInput: $createTaskInput) {
@@ -136,20 +141,28 @@ export const ADD_TASK = (taskName: String, projectId: number = 1, statusId: Numb
 				title: taskName,
 				description: "woooow what a task !!!",
 				project: {
-					id: projectId
+					id: projectId,
 				},
 				status: {
-					id: statusId
+					id: statusId,
 				},
-				users: users
+				users: users,
 			},
 		},
 	};
 };
 
-export const UPDATE_TASK = (taskId: Number, taskTitle: String | undefined, users: UserInput[] | undefined = undefined, statusId: Number | undefined = 3) => {
+export const UPDATE_TASK = (
+	taskId: Number,
+	taskTitle: String | undefined,
+	users: UserInput[] | undefined = undefined,
+	statusId: Number | undefined = 3
+) => {
 	const mutationUpdateTask: DocumentNode = gql`
-		mutation UpdateTask($updateTaskInput: UpdateTaskInput!, $taskId: Float!) {
+		mutation UpdateTask(
+			$updateTaskInput: UpdateTaskInput!
+			$taskId: Float!
+		) {
 			updateTask(updateTaskInput: $updateTaskInput, taskId: $taskId) {
 				id
 				title
@@ -171,7 +184,7 @@ export const UPDATE_TASK = (taskId: Number, taskTitle: String | undefined, users
 				status: {
 					id: statusId,
 				},
-				users: users
+				users: users,
 			},
 			taskId: taskId,
 		},
@@ -280,7 +293,11 @@ export const GET_ROLE_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_ROLE = (title: String, projectId: Number = 2, users: UserInput[] | undefined = [{id: 4},{id: 5}]) => {
+export const ADD_ROLE = (
+	title: String,
+	projectId: Number = 2,
+	users: UserInput[] | undefined = [{ id: 4 }, { id: 5 }]
+) => {
 	const mutationAddRole: DocumentNode = gql`
 		mutation AddRole($createRoleInput: CreateRoleInput!) {
 			addRole(createRoleInput: $createRoleInput) {
@@ -299,17 +316,24 @@ export const ADD_ROLE = (title: String, projectId: Number = 2, users: UserInput[
 			createRoleInput: {
 				title: title,
 				project: {
-					id: projectId
+					id: projectId,
 				},
-				users: users
+				users: users,
 			},
 		},
-	}
+	};
 };
 
-export const UPDATE_ROLE = (roleId: Number, users: UserInput[] = [{id: 5}], title: String = "brand new role for Thomas") => {
+export const UPDATE_ROLE = (
+	roleId: Number,
+	users: UserInput[] = [{ id: 5 }],
+	title: String = "brand new role for Thomas"
+) => {
 	const mutationUpdateRole: DocumentNode = gql`
-		mutation UpdateRole($updateRoleInput: UpdateRoleInput!, $roleId: Float!) {
+		mutation UpdateRole(
+			$updateRoleInput: UpdateRoleInput!
+			$roleId: Float!
+		) {
 			updateRole(updateRoleInput: $updateRoleInput, roleId: $roleId) {
 				id
 				title
@@ -325,10 +349,10 @@ export const UPDATE_ROLE = (roleId: Number, users: UserInput[] = [{id: 5}], titl
 		variables: {
 			updateRoleInput: {
 				title: title,
-				users: users
+				users: users,
 			},
-			roleId: roleId
-		}
+			roleId: roleId,
+		},
 	};
 };
 
@@ -359,7 +383,11 @@ export const GET_STATUS_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_STATUS = (title: String, projectId: Number = 1, taskId: Number = 1) => {
+export const ADD_STATUS = (
+	title: String,
+	projectId: Number = 1,
+	taskId: Number = 1
+) => {
 	const mutationAddStatus: DocumentNode = gql`
 		mutation AddStatus($createStatusInput: CreateStatusInput!) {
 			addStatus(createStatusInput: $createStatusInput) {
@@ -374,22 +402,32 @@ export const ADD_STATUS = (title: String, projectId: Number = 1, taskId: Number 
 			createStatusInput: {
 				title: title,
 				project: {
-					id: projectId
+					id: projectId,
 				},
 				tasks: [
 					{
-						id: taskId
-					}
-				]
+						id: taskId,
+					},
+				],
 			},
 		},
 	};
 };
 
-export const UPDATE_STATUS = (id: Number, tasks: TaskInput[] | undefined = undefined, title: String = "brand new status title") => {
+export const UPDATE_STATUS = (
+	id: Number,
+	tasks: TaskInput[] | undefined = undefined,
+	title: String = "brand new status title"
+) => {
 	const mutationUpdateStatus: DocumentNode = gql`
-		mutation UpdateStatus($updateStatusInput: UpdateStatusInput!, $statusId: Float!) {
-			updateStatus(updateStatusInput: $updateStatusInput, statusId: $statusId) {
+		mutation UpdateStatus(
+			$updateStatusInput: UpdateStatusInput!
+			$statusId: Float!
+		) {
+			updateStatus(
+				updateStatusInput: $updateStatusInput
+				statusId: $statusId
+			) {
 				title
 				id
 			}
@@ -400,7 +438,7 @@ export const UPDATE_STATUS = (id: Number, tasks: TaskInput[] | undefined = undef
 		variables: {
 			updateStatusInput: {
 				title: title,
-				tasks: tasks
+				tasks: tasks,
 			},
 			statusId: id,
 		},
