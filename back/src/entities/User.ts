@@ -47,7 +47,7 @@ export class BackBonesUser extends BaseEntity {
 
 	@Field(() => [Task], { nullable: true })
 	@ManyToMany(() => Task, (task) => task.users, {
-		eager: true,
+		lazy: true,
 		nullable: true,
 	})
 	@JoinTable()
@@ -55,7 +55,7 @@ export class BackBonesUser extends BaseEntity {
 
 	@Field(() => [Project], { nullable: true })
 	@ManyToMany(() => Project, (project) => project.users, {
-		eager: true,
+		lazy: true,
 		nullable: true,
 	})
 	@JoinTable()

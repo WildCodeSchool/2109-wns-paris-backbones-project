@@ -59,7 +59,7 @@ export class Task extends BaseEntity {
 
 	@Field(() => Project, { nullable: true })
 	@ManyToOne(() => Project, (project) => project.tasks, {
-		eager: true,
+		lazy: true,
 		nullable: true,
 	})
 	project: Project;

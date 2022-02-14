@@ -46,7 +46,6 @@ export class UpdateProjectInput {
 	@Field({ nullable: true })
 	end_date: Date;
 
-	// Relations
 	@Field(() => [UserInput], { nullable: true })
 	users: [BackBonesUser];
 }

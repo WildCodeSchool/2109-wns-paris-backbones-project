@@ -5,11 +5,11 @@ export const findSameTitle = (array: any[] | undefined, title: String, id: Numbe
    return !!matchingTitle
 }
 
-export const resolveNotOnProject = (array: any[] | undefined, arrayToCompare: any[] | undefined) => {
+export const resolveNotOnProject = (inputArray: any[] | undefined, projectsArray: any[] | undefined) => {
    let result = [];
-   if (array && array[0] && arrayToCompare) {
-      result = array.filter(element => {
-         return !arrayToCompare?.map(el => el.id).includes(element.id)
+   if (inputArray && inputArray[0] && projectsArray) {
+      result = inputArray.filter(element => {
+         return !projectsArray?.map(el => el.id).includes(element.id)
       })
    }
    return result.length > 0 ? result : false
