@@ -26,7 +26,14 @@ import {
 	UPDATE_PROJECT,
 	UPDATE_TASK,
 	UPDATE_USER,
+	GET_ROLE_BY_ID,
+	ADD_ROLE,
+	UPDATE_ROLE,
+	GET_STATUS_BY_ID,
+	ADD_STATUS,
+	UPDATE_STATUS,
 } from "./gqlQueries/gqlQueries";
+
 let server: ApolloServer;
 
 beforeAll(async () => {
@@ -50,8 +57,8 @@ beforeAll(async () => {
 	);
 });
 
-afterAll(() => {
-	server.stop();
+afterAll(async () => {
+	await server.stop();
 });
 
 describe("test data base", () => {
@@ -91,6 +98,18 @@ describe("test Resolvers", () => {
 			expect(response.data?.getUserById.firstName).toBe(user?.firstName);
 		});
 
+		it("test query getUserById expect user id 1 role's on project id 1 to be 'CTO' and 'Developer' on project 2", async () => {
+			const response = await server.executeOperation(GET_USER_BY_ID(1));
+			const user = await BackBonesUser.findOne(1);
+			const responseRoleOnProject1 = await response.data?.getUserById
+				.roles[0];
+			const userRoles = await user?.roles;
+			const userRoleOnProject1 = userRoles ? userRoles[0] : userRoles;
+			expect(responseRoleOnProject1.title).toBe(
+				userRoleOnProject1?.title
+			);
+		});
+
 		it("test query getUserById expect user id 100 throw an error", async () => {
 			const response = await server.executeOperation(GET_USER_BY_ID(100));
 			expect(response.errors).toBeTruthy();
@@ -117,25 +136,52 @@ describe("test Resolvers", () => {
 
 		it("test mutation addUser expect user rejected because no lastname", async () => {
 			const response = await server.executeOperation(
-				ADD_USER("myriam@gmail.com", "")
+				ADD_USER("mymy@gmail.com", "")
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addUser expect user rejected because tasks not on users projects", async () => {
+			const response = await server.executeOperation(
+				ADD_USER("myriou@gmail.com", "Hyyyyy", [{id: 1},{id: 2}], [{id: 3}, {id: 9}], [{id: 4}, {id: 14}])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addUser expect user rejected because roles not on users projects", async () => {
+			const response = await server.executeOperation(
+				ADD_USER("myriou@gmail.com", "Hyyyyy", [{id: 1}], [{id: 9}], [{id: 4}, {id: 5}])
 			);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateUser expect updatedUser name equal to user name with same id", async () => {
 			const response = await server.executeOperation(UPDATE_USER(5));
+
 			const updatedUser = await BackBonesUser.findOne(
 				response.data?.updateUser.id
 			);
-			let firstName = updatedUser?.firstName;
-			const role = await updatedUser?.role;
+			const responseUser = await response.data?.updateUser;
 
-			expect(response.data?.updateUser.firstName).toBe(firstName);
-			expect(response.data?.updateUser.role.title).toBe(role?.title);
+			expect(responseUser.firstName).toBe(updatedUser?.firstName);
 		});
 
 		it("test mutation updateUser expect updatedUser can't be updated because not found", async () => {
 			const response = await server.executeOperation(UPDATE_USER(1900));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation UpdateUser expect user rejected because tasks not on users projects", async () => {
+			const response = await server.executeOperation(
+				UPDATE_USER(3, "Yo firstname", [{id: 1}], [{id: 3}, {id: 1}], [{id: 4}, {id: 14}])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation UpdateUser expect user rejected because roles not on users projects", async () => {
+			const response = await server.executeOperation(
+				UPDATE_USER(3, "Miche miche", [{id: 2}], [{id: 2}], [{id: 6}, {id: 7}])
+			);
 			expect(response.errors).toBeTruthy();
 		});
 	});
@@ -173,8 +219,52 @@ describe("test Resolvers", () => {
 			expect(response.errors).toBeTruthy();
 		});
 
+		it("test mutation addTask expect createdTask with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(
+				ADD_TASK("task title 0")
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addTask expect addTask users return users added on a task", async () => {
+			const response = await server.executeOperation(
+				ADD_TASK("another new task for project 2", 2, 8)
+			);
+			const newTask = await Task.findOne(response.data?.addTask.id);
+			const taskUsers = await newTask?.users;
+			let expectedResponse: any[] = [];
+			if (taskUsers) {
+				for (const user of taskUsers) {
+					expectedResponse = [
+						...expectedResponse,
+						{ firstName: user.firstName, id: user.id },
+					];
+				}
+			}
+			expect(response.data?.addTask.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation addTask expect addTask users throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(
+				ADD_TASK("another new new task for project 2", 2, 4)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addTask expect addTask throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(
+				ADD_TASK("another brand new new task for project 2", 2, 3, [
+					{ id: 4 },
+					{ id: 6 },
+				])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
 		it("test mutation updateTask expect updatedTask title equal to task title with same id", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(3));
+			const response = await server.executeOperation(
+				UPDATE_TASK(3, "Brand new task name")
+			);
 			const updatedTask = await Task.findOne(
 				response.data?.updateTask.id
 			);
@@ -186,8 +276,49 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateTask expect updatedTask can't be updated because not found", async () => {
-			const response = await server.executeOperation(UPDATE_TASK(1900));
+			const response = await server.executeOperation(
+				UPDATE_TASK(1900, "balek")
+			);
 
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation Update Task expect updatedTask with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(
+				UPDATE_TASK(2, "task title 0")
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateTask expect updatedTask users return users updated on a task", async () => {
+			const response = await server.executeOperation(
+				UPDATE_TASK(4, "the task name", [{ id: 4 }])
+			);
+			const updatedTask = await Task.findOne(4);
+			const taskUsers = await updatedTask?.users;
+			let expectedResponse: any[] = [];
+			if (taskUsers) {
+				for (const user of taskUsers) {
+					expectedResponse = [
+						...expectedResponse,
+						{ id: user.id, firstName: user.firstName },
+					];
+				}
+			}
+			expect(response.data?.updateTask.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation updateTask expect updatedTask user throw an error because this user is not on the project", async () => {
+			const response = await server.executeOperation(
+				UPDATE_TASK(1, "brand new task name 2", [{ id: 4 }, { id: 6 }])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateTask expect updatedTask status throw an error because this status is not on the project", async () => {
+			const response = await server.executeOperation(
+				UPDATE_TASK(1, "brand new task name 2", undefined, 7)
+			);
 			expect(response.errors).toBeTruthy();
 		});
 	});
@@ -237,12 +368,8 @@ describe("test Resolvers", () => {
 				response.data?.updateProject.id
 			);
 			const title = updatedProject?.title;
-			const status = await updatedProject?.status;
 
 			expect(response.data?.updateProject.title).toBe(title);
-			expect(response.data?.updateProject.status.title).toBe(
-				status?.title
-			);
 		});
 
 		it("test mutation updateProject expect updatedProject can't be updated because not found", async () => {
@@ -260,6 +387,113 @@ describe("test Resolvers", () => {
 			const response = await server.executeOperation(GET_ROLES());
 			expect(response.data?.getRoles.length).toEqual(roles.length);
 		});
+
+		it("test query getRoleById expect Role id 1 to be 'CTO'", async () => {
+			const response = await server.executeOperation(GET_ROLE_BY_ID(1));
+			const role = await Role.findOne(1);
+			expect(response.data?.getRoleById.title).toBe(role?.title);
+		});
+
+		it("test query getProjectRoleById expect Role id 100 throw an error", async () => {
+			const response = await server.executeOperation(GET_ROLE_BY_ID(100));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addRole expect created Role id equal to role with same id", async () => {
+			const response = await server.executeOperation(
+				ADD_ROLE("brand new role", 2)
+			);
+			const createdRole = await Role.findOne(response.data?.addRole.id);
+			const id = createdRole?.id;
+			await createdRole?.remove();
+			expect(response.data?.addRole.id).toBe(id);
+		});
+
+		it("test mutation addRole expect created Role with no title throw an error", async () => {
+			const response = await server.executeOperation(ADD_ROLE("", 2));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addRole expect created Role with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(ADD_ROLE("CTO"));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addRole expect addRole users return users added on a role", async () => {
+			const response = await server.executeOperation(
+				ADD_ROLE("another new role for project 2", 2)
+			);
+			const newRole = await Role.findOne(response.data?.addRole.id);
+			const roleUsers = await newRole?.users;
+			let expectedResponse: any[] = [];
+			if (roleUsers) {
+				for (const user of roleUsers) {
+					expectedResponse = [
+						...expectedResponse,
+						{ firstName: user.firstName, id: user.id },
+					];
+				}
+			}
+			expect(response.data?.addRole.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation addRole expect addRole users throw an error because one user is not on project 2", async () => {
+			const response = await server.executeOperation(
+				ADD_ROLE("another new new role for project 2", 2, [
+					{ id: 4 },
+					{ id: 6 },
+				])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateRole expect updatedRole title equal to role title with same id", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(2));
+			const updatedRole = await Role.findOne(
+				response.data?.updateRole.id
+			);
+			const title = updatedRole?.title;
+
+			expect(response.data?.updateRole.title).toBe(title);
+		});
+
+		it("test mutation updateRole expect updatedRole throw an error because role with id doesn't exists", async () => {
+			const response = await server.executeOperation(UPDATE_ROLE(500));
+
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateRole expect updatedRole users return users updated on a role", async () => {
+			const response = await server.executeOperation(
+				UPDATE_ROLE(2, [{ id: 3 }], "Change role too")
+			);
+			const updatedRole = await Role.findOne(2);
+			const roleUsers = await updatedRole?.users;
+			let expectedResponse: any[] = [];
+			if (roleUsers) {
+				for (const user of roleUsers) {
+					expectedResponse = [
+						...expectedResponse,
+						{ firstName: user.firstName, id: user.id },
+					];
+				}
+			}
+			expect(response.data?.updateRole.users).toEqual(expectedResponse);
+		});
+
+		it("test mutation updateRole expect updatedRole user throw an error because this user is not on the project", async () => {
+			const response = await server.executeOperation(
+				UPDATE_ROLE(1, [{ id: 6 }])
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateRole expect updatedRole with same title on a project throw an error", async () => {
+			const response = await server.executeOperation(
+				UPDATE_ROLE(1, [{ id: 5 }], "Product Owner")
+			);
+			expect(response.errors).toBeTruthy();
+		});
 	});
 
 	describe("test StatusResolver", () => {
@@ -267,6 +501,78 @@ describe("test Resolvers", () => {
 			const statuses = await Status.find();
 			const response = await server.executeOperation(GET_STATUSES());
 			expect(response.data?.getStatuses.length).toEqual(statuses.length);
+		});
+
+		it("test query getStatusById expect Status id 1 to be 'in progress'", async () => {
+			const response = await server.executeOperation(GET_STATUS_BY_ID(1));
+			const status = await Status.findOne(1);
+			expect(response.data?.getStatusById.title).toBe(status?.title);
+		});
+
+		it("test query getStatusById expect Status id 100 throw an error", async () => {
+			const response = await server.executeOperation(
+				GET_STATUS_BY_ID(100)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status id equal to status with same id", async () => {
+			const response = await server.executeOperation(
+				ADD_STATUS("brand new status", undefined)
+			);
+			const createdStatus = await Status.findOne(
+				response.data?.addStatus.id
+			);
+			const id = createdStatus?.id;
+			expect(response.data?.addStatus.id).toBe(id);
+		});
+
+		it("test mutation addStatus expect created Status with no title throw an error", async () => {
+			const response = await server.executeOperation(
+				ADD_STATUS("", undefined)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status with same title throw an error", async () => {
+			const response = await server.executeOperation(
+				ADD_STATUS("done", undefined)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation addStatus expect created Status with tasks not on throw an error", async () => {
+			const response = await server.executeOperation(
+				ADD_STATUS("new status", undefined, 7)
+			);
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updatedStatus title equal to status title with same id", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(2));
+			const updatedStatus = await Status.findOne(
+				response.data?.updateStatus.id
+			);
+			const title = updatedStatus?.title;
+
+			expect(response.data?.updateStatus.title).toBe(title);
+		});
+
+		it("test mutation updateStatus expect updatedStatus can't be updated because not found", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(1900));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updatedStatus with same title throw an error", async () => {
+			const response = await server.executeOperation(UPDATE_STATUS(1));
+			expect(response.errors).toBeTruthy();
+		});
+
+		it("test mutation updateStatus expect updateStatus task throw an error because this task is not on the project", async () => {
+			const response = await server.executeOperation(
+				UPDATE_STATUS(5, [{ id: 8 }], "a new status again")
+			);
+			expect(response.errors).toBeTruthy();
 		});
 	});
 });

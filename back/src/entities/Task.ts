@@ -6,8 +6,6 @@ import {
 	ManyToOne,
 	ManyToMany,
 	BaseEntity,
-	JoinTable,
-	Unique,
 } from "typeorm";
 import { Status } from "./Status";
 import { BackBonesUser } from "./User";
@@ -53,17 +51,16 @@ export class Task extends BaseEntity {
 	status: Status;
 
 	@Field(() => [BackBonesUser], { nullable: true })
-	@ManyToMany((type) => BackBonesUser, (user) => user.tasks, {
+	@ManyToMany(() => BackBonesUser, (user) => user.tasks, {
 		lazy: true,
 		nullable: true,
 	})
 	users: BackBonesUser[];
 
 	@Field(() => Project, { nullable: true })
-	@ManyToOne((type) => Project, (project) => project.tasks, {
+	@ManyToOne(() => Project, (project) => project.tasks, {
 		lazy: true,
 		nullable: true,
 	})
-	@JoinTable()
 	project: Project;
 }

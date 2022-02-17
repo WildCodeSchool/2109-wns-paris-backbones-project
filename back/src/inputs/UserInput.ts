@@ -1,10 +1,10 @@
 import { Task } from "../entities/Task";
 import { InputType, Field } from "type-graphql";
 import { TaskInput } from "./TaskInput";
-import { RoleInput } from "./RoleInput";
-import { Role } from "../entities/Role";
 import { ProjectInput } from "./ProjectInput";
 import { Project } from "src/entities/Project";
+import { Role } from "../entities/Role";
+import { RoleInput } from "./RoleInput";
 
 @InputType()
 export class UserInput {
@@ -28,14 +28,14 @@ export class CreateUserInput {
 	@Field({ nullable: true })
 	avatar: string;
 
-	@Field((input) => RoleInput, { nullable: true })
-	role: Role;
-
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [ProjectInput], { nullable: true })
+	@Field(() => [ProjectInput], { nullable: true })
 	projects: [Project];
+
+	@Field(() => [RoleInput], { nullable: true })
+	roles: [Role];
 }
 
 @InputType()
@@ -55,12 +55,12 @@ export class UpdateUserInput {
 	@Field({ nullable: true })
 	avatar: string;
 
-	@Field((input) => RoleInput, { nullable: true })
-	role: Role;
-
-	@Field((input) => [TaskInput], { nullable: true })
+	@Field(() => [TaskInput], { nullable: true })
 	tasks: [Task];
 
-	@Field((input) => [ProjectInput], { nullable: true })
+	@Field(() => [ProjectInput], { nullable: true })
 	projects: [Project];
+
+	@Field(() => [RoleInput], { nullable: true })
+	roles: [Role];
 }

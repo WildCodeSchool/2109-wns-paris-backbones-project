@@ -5,6 +5,7 @@ import {
 	Column,
 	OneToMany,
 	BaseEntity,
+	ManyToOne,
 } from "typeorm";
 import { Project } from "./Project";
 import { Task } from "./Task";
@@ -27,10 +28,10 @@ export class Status extends BaseEntity {
 	})
 	tasks: Task[];
 
-	@Field(() => [Project], { nullable: true })
-	@OneToMany(() => Project, (project) => project.status, {
+	@Field(() => Project, { nullable: true })
+	@ManyToOne(() => Project, (project) => project.statuses, {
 		lazy: true,
 		nullable: true,
 	})
-	projects: Project[];
+	project: Project;
 }

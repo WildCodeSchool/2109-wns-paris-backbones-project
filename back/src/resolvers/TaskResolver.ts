@@ -1,6 +1,8 @@
-import { Resolver, Query, Arg, Mutation } from "type-graphql";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
+import { errorHandler } from "../utils/errorHandler";
+import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
 
 @Resolver()
 export class TaskResolver {
@@ -12,33 +14,48 @@ export class TaskResolver {
 	@Query(() => Task)
 	async getTaskById(@Arg("taskId") id: number) {
 		try {
-			const task = await Task.findOne(id);
-			if (task) {
-				return task;
-			} else {
-				throw `there in no task with id: ${id}`;
-			}
+			return await Task.findOneOrFail(id);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
 	}
 
 	//CREATE
 	@Mutation(() => Task)
-	async addTask(@Arg("createTaskInput") createTaskInput: CreateTaskInput) {
-		let newTaskId = 0;
-		const task = Task.create(createTaskInput);
+	async addTask(@Arg("createTaskInput") input: CreateTaskInput) {
 		try {
+			const task = Task.create(input);
+			const project = await task?.project;
+			const { users, statuses, tasks } = await project;
+			const userNotOnProject = resolveNotOnProject(
+				input?.users,
+				await users
+			);
+			const statusNotOnProject = resolveNotOnProject(
+				[input?.status],
+				await statuses
+			);
 			if (!task.title) {
-				throw "task title can't be null";
+				errorHandler("task title can't be null");
+			} else if (findSameTitle(await tasks, task.title)) {
+				errorHandler(
+					`Task with title ${task.title} already exists on this project`
+				);
+			} else if (userNotOnProject) {
+				errorHandler(
+					`User with id ${userNotOnProject[0].id} is not referenced on the project ${project.id}`
+				);
+			} else if (statusNotOnProject) {
+				errorHandler(
+					`Status with id ${statusNotOnProject[0].id} is not referenced on the project ${project.id}`
+				);
 			}
-			await Task.save(task);
-			newTaskId = task.id;
+			await task.save();
 			console.log("Successfully create: ", task);
+			return Task.findOne(task.id);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Task.findOne(newTaskId);
 	}
 
 	//UPDATE
@@ -46,19 +63,41 @@ export class TaskResolver {
 	async updateTask(
 		@Arg("taskId") taskId: number,
 
-		@Arg("updateTaskInput") updateTaskInput: UpdateTaskInput
+		@Arg("updateTaskInput", { nullable: true }) input: UpdateTaskInput
 	) {
 		try {
-			const task = await Task.findOne(taskId);
-			if (task) {
-				await Task.update(taskId, updateTaskInput);
-				console.log("Successfully update: ", task);
-			} else {
-				throw `Task with id : ${taskId} doesn't exists`;
+			const task = await Task.findOneOrFail(taskId);
+			const project = await task?.project;
+			const { users, statuses, tasks } = await project;
+			const usersNotOnProject = resolveNotOnProject(
+				input.users,
+				await users
+			);
+			const statusesNotOnProject = resolveNotOnProject(
+				[input?.status],
+				await statuses
+			);
+			if (usersNotOnProject) {
+				errorHandler(
+					`User with id ${usersNotOnProject[0].id} is not referenced on the project ${task.project?.id}`
+				);
+			} else if (statusesNotOnProject) {
+				errorHandler(
+					`Status with id ${input?.status.id} is not referenced on the project ${project?.id}`
+				);
+			} else if (findSameTitle(await tasks, input.title, taskId)) {
+				errorHandler(
+					`Task with title ${input.title} already exists on this project`
+				);
 			}
+			Object.assign(task, input);
+			await task.save();
+			console.log(
+				`Role: [id: ${task.id}, ${task.title}] was successfully created`
+			);
+			return await Task.findOne(task.id);
 		} catch (error) {
-			console.log(error);
+			throw error;
 		}
-		return await Task.findOne(taskId);
 	}
 }
