@@ -11,7 +11,7 @@ const GET_DATA = gql`
 			title
 			id
 			description
-			status {
+			statuses {
 				title
 			}
 			tasks {
@@ -52,7 +52,7 @@ const GET_DATA = gql`
 			email
 			avatar
 			password
-			role {
+			roles {
 				title
 			}
 		}
@@ -69,7 +69,7 @@ function App() {
 	} = data ?? {};
 
 	return (
-		<div className="App bg-pink-700">
+		<div className="bg-pink-700 App">
 			<AuthenticationHeader />
 			{loading && <div>Loading, plz wait :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
