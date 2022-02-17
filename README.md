@@ -50,5 +50,3 @@ Postgresql | BetterSqlite3
 Jest
 ### CI
 Docker
-
-Vive Tom
