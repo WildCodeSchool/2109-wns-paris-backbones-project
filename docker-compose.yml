@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   postgresDB:
     image: postgres
@@ -14,9 +16,7 @@ services:
       context: ./back
       dockerfile: Dockerfile.prod
     ports:
-      - 4000:4000
-    volumes:
-      - ./back/src:/back/src
+      - "4000:4000"
     depends_on:
       - postgresDB
     command: sh -c "yarn seed:prod && yarn start"
@@ -24,8 +24,9 @@ services:
   front:
     build: ./front
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./front/src:/front/src
     depends_on:
       - back
+    command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
