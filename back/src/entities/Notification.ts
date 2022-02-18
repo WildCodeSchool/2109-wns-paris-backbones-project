@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "type-graphql";
+import {Field, ObjectType} from "type-graphql";
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -6,8 +6,8 @@ import {
     BaseEntity, ManyToOne,
 } from "typeorm";
 
-import { Task } from "./Task";
-import { BackBonesUser } from "./User";
+import {Task} from "./Task";
+import {BackBonesUser} from "./User";
 import {Project} from "./Project";
 
 @Entity()
@@ -21,12 +21,12 @@ export class Notification extends BaseEntity {
     @Column()
     title: string;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
+    @Field({nullable: true})
+    @Column({nullable: true})
     description: string;
 
-    @Field({ nullable: true })
-    @Column({ nullable: true })
+    @Field({nullable: true})
+    @Column({nullable: true})
     created_at: Date;
 
     @Field(() => BackBonesUser)
@@ -36,14 +36,14 @@ export class Notification extends BaseEntity {
     })
     user: BackBonesUser;
 
-    @Field(() => Task, { nullable: true })
+    @Field(() => Task, {nullable: true})
     @ManyToOne(() => Task, (task) => task.notifications, {
         lazy: true,
         nullable: true,
     })
     task: Task;
 
-    @Field(() => Project, { nullable: true })
+    @Field(() => Project, {nullable: true})
     @ManyToOne(() => Project, (project) => project.notifications, {
         lazy: true,
         nullable: true,

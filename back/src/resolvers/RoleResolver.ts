@@ -12,6 +12,7 @@ export class RoleResolver {
 	async getRoles() {
 		return await Role.find();
 	}
+
 	@Query(() => Status)
 	async getRoleById(@Arg("roleId") roleId: number) {
 		try {
@@ -45,6 +46,7 @@ export class RoleResolver {
 			}
 			await Role.save(role);
 			console.log("Successfully create: ", role);
+			// todo: createNotification
 			return await Role.findOne(role.id);
 		} catch (error) {
 			throw error;
@@ -55,7 +57,6 @@ export class RoleResolver {
 	@Mutation(() => Role)
 	async updateRole(
 		@Arg("roleId") roleId: number,
-
 		@Arg("updateRoleInput", { nullable: true }) input: UpdateRoleInput
 	) {
 		try {

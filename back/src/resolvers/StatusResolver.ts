@@ -11,6 +11,7 @@ export class StatusResolver {
 	async getStatuses() {
 		return await Status.find();
 	}
+
 	@Query(() => Status)
 	async getStatusById(@Arg("statusId") statusId: number) {
 		try {
@@ -54,7 +55,6 @@ export class StatusResolver {
 	@Mutation(() => Status)
 	async updateStatus(
 		@Arg("statusId") statusId: number,
-
 		@Arg("updateStatusInput") input: UpdateStatusInput
 	) {
 		try {
@@ -74,7 +74,9 @@ export class StatusResolver {
 					`Task with id ${taskNotOnProject[0].id} is not referenced on the project ${project.id}`
 				);
 			}
-			await Status.update(statusId, input);
+			Object.assign(status, input);
+			await status.save();
+			// todo: createNotification
 			console.log("Successfully update: ", status);
 			return await Status.findOne(statusId);
 		} catch (error) {

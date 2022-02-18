@@ -51,6 +51,7 @@ export class TaskResolver {
 				);
 			}
 			await task.save();
+            // todo: createNotification
 			console.log("Successfully create: ", task);
 			return Task.findOne(task.id);
 		} catch (error) {
@@ -90,8 +91,9 @@ export class TaskResolver {
 					`Task with title ${input.title} already exists on this project`
 				);
 			}
-			Object.assign(task, input);
+            Object.assign(task, input);
 			await task.save();
+            // todo: createNotification
 			console.log(
 				`Task: [id: ${task.id}, ${task.title}] was successfully updated`
 			);

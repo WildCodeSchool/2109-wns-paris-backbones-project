@@ -2,8 +2,8 @@ import { gql } from "apollo-server";
 import { DocumentNode } from "graphql";
 import { UserInput } from "../../inputs/UserInput";
 import { TaskInput } from "../../inputs/TaskInput";
-import {ProjectInput} from "../../inputs/ProjectInput";
-import {RoleInput} from "../../inputs/RoleInput";
+import { ProjectInput } from "../../inputs/ProjectInput";
+import { RoleInput } from "../../inputs/RoleInput";
 
 export const GET_USERS = () => {
 	const queryGetUsers: DocumentNode = gql`
@@ -40,7 +40,13 @@ export const GET_USER_BY_ID = (id: Number) => {
 	};
 };
 
-export const ADD_USER = (email: String, lastname: String, projects: ProjectInput[] | undefined = [{id: 1}, {id: 2}], roles: RoleInput[] | undefined = [{id: 3}, {id: 8}], tasks: TaskInput[] | undefined = [{id: 4}, {id: 9}]) => {
+export const ADD_USER = (
+	email: String,
+	lastname: String,
+	projects: ProjectInput[] | undefined = [{ id: 1 }, { id: 2 }],
+	roles: RoleInput[] | undefined = [{ id: 3 }, { id: 8 }],
+	tasks: TaskInput[] | undefined = [{ id: 4 }, { id: 9 }]
+) => {
 	const mutationAddUser: DocumentNode = gql`
 		mutation AddUser($createUserInput: CreateUserInput!) {
 			addUser(createUserInput: $createUserInput) {
@@ -66,7 +72,13 @@ export const ADD_USER = (email: String, lastname: String, projects: ProjectInput
 	};
 };
 
-export const UPDATE_USER = (userId: Number, firstname: String = "Thomas de l'internet", projects: ProjectInput[] | undefined = [{id: 1}, {id: 2}], roles: RoleInput[] | undefined = [{id: 3}, {id: 8}], tasks: TaskInput[] | undefined = [{id: 4}, {id: 9}]) => {
+export const UPDATE_USER = (
+	userId: Number,
+	firstname: String = "Thomas de l'internet",
+	projects: ProjectInput[] | undefined = [{ id: 1 }, { id: 2 }],
+	roles: RoleInput[] | undefined = [{ id: 3 }, { id: 8 }],
+	tasks: TaskInput[] | undefined = [{ id: 4 }, { id: 9 }]
+) => {
 	const mutationUpdateUser: DocumentNode = gql`
 		mutation UpdateUser(
 			$updateUserInput: UpdateUserInput!
@@ -89,7 +101,7 @@ export const UPDATE_USER = (userId: Number, firstname: String = "Thomas de l'int
 				firstName: firstname,
 				projects: projects,
 				roles: roles,
-				tasks: tasks
+				tasks: tasks,
 			},
 			userId: userId,
 		},

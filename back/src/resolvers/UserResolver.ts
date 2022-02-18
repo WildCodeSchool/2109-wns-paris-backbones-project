@@ -2,10 +2,10 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
 import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
 import { errorHandler } from "../utils/errorHandler";
-import {resolveNotOnProject} from "../utils/resolverHelpers";
-import {Task} from "../entities/Task";
-import {Role} from "../entities/Role";
-import {Project} from "../entities/Project";
+import { resolveNotOnProject } from "../utils/resolverHelpers";
+import { Task } from "../entities/Task";
+import { Role } from "../entities/Role";
+import { Project } from "../entities/Project";
 
 @Resolver()
 export class UserResolver {
@@ -14,6 +14,7 @@ export class UserResolver {
 	async getUsers() {
 		return await BackBonesUser.find();
 	}
+
 	@Query(() => BackBonesUser)
 	async getUserById(@Arg("userId") userId: number) {
 		try {
@@ -32,13 +33,19 @@ export class UserResolver {
 			const tasks: Task[] = [];
 			const roles: Role[] = [];
 			for (const project of await user?.projects) {
-				const projectTasks = await project?.tasks
-				const projectRoles = await project?.roles
-				projectTasks.forEach(task => tasks.push(task))
-				projectRoles.forEach(role => roles.push(role))
+				const projectTasks = await project?.tasks;
+				const projectRoles = await project?.roles;
+				projectTasks.forEach((task) => tasks.push(task));
+				projectRoles.forEach((role) => roles.push(role));
 			}
-			const tasksNotOnProject = resolveNotOnProject(await user?.tasks, tasks);
-			const rolesNotOnProject = resolveNotOnProject(await user?.roles, roles)
+			const tasksNotOnProject = resolveNotOnProject(
+				await user?.tasks,
+				tasks
+			);
+			const rolesNotOnProject = resolveNotOnProject(
+				await user?.roles,
+				roles
+			);
 			// FIN DE LA REFACTO
 
 			if (!user.firstName || !user.lastName || !user.email) {
@@ -47,7 +54,7 @@ export class UserResolver {
 				errorHandler(
 					`Role with id ${rolesNotOnProject[0].id} is not referenced on users projects`
 				);
-			}  else if (tasksNotOnProject) {
+			} else if (tasksNotOnProject) {
 				errorHandler(
 					`Role with id ${tasksNotOnProject[0].id} is not referenced on users projects`
 				);
@@ -64,29 +71,34 @@ export class UserResolver {
 	@Mutation(() => BackBonesUser)
 	async updateUser(
 		@Arg("userId") userId: number,
-
 		@Arg("updateUserInput") input: UpdateUserInput
 	) {
 		try {
 			const user = await BackBonesUser.findOneOrFail(userId);
-			const projects = await Project.findByIds(input.projects)
+			const projects = await Project.findByIds(input.projects);
 			//REFACTO A FAIRE
 			const tasks: Task[] = [];
 			const roles: Role[] = [];
 			for (const project of projects) {
-				const projectTasks = await project?.tasks
-				const projectRoles = await project?.roles
-				projectTasks.forEach(task => tasks.push(task))
-				projectRoles.forEach(role => roles.push(role))
+				const projectTasks = await project?.tasks;
+				const projectRoles = await project?.roles;
+				projectTasks.forEach((task) => tasks.push(task));
+				projectRoles.forEach((role) => roles.push(role));
 			}
-			const tasksNotOnProject = resolveNotOnProject(await input?.tasks, tasks);
-			const rolesNotOnProject = resolveNotOnProject(await input?.roles, roles)
+			const tasksNotOnProject = resolveNotOnProject(
+				await input?.tasks,
+				tasks
+			);
+			const rolesNotOnProject = resolveNotOnProject(
+				await input?.roles,
+				roles
+			);
 			// FIN DE LA REFACTO
-			 if (rolesNotOnProject) {
+			if (rolesNotOnProject) {
 				errorHandler(
 					`Role with id ${rolesNotOnProject[0].id} is not referenced on users projects`
 				);
-			}  else if (tasksNotOnProject) {
+			} else if (tasksNotOnProject) {
 				errorHandler(
 					`Role with id ${tasksNotOnProject[0].id} is not referenced on users projects`
 				);

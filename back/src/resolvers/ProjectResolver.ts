@@ -29,6 +29,7 @@ export class ProjectResolver {
 				errorHandler("project title can't be null");
 			}
 			await project.save();
+			// todo: createNotification
 			console.log("Successfully create: ", project);
 			return project;
 		} catch (error) {
@@ -40,13 +41,13 @@ export class ProjectResolver {
 	@Mutation(() => Project)
 	async updateProject(
 		@Arg("projectId") projectId: number,
-
 		@Arg("updateProjectInput") input: UpdateProjectInput
 	) {
 		try {
 			const project = await Project.findOneOrFail(projectId);
 			Object.assign(project, input);
 			await Project.save(project);
+			// todo: createNotification
 			console.log("Successfully update: ", project);
 			return project;
 		} catch (error) {

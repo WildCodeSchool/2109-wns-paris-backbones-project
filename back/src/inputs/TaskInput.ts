@@ -11,6 +11,7 @@ export class TaskInput {
 	@Field()
 	id: number;
 }
+
 @InputType()
 export class CreateTaskInput {
 	@Field()
