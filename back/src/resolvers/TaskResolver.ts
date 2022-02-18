@@ -93,7 +93,7 @@ export class TaskResolver {
 			Object.assign(task, input);
 			await task.save();
 			console.log(
-				`Role: [id: ${task.id}, ${task.title}] was successfully created`
+				`Task: [id: ${task.id}, ${task.title}] was successfully updated`
 			);
 			return await Task.findOne(task.id);
 		} catch (error) {

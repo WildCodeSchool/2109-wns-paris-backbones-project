@@ -10,6 +10,7 @@ import {
 import { Status } from "./Status";
 import { BackBonesUser } from "./User";
 import { Project } from "./Project";
+import {Notification} from "./Notification";
 
 @Entity()
 // @Unique(["title", "project"]) TO MAKE title unique for one project, work with PG but not with SQLITE3
@@ -63,4 +64,11 @@ export class Task extends BaseEntity {
 		nullable: true,
 	})
 	project: Project;
+
+    @Field(() => [Notification], {nullable: true})
+    @ManyToOne(() => Notification, (notification) => notification.task, {
+        lazy: true,
+        nullable: true,
+    })
+    notifications: Notification[];
 }

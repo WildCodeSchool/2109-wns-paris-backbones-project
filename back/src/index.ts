@@ -7,6 +7,7 @@ import { RoleResolver } from "./resolvers/RoleResolver";
 import { ProjectResolver } from "./resolvers/ProjectResolver";
 import { buildSchema } from "type-graphql";
 import { config } from "dotenv";
+import {NotificationResolver} from "./resolvers/NotificationResolver";
 config({ path: `.env.${process.env.NODE_ENV}` });
 
 console.log(`You are in ${process.env.NODE_ENV} environement`);
@@ -33,6 +34,7 @@ async function main() {
 			StatusResolver,
 			RoleResolver,
 			ProjectResolver,
+            NotificationResolver,
 		],
 	});
 	const server = new ApolloServer({

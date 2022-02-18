@@ -9,6 +9,7 @@ import { Role } from "./entities/Role";
 import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
+import {Notification} from "./entities/Notification";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -70,6 +71,7 @@ const projectName = [
 	},
 ];
 
+
 const runSeed = async () => {
 	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
 
@@ -82,6 +84,27 @@ const runSeed = async () => {
 			console.log("synchronizing new DB...")
 			await connection.synchronize();
 			console.log("synchronizing new DB...Done")
+
+            const createNotification = async (users: BackBonesUser[], task?: Task, project?: Project) => {
+                for (const user of users) {
+                    const n = new Notification();
+                    n.created_at = new Date()
+                    n.user = user
+                    if (project) {
+                        n.title = `Welcome to the project: ${project.title}!`
+                        n.description = `You've been added to the project ${project.title}! Keep calm and take your mark`
+                        n.project = project
+                    }
+                    if (task) {
+                        const taskProject = await task?.project;
+                        n.title = `${taskProject.title}: new ${task.title}!`
+                        n.description = `${taskProject.title}: You have a new task: ${task.title}`
+                        n.task = task
+                    }
+                    await connection.manager.save(n);
+                    console.log(`Saved a new Notification: ${n.title}. On user id: ${user.id}`)
+                }
+            }
 
 			// CREATE USERS
 			console.log("CREATE USERS")
@@ -108,8 +131,9 @@ const runSeed = async () => {
 				p.start_date = new Date();
 				p.end_date = new Date();
 				p.users = project != projectName[2] ? users : [];
-				await connection.manager.save(p);
+				const createdProject = await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
+                await createNotification(await p?.users, undefined, createdProject)
 			}
 			const projects = await connection.manager.find(Project);
 
@@ -169,8 +193,9 @@ const runSeed = async () => {
 					t.estimated_time = new Date();
 					t.start_date = new Date();
 					t.end_date = new Date();
-					await connection.manager.save(t);
+					const createdTask = await connection.manager.save(t);
 					console.log(`Saved a new Task: ${t.title}. On project id: ${project.id}`);
+                    await createNotification(await t?.users, createdTask)
 					i++;
 				}
 			}

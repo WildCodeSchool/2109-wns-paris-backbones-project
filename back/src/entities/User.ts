@@ -1,15 +1,16 @@
 import { Field, ObjectType } from "type-graphql";
 import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	ManyToMany,
-	JoinTable,
-	BaseEntity,
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToMany,
+    JoinTable,
+    BaseEntity, ManyToOne,
 } from "typeorm";
 import { Project } from "./Project";
 import { Role } from "./Role";
 import { Task } from "./Task";
+import {Notification} from "./Notification";
 @Entity()
 @ObjectType()
 export class BackBonesUser extends BaseEntity {
@@ -60,4 +61,11 @@ export class BackBonesUser extends BaseEntity {
 	})
 	@JoinTable()
 	projects: Project[];
+
+    @Field(() => [Notification], {nullable: true})
+    @ManyToOne(() => Notification, (notification) => notification.user, {
+        lazy: true,
+        nullable: true,
+    })
+    notifications: Notification[];
 }
