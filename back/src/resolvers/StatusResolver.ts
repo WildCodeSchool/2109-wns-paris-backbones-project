@@ -45,7 +45,7 @@ export class StatusResolver {
 			}
 			await Status.save(status);
 			console.log("Successfully create: ", status);
-			return await Status.findOne(status.id);
+			return await Status.findOneOrFail(status.id);
 		} catch (error) {
 			throw error;
 		}
@@ -78,7 +78,7 @@ export class StatusResolver {
 			await status.save();
 			// todo: createNotification
 			console.log("Successfully update: ", status);
-			return await Status.findOne(statusId);
+			return await Status.findOneOrFail(statusId);
 		} catch (error) {
 			throw error;
 		}

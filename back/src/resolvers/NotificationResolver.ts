@@ -2,7 +2,10 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { errorHandler } from "../utils/errorHandler";
 import { resolveNotOnProject } from "../utils/resolverHelpers";
 import { Notification } from "../entities/Notification";
-import { CreateNotificationInput } from "../inputs/NotificationInput";
+import {
+	CreateNotificationInput,
+	UpdateNotificationInput,
+} from "../inputs/NotificationInput";
 
 @Resolver()
 export class NotificationResolver {
@@ -51,7 +54,29 @@ export class NotificationResolver {
 			}
 			await notification.save();
 			console.log("Successfully create: ", notification);
-			return Notification.findOne(notification.id);
+			return Notification.findOneOrFail(notification.id);
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	//UPDATE
+	@Mutation(() => Notification)
+	async updateNotification(
+		@Arg("notificationId") notificationId: number,
+		@Arg("updateNotificationInput", { nullable: true })
+		input: UpdateNotificationInput
+	) {
+		try {
+			const notification = await Notification.findOneOrFail(
+				notificationId
+			);
+			Object.assign(notification, input);
+			await notification.save();
+			console.log(
+				`Task: [id: ${notification.id}, ${notification.title}] was successfully updated`
+			);
+			return Notification.findOneOrFail(notification.id);
 		} catch (error) {
 			throw error;
 		}

@@ -21,6 +21,9 @@ export class CreateNotificationInput {
 	description: string;
 
 	@Field({ nullable: true })
+	read: boolean;
+
+	@Field({ nullable: true })
 	created_at: Date;
 
 	@Field(() => UserInput)
@@ -42,11 +45,8 @@ export class UpdateNotificationInput {
 	description: string;
 
 	@Field({ nullable: true })
+	read: boolean;
+
+	@Field({ nullable: true })
 	created_at: Date;
-
-	@Field(() => ProjectInput, { nullable: true })
-	project: Project;
-
-	@Field(() => TaskInput, { nullable: true })
-	task: Task;
 }

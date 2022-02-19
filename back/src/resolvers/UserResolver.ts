@@ -2,7 +2,10 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
 import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
 import { errorHandler } from "../utils/errorHandler";
-import { resolveNotOnProject } from "../utils/resolverHelpers";
+import {
+	handleUserNotification,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
 import { Task } from "../entities/Task";
 import { Role } from "../entities/Role";
 import { Project } from "../entities/Project";
@@ -61,7 +64,8 @@ export class UserResolver {
 			}
 			await user.save();
 			console.log("Successfully create: ", user);
-			return user;
+			await handleUserNotification(user, input.tasks, input.projects);
+			return BackBonesUser.findOneOrFail(user.id);
 		} catch (error) {
 			throw error;
 		}
@@ -76,6 +80,7 @@ export class UserResolver {
 		try {
 			const user = await BackBonesUser.findOneOrFail(userId);
 			const projects = await Project.findByIds(input.projects);
+
 			//REFACTO A FAIRE
 			const tasks: Task[] = [];
 			const roles: Role[] = [];
@@ -106,7 +111,8 @@ export class UserResolver {
 			Object.assign(user, input);
 			await user.save();
 			console.log("Successfully update: ", user);
-			return await BackBonesUser.findOne(userId);
+			await handleUserNotification(user, input.tasks, input.projects);
+			return BackBonesUser.findOneOrFail(user.id);
 		} catch (error) {
 			throw error;
 		}

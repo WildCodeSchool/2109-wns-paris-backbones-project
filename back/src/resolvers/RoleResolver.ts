@@ -3,7 +3,12 @@ import { Role } from "../entities/Role";
 import { Status } from "../entities/Status";
 import { CreateRoleInput, UpdateRoleInput } from "../inputs/RoleInput";
 import { errorHandler } from "../utils/errorHandler";
-import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
+import {
+	createNotification,
+	findSameTitle,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
+import { BackBonesUser } from "../entities/User";
 
 @Resolver()
 export class RoleResolver {
@@ -46,8 +51,11 @@ export class RoleResolver {
 			}
 			await Role.save(role);
 			console.log("Successfully create: ", role);
-			// todo: createNotification
-			return await Role.findOne(role.id);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, undefined, project);
+			}
+			return await Role.findOneOrFail(role.id);
 		} catch (error) {
 			throw error;
 		}
@@ -81,7 +89,11 @@ export class RoleResolver {
 			console.log(
 				`Role: [id: ${roleId}, ${role.title}] was successfully created`
 			);
-			return await Role.findOne(roleId);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, undefined, project);
+			}
+			return await Role.findOneOrFail(roleId);
 		} catch (error) {
 			throw error;
 		}

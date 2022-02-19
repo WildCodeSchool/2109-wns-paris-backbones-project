@@ -6,7 +6,7 @@ import { Role } from "./entities/Role";
 import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
-import { Notification } from "./entities/Notification";
+import { createNotification } from "./utils/resolverHelpers";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -94,33 +94,6 @@ const runSeed = async () => {
 			console.log("synchronizing new DB...");
 			await connection.synchronize();
 			console.log("synchronizing new DB...Done");
-
-			const createNotification = async (
-				users: BackBonesUser[],
-				task?: Task,
-				project?: Project
-			) => {
-				for (const user of users) {
-					const n = new Notification();
-					n.created_at = new Date();
-					n.user = user;
-					if (project) {
-						n.title = `Welcome to the project: ${project.title}!`;
-						n.description = `You've been added to the project ${project.title}! Keep calm and take your mark`;
-						n.project = project;
-					}
-					if (task) {
-						const taskProject = await task?.project;
-						n.title = `${taskProject.title}: new ${task.title}!`;
-						n.description = `${taskProject.title}: You have a new task: ${task.title}`;
-						n.task = task;
-					}
-					await connection.manager.save(n);
-					console.log(
-						`Saved a new Notification: ${n.title}. On user id: ${user.id}`
-					);
-				}
-			};
 
 			// CREATE USERS
 			console.log("CREATE USERS");

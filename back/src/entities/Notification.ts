@@ -27,6 +27,10 @@ export class Notification extends BaseEntity {
 	description: string;
 
 	@Field({ nullable: true })
+	@Column({ nullable: true, default: true })
+	read: boolean = false;
+
+	@Field({ nullable: true })
 	@Column({ nullable: true })
 	created_at: Date;
 

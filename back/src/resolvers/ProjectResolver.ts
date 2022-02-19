@@ -2,6 +2,8 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Project } from "../entities/Project";
 import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
 import { errorHandler } from "../utils/errorHandler";
+import { createNotification } from "../utils/resolverHelpers";
+import { BackBonesUser } from "../entities/User";
 
 @Resolver()
 export class ProjectResolver {
@@ -29,9 +31,12 @@ export class ProjectResolver {
 				errorHandler("project title can't be null");
 			}
 			await project.save();
-			// todo: createNotification
 			console.log("Successfully create: ", project);
-			return project;
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, undefined, project);
+			}
+			return Project.findOneOrFail(project.id);
 		} catch (error) {
 			throw error;
 		}
@@ -47,9 +52,12 @@ export class ProjectResolver {
 			const project = await Project.findOneOrFail(projectId);
 			Object.assign(project, input);
 			await Project.save(project);
-			// todo: createNotification
 			console.log("Successfully update: ", project);
-			return project;
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, undefined, project);
+			}
+			return Project.findOneOrFail(project.id);
 		} catch (error) {
 			throw error;
 		}

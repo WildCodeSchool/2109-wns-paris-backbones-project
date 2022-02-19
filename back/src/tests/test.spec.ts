@@ -123,7 +123,6 @@ describe("test Resolvers", () => {
 				response.data?.addUser.id
 			);
 			const id = createdUser?.id;
-			await createdUser?.remove();
 			expect(response.data?.addUser.id).toBe(id);
 		});
 

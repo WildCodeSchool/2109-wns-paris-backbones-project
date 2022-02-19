@@ -2,7 +2,12 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 import { errorHandler } from "../utils/errorHandler";
-import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
+import {
+	createNotification,
+	findSameTitle,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
+import { BackBonesUser } from "../entities/User";
 
 @Resolver()
 export class TaskResolver {
@@ -11,6 +16,7 @@ export class TaskResolver {
 	async getTasks() {
 		return await Task.find();
 	}
+
 	@Query(() => Task)
 	async getTaskById(@Arg("taskId") id: number) {
 		try {
@@ -51,9 +57,12 @@ export class TaskResolver {
 				);
 			}
 			await task.save();
-			// todo: createNotification
 			console.log("Successfully create: ", task);
-			return Task.findOne(task.id);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, task);
+			}
+			return Task.findOneOrFail(task.id);
 		} catch (error) {
 			throw error;
 		}
@@ -63,7 +72,6 @@ export class TaskResolver {
 	@Mutation(() => Task)
 	async updateTask(
 		@Arg("taskId") taskId: number,
-
 		@Arg("updateTaskInput", { nullable: true }) input: UpdateTaskInput
 	) {
 		try {
@@ -93,11 +101,14 @@ export class TaskResolver {
 			}
 			Object.assign(task, input);
 			await task.save();
-			// todo: createNotification
 			console.log(
 				`Task: [id: ${task.id}, ${task.title}] was successfully updated`
 			);
-			return await Task.findOne(task.id);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(users, task);
+			}
+			return Task.findOneOrFail(task.id);
 		} catch (error) {
 			throw error;
 		}
