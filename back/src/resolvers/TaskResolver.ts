@@ -57,10 +57,14 @@ export class TaskResolver {
 				);
 			}
 			await task.save();
-			console.log("Successfully create: ", task);
+			console.log(`Task ${task.id} Created: [project: ${project.title}]`);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, task);
+				await createNotification(
+					`${project.title}: You have a new task: ${task.title}`,
+					users,
+					task
+				);
 			}
 			return Task.findOneOrFail(task.id);
 		} catch (error) {
@@ -101,12 +105,14 @@ export class TaskResolver {
 			}
 			Object.assign(task, input);
 			await task.save();
-			console.log(
-				`Task: [id: ${task.id}, ${task.title}] was successfully updated`
-			);
+			console.log(`Task ${task.id} Updated: [project: ${project.title}]`);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, task);
+				await createNotification(
+					`${project.title}: You have a new task: ${task.title}`,
+					users,
+					task
+				);
 			}
 			return Task.findOneOrFail(task.id);
 		} catch (error) {

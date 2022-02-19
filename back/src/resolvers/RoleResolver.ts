@@ -50,10 +50,15 @@ export class RoleResolver {
 				);
 			}
 			await Role.save(role);
-			console.log("Successfully create: ", role);
+			console.log(`Role ${role.id} Created: [project: ${project.title}]`);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, undefined, project);
+				await createNotification(
+					`${project.title}: Enjoy promotion you're now: ${role.title}`,
+					users,
+					undefined,
+					project
+				);
 			}
 			return await Role.findOneOrFail(role.id);
 		} catch (error) {
@@ -86,12 +91,15 @@ export class RoleResolver {
 			}
 			Object.assign(role, input);
 			await role.save();
-			console.log(
-				`Role: [id: ${roleId}, ${role.title}] was successfully created`
-			);
+			console.log(`Role ${role.id} Updated: [project: ${project.title}]`);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, undefined, project);
+				await createNotification(
+					`${project.title}: your role name change to ${role.title}`,
+					users,
+					undefined,
+					project
+				);
 			}
 			return await Role.findOneOrFail(roleId);
 		} catch (error) {

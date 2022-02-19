@@ -33,6 +33,7 @@ export const resolveNotOnProject = (
 };
 
 export const createNotification = async (
+	description: string,
 	users: BackBonesUser[],
 	task?: Task,
 	project?: Project
@@ -40,21 +41,24 @@ export const createNotification = async (
 	for (const user of users) {
 		const notification = new Notification();
 		notification.created_at = new Date();
+		notification.description = description;
 		notification.user = user;
 		if (project) {
-			notification.title = `Welcome to the project: ${project.title}!`;
-			notification.description = `You've been added to the project ${project.title}! Keep calm and take your mark`;
+			notification.title = `${project.title}`;
 			notification.project = project;
 		}
 		if (task) {
 			const taskProject = await task?.project;
-			notification.title = `${taskProject.title}: new ${task.title}!`;
-			notification.description = `${taskProject.title}: You have a new task: ${task.title}`;
+			notification.title = `${taskProject.title}: ${task.title}!`;
 			notification.task = task;
 		}
 		await notification.save();
 		console.log(
-			`Saved a new Notification: ${notification.title}. On user id: ${user.id}`
+			`Notification ${notification.id} Created! [user: ${user.id} ${
+				project
+					? `for project: ${project.title}`
+					: `for task: ${task?.title}`
+			}]`
 		);
 	}
 };
@@ -67,13 +71,23 @@ export const handleUserNotification = async (
 	if (inputProjects) {
 		const projects = await Project.findByIds(inputProjects);
 		for (const project of projects) {
-			await createNotification([user], undefined, await project);
+			await createNotification(
+				`You've been added to the project ${project.title}! Keep calm and take your mark`,
+				[user],
+				undefined,
+				await project
+			);
 		}
 	}
 	if (inputTasks) {
 		const tasks = await Task.findByIds(inputTasks);
 		for (const task of tasks) {
-			await createNotification([user], task);
+			const taskProject = await task?.project;
+			await createNotification(
+				`${taskProject.title}: You have a new task: ${task.title}`,
+				[user],
+				task
+			);
 		}
 	}
 };

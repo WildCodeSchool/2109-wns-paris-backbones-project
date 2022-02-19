@@ -31,10 +31,17 @@ export class ProjectResolver {
 				errorHandler("project title can't be null");
 			}
 			await project.save();
-			console.log("Successfully create: ", project);
+			console.log(
+				`Project ${project.id} Created: [title: ${project.title}]`
+			);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, undefined, project);
+				await createNotification(
+					`You've been added to the project ${project.title}! Keep calm and take your mark`,
+					users,
+					undefined,
+					project
+				);
 			}
 			return Project.findOneOrFail(project.id);
 		} catch (error) {
@@ -52,10 +59,17 @@ export class ProjectResolver {
 			const project = await Project.findOneOrFail(projectId);
 			Object.assign(project, input);
 			await Project.save(project);
-			console.log("Successfully update: ", project);
+			console.log(
+				`Project ${project.id} Updated: [title: ${project.title}]`
+			);
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
-				await createNotification(users, undefined, project);
+				await createNotification(
+					`You've been added to the project ${project.title}! Keep calm and take your mark`,
+					users,
+					undefined,
+					project
+				);
 			}
 			return Project.findOneOrFail(project.id);
 		} catch (error) {

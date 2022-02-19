@@ -10,7 +10,7 @@ import { createNotification } from "./utils/resolverHelpers";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
-console.log(`seedDatabase starting in ${process.env.NODE_ENV} environement`);
+console.log(`seedDatabase starting in ${process.env.NODE_ENV} environment`);
 
 //Create test DB
 const Database = require("better-sqlite3");
@@ -123,6 +123,7 @@ const runSeed = async () => {
 				const createdProject = await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
 				await createNotification(
+					`You've been added to the project ${project.title}! Keep calm and take your mark`,
 					await p?.users,
 					undefined,
 					createdProject
@@ -200,7 +201,11 @@ const runSeed = async () => {
 					console.log(
 						`Saved a new Task: ${t.title}. On project id: ${project.id}`
 					);
-					await createNotification(await t?.users, createdTask);
+					await createNotification(
+						`${project.title}: You have a new task: ${t.title}`,
+						await t?.users,
+						createdTask
+					);
 					i++;
 				}
 			}

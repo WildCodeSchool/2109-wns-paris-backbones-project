@@ -32,6 +32,8 @@ export class NotificationResolver {
 		try {
 			const notification = Notification.create(input);
 			const user = await notification?.user;
+			const project = await notification?.project;
+			const task = await notification?.task;
 			const { projects, tasks } = await user;
 			const userNotOnProject = resolveNotOnProject(
 				[input?.project],
@@ -53,7 +55,13 @@ export class NotificationResolver {
 				);
 			}
 			await notification.save();
-			console.log("Successfully create: ", notification);
+			console.log(
+				`Notification ${notification.id} Created! [user: ${user.id} ${
+					project
+						? `for project: ${project.title}`
+						: `for task: ${task.title}`
+				}]`
+			);
 			return Notification.findOneOrFail(notification.id);
 		} catch (error) {
 			throw error;
@@ -71,10 +79,17 @@ export class NotificationResolver {
 			const notification = await Notification.findOneOrFail(
 				notificationId
 			);
+			const user = await notification?.user;
+			const project = await notification?.project;
+			const task = await notification?.task;
 			Object.assign(notification, input);
 			await notification.save();
 			console.log(
-				`Task: [id: ${notification.id}, ${notification.title}] was successfully updated`
+				`Notification ${notification.id} Updated! [user: ${user.id} ${
+					project
+						? `for project: ${project.title}`
+						: `for task: ${task.title}`
+				}]`
 			);
 			return Notification.findOneOrFail(notification.id);
 		} catch (error) {

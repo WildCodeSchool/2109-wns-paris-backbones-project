@@ -63,7 +63,9 @@ export class UserResolver {
 				);
 			}
 			await user.save();
-			console.log("Successfully create: ", user);
+			console.log(
+				`User ${user.id} Created: [firstName: ${user.firstName}]`
+			);
 			await handleUserNotification(user, input.tasks, input.projects);
 			return BackBonesUser.findOneOrFail(user.id);
 		} catch (error) {
@@ -110,7 +112,9 @@ export class UserResolver {
 			}
 			Object.assign(user, input);
 			await user.save();
-			console.log("Successfully update: ", user);
+			console.log(
+				`User ${user.id} Updated: [firstName: ${user.firstName}]`
+			);
 			await handleUserNotification(user, input.tasks, input.projects);
 			return BackBonesUser.findOneOrFail(user.id);
 		} catch (error) {

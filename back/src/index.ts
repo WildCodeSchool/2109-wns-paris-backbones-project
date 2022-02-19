@@ -11,7 +11,7 @@ import { NotificationResolver } from "./resolvers/NotificationResolver";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
-console.log(`You are in ${process.env.NODE_ENV} environement`);
+console.log(`You are in ${process.env.NODE_ENV} environment`);
 
 async function main() {
 	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
