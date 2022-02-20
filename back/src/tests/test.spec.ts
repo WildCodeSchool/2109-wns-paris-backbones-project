@@ -251,7 +251,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect addTask users return users added on a task", async () => {
 			const response = await server.executeOperation(
-				ADD_TASK("another new task for project 2", 2, 8)
+				ADD_TASK("another new task for project 2", 2, 8, [{ id: 4 }])
 			);
 			const newTask = await Task.findOne(response.data?.addTask.id);
 			const taskUsers = await newTask?.users;

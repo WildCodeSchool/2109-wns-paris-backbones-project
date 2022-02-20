@@ -9,6 +9,7 @@ import {
 	resolveNotOnProject,
 } from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
+import { Project } from "../entities/Project";
 
 @Resolver()
 export class RoleResolver {
@@ -32,15 +33,13 @@ export class RoleResolver {
 	async addRole(@Arg("createRoleInput") input: CreateRoleInput) {
 		try {
 			const role = await Role.create(input);
-			const project = await role?.project;
-			const { roles, users } = await project;
-			const userNotOnProject = resolveNotOnProject(
-				input?.users,
-				await users
-			);
+			const project = await Project.findOneOrFail(input.project);
+			const roles = await project?.roles;
+			const users = await project?.users;
+			const userNotOnProject = resolveNotOnProject(input?.users, users);
 			if (!role.title) {
 				errorHandler("role title can't be null");
-			} else if (findSameTitle(await roles, role.title)) {
+			} else if (findSameTitle(roles, role.title)) {
 				errorHandler(
 					`Role with title ${role.title} already exists on this project`
 				);
@@ -74,8 +73,9 @@ export class RoleResolver {
 	) {
 		try {
 			const role = await Role.findOneOrFail(roleId);
-			const project = await role?.project;
-			const { roles, users } = project;
+			const project = await Project.findOneOrFail(role.project);
+			const roles = await project?.roles;
+			const users = await project?.users;
 			const usersNotOnProject = resolveNotOnProject(
 				input.users,
 				await users

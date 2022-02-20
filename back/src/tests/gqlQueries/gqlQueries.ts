@@ -137,9 +137,9 @@ export const GET_TASK_BY_ID = (id: Number) => {
 };
 
 export const ADD_TASK = (
-	taskName: String,
+	taskName: string,
 	projectId: number = 1,
-	statusId: Number = 3,
+	statusId: number = 3,
 	users: UserInput[] | undefined = undefined
 ) => {
 	const mutationAddTask: DocumentNode = gql`

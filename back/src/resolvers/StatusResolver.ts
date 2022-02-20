@@ -2,7 +2,12 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { Status } from "../entities/Status";
 import { CreateStatusInput, UpdateStatusInput } from "../inputs/StatusInput";
 import { errorHandler } from "../utils/errorHandler";
-import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
+import {
+	createNotification,
+	findSameTitle,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
+import { Project } from "../entities/Project";
 
 @Resolver()
 export class StatusResolver {
@@ -26,15 +31,13 @@ export class StatusResolver {
 	async addStatus(@Arg("createStatusInput") input: CreateStatusInput) {
 		try {
 			const status = await Status.create(input);
-			const project = await status?.project;
-			const { statuses, tasks } = await project;
-			const taskNotOnProject = resolveNotOnProject(
-				input.tasks,
-				await tasks
-			);
+			const project = await Project.findOneOrFail(input.project);
+			const statuses = await project?.statuses;
+			const tasks = await project?.tasks;
+			const taskNotOnProject = resolveNotOnProject(input.tasks, tasks);
 			if (!status.title) {
 				errorHandler("status title can't be null");
-			} else if (findSameTitle(await statuses, status.title)) {
+			} else if (findSameTitle(statuses, status.title)) {
 				errorHandler(
 					`Status with title ${status.title} already exists on this project`
 				);
@@ -47,6 +50,14 @@ export class StatusResolver {
 			console.log(
 				`Status ${status.id} Created: [project: ${project.title}]`
 			);
+			for (const task of tasks) {
+				const taskUsers = await task?.users;
+				await createNotification(
+					`${task.title}: status change to ${status.title}`,
+					taskUsers,
+					task
+				);
+			}
 			return await Status.findOneOrFail(status.id);
 		} catch (error) {
 			throw error;
@@ -61,13 +72,11 @@ export class StatusResolver {
 	) {
 		try {
 			const status = await Status.findOneOrFail(statusId);
-			const project = await status?.project;
-			const { statuses, tasks } = await project;
-			const taskNotOnProject = resolveNotOnProject(
-				input.tasks,
-				await tasks
-			);
-			if (findSameTitle(await statuses, input.title, statusId)) {
+			const project = await Project.findOneOrFail(status.project);
+			const statuses = await project?.statuses;
+			const tasks = await project?.tasks;
+			const taskNotOnProject = resolveNotOnProject(input.tasks, tasks);
+			if (findSameTitle(statuses, input.title, statusId)) {
 				errorHandler(
 					`Status with title ${input.title} already exists on this project`
 				);
@@ -78,10 +87,17 @@ export class StatusResolver {
 			}
 			Object.assign(status, input);
 			await status.save();
-			// todo: createNotification
 			console.log(
 				`Status ${status.id} Updated: [project: ${project.title}]`
 			);
+			for (const task of tasks) {
+				const taskUsers = await task?.users;
+				await createNotification(
+					`${task.title}: status change to ${status.title}`,
+					taskUsers,
+					task
+				);
+			}
 			return await Status.findOneOrFail(statusId);
 		} catch (error) {
 			throw error;

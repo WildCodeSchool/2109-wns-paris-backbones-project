@@ -8,6 +8,7 @@ import {
 	resolveNotOnProject,
 } from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
+import { Project } from "../entities/Project";
 
 @Resolver()
 export class TaskResolver {
@@ -31,19 +32,18 @@ export class TaskResolver {
 	async addTask(@Arg("createTaskInput") input: CreateTaskInput) {
 		try {
 			const task = Task.create(input);
-			const project = await task?.project;
-			const { users, statuses, tasks } = await project;
-			const userNotOnProject = resolveNotOnProject(
-				input?.users,
-				await users
-			);
+			const project = await Project.findOneOrFail(input.project);
+			const users = await project?.users;
+			const statuses = await project?.statuses;
+			const tasks = await project?.tasks;
+			const userNotOnProject = resolveNotOnProject(input?.users, users);
 			const statusNotOnProject = resolveNotOnProject(
 				[input?.status],
-				await statuses
+				statuses
 			);
 			if (!task.title) {
 				errorHandler("task title can't be null");
-			} else if (findSameTitle(await tasks, task.title)) {
+			} else if (findSameTitle(tasks, task.title)) {
 				errorHandler(
 					`Task with title ${task.title} already exists on this project`
 				);
@@ -80,15 +80,14 @@ export class TaskResolver {
 	) {
 		try {
 			const task = await Task.findOneOrFail(taskId);
-			const project = await task?.project;
-			const { users, statuses, tasks } = await project;
-			const usersNotOnProject = resolveNotOnProject(
-				input.users,
-				await users
-			);
+			const project = await Project.findOneOrFail(task.project);
+			const users = await project?.users;
+			const statuses = await project?.statuses;
+			const tasks = await project?.tasks;
+			const usersNotOnProject = resolveNotOnProject(input.users, users);
 			const statusesNotOnProject = resolveNotOnProject(
 				[input?.status],
-				await statuses
+				statuses
 			);
 			if (usersNotOnProject) {
 				errorHandler(
@@ -98,7 +97,7 @@ export class TaskResolver {
 				errorHandler(
 					`Status with id ${input?.status.id} is not referenced on the project ${project?.id}`
 				);
-			} else if (findSameTitle(await tasks, input.title, taskId)) {
+			} else if (findSameTitle(tasks, input.title, taskId)) {
 				errorHandler(
 					`Task with title ${input.title} already exists on this project`
 				);
