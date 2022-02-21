@@ -6,7 +6,6 @@ import {
 	ManyToMany,
 	OneToMany,
 	BaseEntity,
-	ManyToOne,
 } from "typeorm";
 
 import { Status } from "./Status";
@@ -18,7 +17,6 @@ import { Notification } from "./Notification";
 @Entity()
 @ObjectType()
 export class Project extends BaseEntity {
-	// Simple Fields
 	@Field()
 	@PrimaryGeneratedColumn()
 	id: number;
@@ -43,7 +41,6 @@ export class Project extends BaseEntity {
 	@Column({ nullable: true })
 	end_date: Date;
 
-	// Relations
 	@Field(() => [Status], { nullable: true })
 	@OneToMany(() => Status, (status) => status.project, {
 		lazy: true,
@@ -73,7 +70,7 @@ export class Project extends BaseEntity {
 	roles: Role[];
 
 	@Field(() => [Notification], { nullable: true })
-	@ManyToOne(() => Notification, (notification) => notification.project, {
+	@OneToMany(() => Notification, (notification) => notification.project, {
 		lazy: true,
 		nullable: true,
 	})
