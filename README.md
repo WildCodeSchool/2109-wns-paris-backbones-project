@@ -2,7 +2,7 @@
 
 The best ways to manage all your projects. JIRA and ASANA suck.
 
-## Desktop
+## DESKTOP
 ### Installation - dev
 #### Follow those steps to run the project
 
