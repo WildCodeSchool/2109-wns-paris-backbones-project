@@ -7,7 +7,7 @@
 	"scripts": {
 		"build": "tsc",
 		"start": "NODE_ENV=prod node build/index.js",
-		"dev": "NODE_ENV=prod ts-node src/index.ts",
+		"dev": "NODE_ENV=prod nodemon src/index.ts",
 		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",
 		"seed:dev": "NODE_ENV=prod ts-node src/seedDatabase.ts",
 		"seed:prod": "NODE_ENV=prod node build/seedDatabase.js",
@@ -22,6 +22,7 @@
 		"eslint": "^8.1.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
+		"nodemon": "^2.0.15",
 		"prettier": "^2.4.1",
 		"ts-node-dev": "^1.1.8",
 		"typeorm-uml": "^1.6.4"

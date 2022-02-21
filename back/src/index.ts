@@ -7,22 +7,24 @@ import { RoleResolver } from "./resolvers/RoleResolver";
 import { ProjectResolver } from "./resolvers/ProjectResolver";
 import { buildSchema } from "type-graphql";
 import { config } from "dotenv";
+import { NotificationResolver } from "./resolvers/NotificationResolver";
+
 config({ path: `.env.${process.env.NODE_ENV}` });
 
-console.log(`You are in ${process.env.NODE_ENV} environement`);
+console.log(`You are in ${process.env.NODE_ENV} environment`);
 
 async function main() {
 	const connectionOptions = await getConnectionOptions(process.env.DB_NAME);
 
-	let retries = 3
+	let retries = 3;
 	while (retries) {
 		try {
 			await createConnection({ ...connectionOptions, name: "default" });
 			break;
-		} catch (err){
-			console.log(err)
+		} catch (err) {
+			console.log(err);
 			retries -= 1;
-			await new Promise(res => setTimeout(res, 5000));
+			await new Promise((res) => setTimeout(res, 5000));
 		}
 	}
 
@@ -33,6 +35,7 @@ async function main() {
 			StatusResolver,
 			RoleResolver,
 			ProjectResolver,
+			NotificationResolver,
 		],
 	});
 	const server = new ApolloServer({
@@ -41,4 +44,5 @@ async function main() {
 	await server.listen(4000);
 	console.log("Apollo Server has started! visit: http://localhost:4000/");
 }
+
 main();

@@ -6,12 +6,14 @@ import {
 	ManyToMany,
 	OneToMany,
 	BaseEntity,
+	ManyToOne,
 } from "typeorm";
 
 import { Status } from "./Status";
 import { Task } from "./Task";
 import { BackBonesUser } from "./User";
 import { Role } from "./Role";
+import { Notification } from "./Notification";
 
 @Entity()
 @ObjectType()
@@ -69,4 +71,11 @@ export class Project extends BaseEntity {
 		nullable: true,
 	})
 	roles: Role[];
+
+	@Field(() => [Notification], { nullable: true })
+	@ManyToOne(() => Notification, (notification) => notification.project, {
+		lazy: true,
+		nullable: true,
+	})
+	notifications: Notification[];
 }

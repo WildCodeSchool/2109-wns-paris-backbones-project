@@ -123,7 +123,6 @@ describe("test Resolvers", () => {
 				response.data?.addUser.id
 			);
 			const id = createdUser?.id;
-			await createdUser?.remove();
 			expect(response.data?.addUser.id).toBe(id);
 		});
 
@@ -143,14 +142,26 @@ describe("test Resolvers", () => {
 
 		it("test mutation addUser expect user rejected because tasks not on users projects", async () => {
 			const response = await server.executeOperation(
-				ADD_USER("myriou@gmail.com", "Hyyyyy", [{id: 1},{id: 2}], [{id: 3}, {id: 9}], [{id: 4}, {id: 14}])
+				ADD_USER(
+					"myriou@gmail.com",
+					"Hyyyyy",
+					[{ id: 1 }, { id: 2 }],
+					[{ id: 3 }, { id: 9 }],
+					[{ id: 4 }, { id: 14 }]
+				)
 			);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation addUser expect user rejected because roles not on users projects", async () => {
 			const response = await server.executeOperation(
-				ADD_USER("myriou@gmail.com", "Hyyyyy", [{id: 1}], [{id: 9}], [{id: 4}, {id: 5}])
+				ADD_USER(
+					"myriou@gmail.com",
+					"Hyyyyy",
+					[{ id: 1 }],
+					[{ id: 9 }],
+					[{ id: 4 }, { id: 5 }]
+				)
 			);
 			expect(response.errors).toBeTruthy();
 		});
@@ -173,14 +184,26 @@ describe("test Resolvers", () => {
 
 		it("test mutation UpdateUser expect user rejected because tasks not on users projects", async () => {
 			const response = await server.executeOperation(
-				UPDATE_USER(3, "Yo firstname", [{id: 1}], [{id: 3}, {id: 1}], [{id: 4}, {id: 14}])
+				UPDATE_USER(
+					3,
+					"Yo firstname",
+					[{ id: 1 }],
+					[{ id: 3 }, { id: 1 }],
+					[{ id: 4 }, { id: 14 }]
+				)
 			);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation UpdateUser expect user rejected because roles not on users projects", async () => {
 			const response = await server.executeOperation(
-				UPDATE_USER(3, "Miche miche", [{id: 2}], [{id: 2}], [{id: 6}, {id: 7}])
+				UPDATE_USER(
+					3,
+					"Miche miche",
+					[{ id: 2 }],
+					[{ id: 2 }],
+					[{ id: 6 }, { id: 7 }]
+				)
 			);
 			expect(response.errors).toBeTruthy();
 		});
@@ -228,7 +251,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect addTask users return users added on a task", async () => {
 			const response = await server.executeOperation(
-				ADD_TASK("another new task for project 2", 2, 8)
+				ADD_TASK("another new task for project 2", 2, 8, [{ id: 4 }])
 			);
 			const newTask = await Task.findOne(response.data?.addTask.id);
 			const taskUsers = await newTask?.users;

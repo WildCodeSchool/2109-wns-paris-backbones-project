@@ -11,6 +11,7 @@ export class UserInput {
 	@Field()
 	id: number;
 }
+
 @InputType()
 export class CreateUserInput {
 	@Field()

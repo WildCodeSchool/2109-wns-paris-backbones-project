@@ -3,7 +3,13 @@ import { Role } from "../entities/Role";
 import { Status } from "../entities/Status";
 import { CreateRoleInput, UpdateRoleInput } from "../inputs/RoleInput";
 import { errorHandler } from "../utils/errorHandler";
-import { findSameTitle, resolveNotOnProject } from "../utils/resolverHelpers";
+import {
+	createNotification,
+	findSameTitle,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
+import { BackBonesUser } from "../entities/User";
+import { Project } from "../entities/Project";
 
 @Resolver()
 export class RoleResolver {
@@ -12,6 +18,7 @@ export class RoleResolver {
 	async getRoles() {
 		return await Role.find();
 	}
+
 	@Query(() => Status)
 	async getRoleById(@Arg("roleId") roleId: number) {
 		try {
@@ -26,15 +33,13 @@ export class RoleResolver {
 	async addRole(@Arg("createRoleInput") input: CreateRoleInput) {
 		try {
 			const role = await Role.create(input);
-			const project = await role?.project;
-			const { roles, users } = await project;
-			const userNotOnProject = resolveNotOnProject(
-				input?.users,
-				await users
-			);
+			const project = await Project.findOneOrFail(input.project);
+			const roles = await project?.roles;
+			const users = await project?.users;
+			const userNotOnProject = resolveNotOnProject(input?.users, users);
 			if (!role.title) {
 				errorHandler("role title can't be null");
-			} else if (findSameTitle(await roles, role.title)) {
+			} else if (findSameTitle(roles, role.title)) {
 				errorHandler(
 					`Role with title ${role.title} already exists on this project`
 				);
@@ -44,8 +49,17 @@ export class RoleResolver {
 				);
 			}
 			await Role.save(role);
-			console.log("Successfully create: ", role);
-			return await Role.findOne(role.id);
+			console.log(`Role ${role.id} Created: [project: ${project.title}]`);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(
+					`${project.title}: Enjoy promotion you're now: ${role.title}`,
+					users,
+					undefined,
+					project
+				);
+			}
+			return await Role.findOneOrFail(role.id);
 		} catch (error) {
 			throw error;
 		}
@@ -55,13 +69,13 @@ export class RoleResolver {
 	@Mutation(() => Role)
 	async updateRole(
 		@Arg("roleId") roleId: number,
-
 		@Arg("updateRoleInput", { nullable: true }) input: UpdateRoleInput
 	) {
 		try {
 			const role = await Role.findOneOrFail(roleId);
-			const project = await role?.project;
-			const { roles, users } = project;
+			const project = await Project.findOneOrFail(role.project);
+			const roles = await project?.roles;
+			const users = await project?.users;
 			const usersNotOnProject = resolveNotOnProject(
 				input.users,
 				await users
@@ -77,10 +91,17 @@ export class RoleResolver {
 			}
 			Object.assign(role, input);
 			await role.save();
-			console.log(
-				`Role: [id: ${roleId}, ${role.title}] was successfully created`
-			);
-			return await Role.findOne(roleId);
+			console.log(`Role ${role.id} Updated: [project: ${project.title}]`);
+			if (input.users) {
+				const users = await BackBonesUser.findByIds(input.users);
+				await createNotification(
+					`${project.title}: your role name change to ${role.title}`,
+					users,
+					undefined,
+					project
+				);
+			}
+			return await Role.findOneOrFail(roleId);
 		} catch (error) {
 			throw error;
 		}
