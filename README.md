@@ -1,9 +1,10 @@
 # Ticket App | Project Manager
 
-The best ways to manage all your projects. JIRA and ASANA sucks.
+The best ways to manage all your projects. JIRA and ASANA suck.
 
-## Installation - dev
-### Follow those steps to run the project
+## Desktop
+### Installation - dev
+#### Follow those steps to run the project
 
 Make sure you have .env files in the /back folder
 
@@ -16,13 +17,39 @@ Back: http://localhost:4000/
 Front: http://localhost:3000/
 
 
-## Installation - prod
-### Follow those steps to run the project
+### Installation - prod
+#### Follow those steps to run the project
 
 Make sure you have .env files in the /back folder
 
 ```bash
 docker-compose up --build
+```
+
+
+## MOBILE
+
+### Installation - mobile
+#### Follow those steps to run the project
+
+
+Run these commands to install mobile dependencies
+```bash
+cd mobile
+yarn
+```
+
+ Start the dev mobile app :
+```bash
+yarn start
+```
+
+Don't forget to start the back dev server as well
+```bash
+# at the root of the project
+# Don't forget to add the .env files
+
+docker-compose -f docker-compose-dev.yml up --build
 ```
 
 ## Tests
