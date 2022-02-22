@@ -1,12 +1,10 @@
 import { type GestureResponderEvent, StyleSheet } from "react-native";
-import tw from "../lib/tailwind";
-
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
+import {  View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { gql, useQuery } from "@apollo/client";
-import GradientWrapper from "../components/GradientWrapper";
 import { Btn } from "../components/Btn";
+import Reminder from "../components/Reminder";
+import Accordion from "../components/Accordion";
 
 const GET_DATA = gql`
 	query GetData {
@@ -78,24 +76,20 @@ export default function TabOneScreen({
 
 	return (
 		<View style={styles.container}>
-			<GradientWrapper gradientName={"primary-linear"}>
-				<Text style={{ ...styles.title, ...tw`font-main-extralight` }}>
-					{!loading && users[0].firstName}
-				</Text>
-			</GradientWrapper>
-
-			<Btn
-				buttonType={"enabled"}
-				content={"Test text youpi"}
-				onPress={onPress("blablabli")}
-			/>
+            <Reminder />
 
 			<View
 				style={styles.separator}
-				lightColor="#eee"
-				darkColor="rgba(255,255,255,0.1)"
+				lightColor="#252525"
+				darkColor="#FFFFFF"
 			/>
-			<EditScreenInfo path="/screens/TabOneScreen.tsx" />
+            <Accordion title={"Tasks"}>
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+            </Accordion>
 		</View>
 	);
 }
