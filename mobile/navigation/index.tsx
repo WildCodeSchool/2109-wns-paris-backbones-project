@@ -88,10 +88,7 @@ function BottomTabNavigator() {
 	return (
 		<BottomTab.Navigator
 			initialRouteName="TabOne"
-			tabBar={(props: BottomTabBarProps) => {
-				console.log(props);
-				return <TabBar {...props} />;
-			}}
+			tabBar={(props: BottomTabBarProps) => <TabBar {...props} />}
 			screenOptions={({
 				navigation,
 			}: RootTabScreenProps<keyof RootTabParamList>) => ({
