@@ -13,12 +13,8 @@ const iconsPerRoute = {
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 	const focusedOptions = descriptors[state.routes[state.index].key].options;
-	console.log(Object.keys(focusedOptions));
-	if (
-		(focusedOptions as { tabBarVisible: boolean }).tabBarVisible === false
-	) {
+	if ((focusedOptions as { tabBarVisible: boolean }).tabBarVisible === false)
 		return null;
-	}
 
 	return (
 		<View
