@@ -9,110 +9,109 @@ import GradientWrapper from "../components/GradientWrapper";
 import { Btn } from "../components/Btn";
 
 const GET_DATA = gql`
-  query GetData {
-    getProjects {
-      title
-      id
-      description
-      statuses {
-        title
-      }
-      tasks {
-        id
-      }
-      users {
-        id
-      }
-    }
-    getTasks {
-      id
-      title
-      description
-      effective_time
-      estimated_time
-      start_date
-      end_date
-      status {
-        title
-      }
-      users {
-        id
-      }
-      project {
-        id
-      }
-    }
-    getUsers {
-      id
-      firstName
-      projects {
-        id
-      }
-      tasks {
-        id
-      }
-      lastName
-      email
-      avatar
-      password
-      roles {
-        title
-      }
-    }
-  }
+	query GetData {
+		getProjects {
+			title
+			id
+			description
+			statuses {
+				title
+			}
+			tasks {
+				id
+			}
+			users {
+				id
+			}
+		}
+		getTasks {
+			id
+			title
+			description
+			effective_time
+			estimated_time
+			start_date
+			end_date
+			status {
+				title
+			}
+			users {
+				id
+			}
+			project {
+				id
+			}
+		}
+		getUsers {
+			id
+			firstName
+			projects {
+				id
+			}
+			tasks {
+				id
+			}
+			lastName
+			email
+			avatar
+			password
+			roles {
+				title
+			}
+		}
+	}
 `;
 
 const onPress = (text: string) => (event: GestureResponderEvent) => {
-  console.log('text', text)
-}
+	console.log("text", text);
+};
 
 export default function TabOneScreen({
-  navigation,
+	navigation,
 }: RootTabScreenProps<"TabOne">) {
-  const { loading, error, data } = useQuery(GET_DATA);
-  const {
-    getProjects: projects,
-    getUsers: users,
-    getTasks: tasks,
-  } = data ?? {};
+	const { loading, error, data } = useQuery(GET_DATA);
+	const {
+		getProjects: projects,
+		getUsers: users,
+		getTasks: tasks,
+	} = data ?? {};
 
-  return (
-    <View style={styles.container}>
+	return (
+		<View style={styles.container}>
+			<GradientWrapper gradientName={"primary-linear"}>
+				<Text style={{ ...styles.title, ...tw`font-main-extralight` }}>
+					{!loading && users[0].firstName}
+				</Text>
+			</GradientWrapper>
 
-      <GradientWrapper gradientName={"primary-linear"} >
-        <Text style={{ ...styles.title, ...tw`font-main-extralight`}}>
-          {!loading && users[0].firstName}
-        </Text>
-      </GradientWrapper>
+			<Btn
+				buttonType={"enabled"}
+				content={"Test text youpi"}
+				onPress={onPress("blablabli")}
+			/>
 
-      <Btn 
-        buttonType={'enabled'}
-        content={'Test text youpi'}
-        onPress={onPress('blablabli')}
-      />
-
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-    </View>
-  );
+			<View
+				style={styles.separator}
+				lightColor="#eee"
+				darkColor="rgba(255,255,255,0.1)"
+			/>
+			<EditScreenInfo path="/screens/TabOneScreen.tsx" />
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
+	container: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	title: {
+		fontSize: 20,
+	},
+	separator: {
+		marginVertical: 30,
+		height: 1,
+		width: "80%",
+	},
 });
