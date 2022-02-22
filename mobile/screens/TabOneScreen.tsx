@@ -89,6 +89,38 @@ export default function TabOneScreen({
                     content={"Test text youpi"}
                     onPress={onPress("blablabli")}
                 />
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+            </Accordion>
+            <Accordion title={"Projects"}>
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
+                <Btn
+                    buttonType={"enabled"}
+                    content={"Test text youpi"}
+                    onPress={onPress("blablabli")}
+                />
             </Accordion>
 		</View>
 	);
@@ -98,7 +130,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: "center",
-		justifyContent: "center",
 	},
 	title: {
 		fontSize: 20,

@@ -13,34 +13,36 @@ const Accordion = ({ title, children }: accordionProps) => {
 	const [expanded, setExpanded] = useState(false);
 
 	const expandAccordion = () => {
-		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-		console.log(expanded);
+		LayoutAnimation.configureNext(
+			LayoutAnimation.create(700, "easeOut", "opacity")
+		);
 		setExpanded(!expanded);
 	};
 	return (
 		<>
-			<View style={tw`flex-row justify-between w-100`}>
-				<View>
+			<View style={tw`flex-row justify-between w-100 h-20`}>
+				<View style={tw`justify-center`}>
 					<Text style={tw`font-main-bold text-2xl`}>{title}</Text>
 				</View>
 				<TouchableOpacity
-					style={tw`flex-row`}
+					style={tw`justify-center`}
 					onPress={() => expandAccordion()}
 				>
-					<Text style={tw`text-2xl font-main-light`}>
-						{" "}
-						View More{" "}
-					</Text>
-					<MaterialIcons
-						style={tw`text-4xl leading-1
-					`}
-						color={tw.color("light-light")}
-						name={
-							expanded
-								? "keyboard-arrow-up"
-								: "keyboard-arrow-down"
-						}
-					/>
+					<View style={tw`flex-row`}>
+						<Text style={tw`text-2xl font-main-light `}>
+							{" "}
+							View More{" "}
+						</Text>
+						<MaterialIcons
+							style={tw`text-4xl leading-1`}
+							color={tw.color("light-light")}
+							name={
+								expanded
+									? "keyboard-arrow-up"
+									: "keyboard-arrow-down"
+							}
+						/>
+					</View>
 				</TouchableOpacity>
 			</View>
 			{expanded && children}
