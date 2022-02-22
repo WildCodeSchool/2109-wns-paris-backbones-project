@@ -32,6 +32,7 @@
     "expo-web-browser": "~10.1.0",
     "graphql": "^16.3.0",
     "metro-config": "^0.68.0",
+    "moment": "^2.29.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
