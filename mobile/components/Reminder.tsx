@@ -1,9 +1,10 @@
 import { Text } from "./Themed";
 import { gql, useQuery } from "@apollo/client";
-import { FlatList, TouchableHighlight, View } from "react-native";
+import { FlatList, View } from "react-native";
 import tw from "../lib/tailwind";
 import GradientWrapper from "./GradientWrapper";
-import moment from "moment";
+import { format } from "date-fns";
+import { useState } from "react";
 
 export const GET_USER_BY_ID = gql`
   query GetUserById($userId: Float!) {
@@ -20,7 +21,9 @@ export const GET_USER_BY_ID = gql`
 `;
 
 const Reminder = () => {
-  const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+  const [width, setWidth] = useState(280);
+
+  const { loading, data } = useQuery(GET_USER_BY_ID, {
     variables: {
       userId: 1,
     },
@@ -29,18 +32,23 @@ const Reminder = () => {
   if (loading) {
     return <Text>LOADING</Text>;
   } else {
-    console.log(data);
     return (
       <GradientWrapper
         gradientName={"primary-linear"}
         style={tw`p-2 max-w-sm rounded-lg w-5/6`}
       >
-        <View style={tw` flex-row justify-between`}>
+        <View
+          style={tw` flex-row justify-between`}
+          onLayout={(event) => {
+            const { width } = event.nativeEvent.layout;
+            setWidth((width * 5) / 6);
+          }}
+        >
           <Text style={tw`mb-2 text-2xl font-main-bold text-light-light`}>
             Reminder
           </Text>
           <Text style={tw`mb-2 text-2xl font-main-light text-light-light`}>
-            {moment().format("ddd DD MMM")}
+            {format(new Date(), "E dd MMM")}
           </Text>
         </View>
         <View style={tw`w-5/6`}>
@@ -52,7 +60,9 @@ const Reminder = () => {
             legacyImplementation={false}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <View style={tw`pr-32 my-10`}>
+              <View
+                style={{ width: width, height: 120, justifyContent: "center" }}
+              >
                 <Text
                   style={tw`mb-2 text-2xl font-main-light text-light-light`}
                 >
