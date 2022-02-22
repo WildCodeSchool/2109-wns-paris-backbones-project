@@ -1,6 +1,7 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import tw from "../lib/tailwind";
+import { Style } from "twrnc/dist/esm/types";
 
 const config = {
   "primary-linear": [tw.color("primary-medium"), tw.color("primary-dark")] as [
@@ -20,14 +21,16 @@ const config = {
 interface IProps {
   gradientName: keyof typeof config;
   children: JSX.Element[] | JSX.Element;
+  style?: Style;
 }
 
-const GradientWrapper = ({ gradientName, children }: IProps) => {
+const GradientWrapper = ({ gradientName, children, style }: IProps) => {
   return (
     <LinearGradient
       colors={config[gradientName]}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
+      style={style}
     >
       {children}
     </LinearGradient>
