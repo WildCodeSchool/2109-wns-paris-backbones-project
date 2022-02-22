@@ -13,6 +13,7 @@ import {
   Roboto_300Light,
 } from "@expo-google-fonts/roboto";
 import AppLoading from "expo-app-loading";
+
 const { manifest } = Constants;
 
 const api =

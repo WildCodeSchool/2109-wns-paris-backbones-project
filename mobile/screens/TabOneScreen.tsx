@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { type GestureResponderEvent, StyleSheet } from "react-native";
 import tw from "../lib/tailwind";
 
 import EditScreenInfo from "../components/EditScreenInfo";
@@ -6,6 +6,7 @@ import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 import { gql, useQuery } from "@apollo/client";
 import GradientWrapper from "../components/GradientWrapper";
+import { Btn } from "../components/Btn";
 
 const GET_DATA = gql`
   query GetData {
@@ -61,6 +62,10 @@ const GET_DATA = gql`
   }
 `;
 
+const onPress = (text: string) => (event: GestureResponderEvent) => {
+  console.log('text', text)
+}
+
 export default function TabOneScreen({
   navigation,
 }: RootTabScreenProps<"TabOne">) {
@@ -73,12 +78,19 @@ export default function TabOneScreen({
 
   return (
     <View style={styles.container}>
-      <GradientWrapper gradientName={"primary-linear"}>
-        <Text style={{ ...styles.title, ...tw`font-main-extralight` }}>
-          {" "}
+
+      <GradientWrapper gradientName={"primary-linear"} >
+        <Text style={{ ...styles.title, ...tw`font-main-extralight`}}>
           {!loading && users[0].firstName}
         </Text>
       </GradientWrapper>
+
+      <Btn 
+        buttonType={'enabled'}
+        content={'Test text youpi'}
+        onPress={onPress('blablabli')}
+      />
+
       <View
         style={styles.separator}
         lightColor="#eee"
