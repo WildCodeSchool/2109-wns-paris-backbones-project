@@ -1,7 +1,12 @@
-import {FlatList, type GestureResponderEvent, StyleSheet, TouchableOpacity} from "react-native";
-import {Text, View} from "../components/Themed";
-import {RootTabScreenProps} from "../types";
-import {gql, useQuery} from "@apollo/client";
+import {
+	FlatList,
+	type GestureResponderEvent,
+	StyleSheet,
+	TouchableOpacity,
+} from "react-native";
+import { Text, View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
+import { gql, useQuery } from "@apollo/client";
 import Reminder from "../components/Reminder";
 import Accordion from "../components/Accordion";
 import ProjectCard from "../components/ProjectCard";
@@ -9,103 +14,113 @@ import AppLoading from "expo-app-loading";
 import UserBadge from "../components/UserBadge";
 
 export const GET_USER_BY_ID = gql`
-    query GetUserById($userId: Float!) {
-        getUserById(userId: $userId) {
-            id
-            firstName
-            lastName
-            email
-            avatar
-            roles {
-                id
-                title
-            }
-            tasks {
-                id
-                title
-                description
-                start_date
-                end_date
-                status {
-                    id
-                    title
-                }
-            }
-            projects {
-                id
-                title
-                description
-                photo
-                start_date
-                end_date
-                tasks {
-                    id
-                    title
-                    description
-                    start_date
-                    end_date
-                    status {
-                        id
-                        title
-                    }
-                }
-                users {
-                    id
-                    firstName
-                    lastName
-                    email
-                    avatar
-                }
-            }
-        }
-    }
+	query GetUserById($userId: Float!) {
+		getUserById(userId: $userId) {
+			id
+			firstName
+			lastName
+			email
+			avatar
+			roles {
+				id
+				title
+			}
+			tasks {
+				id
+				title
+				description
+				start_date
+				end_date
+				status {
+					id
+					title
+				}
+			}
+			projects {
+				id
+				title
+				description
+				photo
+				start_date
+				end_date
+				tasks {
+					id
+					title
+					description
+					start_date
+					end_date
+					status {
+						id
+						title
+					}
+				}
+				users {
+					id
+					firstName
+					lastName
+					email
+					avatar
+				}
+			}
+		}
+	}
 `;
 
-export default function HomeScreen({navigation,}: RootTabScreenProps<"TabOne">) {
-    const {loading, error, data} = useQuery(GET_USER_BY_ID, {
-        variables: {
-            userId: 1,
-        },
-    });
-    const {
-        getUserById: user,
-    } = data ?? {};
+export default function HomeScreen({
+	navigation,
+}: RootTabScreenProps<"TabOne">) {
+	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+		variables: {
+			userId: 1,
+		},
+	});
+	const { getUserById: user } = data ?? {};
 
-    if (!loading) {
-        return (
-            <View style={styles.container}>
-                <Reminder tasks={user.tasks} title={"Reminder"}/>
-                <Accordion title={"Tasks"}>
-                    <UserBadge user={user} />
-                </Accordion>
-                <Accordion title={"Projects"}>
-                    <FlatList data={user.projects} horizontal={false} numColumns={2} renderItem={({item}) => (
-                        <TouchableOpacity onPress={() => console.log("I touched project " + item.title)}>
-                            <ProjectCard project={item}/>
-                        </TouchableOpacity>
-                    )}/>
-                </Accordion>
-            </View>
-        );
-    } else if (error) {
-        return <Text>error: {error}</Text>
-    } else {
-        return <AppLoading/>
-    }
-
+	if (!loading) {
+		return (
+			<View style={styles.container}>
+				<Reminder tasks={user.tasks} title={"Reminder"} />
+				<Accordion title={"Tasks"}>
+					<UserBadge user={user} />
+				</Accordion>
+				<Accordion title={"Projects"}>
+					<FlatList
+						data={user.projects}
+						horizontal={false}
+						numColumns={2}
+						renderItem={({ item }) => (
+							<TouchableOpacity
+								onPress={() =>
+									console.log(
+										"I touched project " + item.title
+									)
+								}
+							>
+								<ProjectCard project={item} />
+							</TouchableOpacity>
+						)}
+					/>
+				</Accordion>
+			</View>
+		);
+	} else if (error) {
+		return <Text>error: {error}</Text>;
+	} else {
+		return <AppLoading />;
+	}
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
-    title: {
-        fontSize: 20,
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: "80%",
-    },
+	container: {
+		flex: 1,
+		alignItems: "center",
+	},
+	title: {
+		fontSize: 20,
+	},
+	separator: {
+		marginVertical: 30,
+		height: 1,
+		width: "80%",
+	},
 });

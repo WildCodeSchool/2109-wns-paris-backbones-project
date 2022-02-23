@@ -16,10 +16,10 @@ const Reminder = ({ tasks, title }: IProps) => {
 	return (
 		<GradientWrapper
 			gradientName={"primary-linear"}
-			style={tw`p-2 max-w-sm rounded-lg w-5/6`}
+			style={tw`w-5/6 max-w-sm p-2 rounded-lg`}
 		>
 			<View
-				style={tw` flex-row justify-between`}
+				style={tw`flex-row justify-between `}
 				onLayout={(event) => {
 					const { width } = event.nativeEvent.layout;
 					setWidth((width * 5) / 6);

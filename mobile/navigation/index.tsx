@@ -94,8 +94,8 @@ function BottomTabNavigator() {
 			}: RootTabScreenProps<keyof RootTabParamList>) => ({
 				// tabBarActiveTintColor: Colors[colorScheme].tint,
 				headerTitleAlign: "left",
-                headerStyle: tw`h-33`,
-                headerTitleStyle: tw`font-main-bold text-3xl`,
+				headerStyle: tw`h-33`,
+				headerTitleStyle: tw`text-3xl font-main-bold`,
 				headerRight: () => (
 					<NotificationButton
 						navigation={navigation}

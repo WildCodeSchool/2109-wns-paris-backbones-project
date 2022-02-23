@@ -22,7 +22,7 @@ const Accordion = ({ title, children }: IProps) => {
 		<>
 			<View style={tw`flex-row justify-between w-11/12 h-20`}>
 				<View style={tw`justify-center`}>
-					<Text style={tw`font-main-bold text-2xl`}>{title}</Text>
+					<Text style={tw`text-2xl font-main-bold`}>{title}</Text>
 				</View>
 				<TouchableOpacity
 					style={tw`justify-center`}
