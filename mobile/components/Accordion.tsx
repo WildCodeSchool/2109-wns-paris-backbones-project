@@ -20,7 +20,7 @@ const Accordion = ({ title, children }: IProps) => {
 	};
 	return (
 		<>
-			<View style={tw`flex-row justify-between w-100 h-20`}>
+			<View style={tw`flex-row justify-between w-11/12 h-20`}>
 				<View style={tw`justify-center`}>
 					<Text style={tw`font-main-bold text-2xl`}>{title}</Text>
 				</View>
@@ -35,7 +35,11 @@ const Accordion = ({ title, children }: IProps) => {
 						</Text>
 						<MaterialIcons
 							style={tw`text-4xl leading-1`}
-							color={tw.color("light-light")}
+							color={
+								tw.prefixMatch("dark")
+									? tw.color("light-light")
+									: tw.color("dark-dark")
+							}
 							name={
 								expanded
 									? "keyboard-arrow-up"
