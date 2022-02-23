@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { TaskListItem } from "../components/TaskListItem";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
@@ -13,6 +14,10 @@ export default function TasksScreen() {
 				darkColor="rgba(255,255,255,0.1)"
 			/>
 			<EditScreenInfo path="/screens/TasksScreen.tsx" />
+			<TaskListItem statusBadge="done" content="Créer le composant task list item" />
+			<TaskListItem statusBadge="to do" content="Importer les bons pictos de material ui" />
+			<TaskListItem statusBadge="in progress" content="Finish styling component" />
+			<TaskListItem statusBadge="late" content="Celebrate Laura's birthday" />
 		</View>
 	);
 }
