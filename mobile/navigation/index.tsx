@@ -17,7 +17,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 
-import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import ModalScreen from "../screens/ModalScreen";
 import NotFoundScreen from "../screens/NotFoundScreen";
@@ -34,6 +33,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 
 import NotificationButton from "./NotificationButton";
 import TabBar from "./TabBar";
+import tw from "../lib/tailwind";
 
 export default function Navigation({
 	colorScheme,
@@ -94,6 +94,8 @@ function BottomTabNavigator() {
 			}: RootTabScreenProps<keyof RootTabParamList>) => ({
 				// tabBarActiveTintColor: Colors[colorScheme].tint,
 				headerTitleAlign: "left",
+                headerStyle: tw`h-33`,
+                headerTitleStyle: tw`font-main-bold text-3xl`,
 				headerRight: () => (
 					<NotificationButton
 						navigation={navigation}

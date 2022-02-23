@@ -4,12 +4,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { ReactNode, useState } from "react";
 import { LayoutAnimation, TouchableOpacity } from "react-native";
 
-interface accordionProps {
+interface IProps {
 	title: string;
 	children: ReactNode;
 }
 
-const Accordion = ({ title, children }: accordionProps) => {
+const Accordion = ({ title, children }: IProps) => {
 	const [expanded, setExpanded] = useState(false);
 
 	const expandAccordion = () => {
