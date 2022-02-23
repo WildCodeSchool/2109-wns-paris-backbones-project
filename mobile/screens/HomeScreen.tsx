@@ -61,7 +61,7 @@ export const GET_USER_BY_ID = gql`
     }
 `;
 
-export default function TabOneScreen({navigation,}: RootTabScreenProps<"TabOne">) {
+export default function HomeScreen({navigation,}: RootTabScreenProps<"TabOne">) {
     const {loading, error, data} = useQuery(GET_USER_BY_ID, {
         variables: {
             userId: 1,
