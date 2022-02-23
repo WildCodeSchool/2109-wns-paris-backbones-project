@@ -13,6 +13,8 @@ import {
 	Roboto_300Light,
 } from "@expo-google-fonts/roboto";
 import AppLoading from "expo-app-loading";
+import tw from "./lib/tailwind";
+import { useDeviceContext } from "twrnc";
 
 const { manifest } = Constants;
 
@@ -27,6 +29,7 @@ const client = new ApolloClient({
 });
 
 export default function App() {
+	useDeviceContext(tw);
 	const isLoadingComplete = useCachedResources();
 	const colorScheme = useColorScheme();
 	const [fontsLoaded] = useFonts({

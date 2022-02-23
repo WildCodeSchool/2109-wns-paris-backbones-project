@@ -1,6 +1,7 @@
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
+import { Text } from "../components/Themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import tw from "../lib/tailwind";
 
@@ -18,7 +19,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 
 	return (
 		<View
-			style={tw`flex-row justify-between px-5 py-2 mx-4 mb-4 rounded-md bg-dark-dark`}
+			style={tw`flex-row justify-between px-5 py-2 mx-4 mb-4 rounded-md bg-light-light dark:bg-dark-dark`}
 		>
 			{state.routes.map((route, index) => {
 				const { options } = descriptors[route.key];
@@ -64,7 +65,8 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 						<View
 							style={tw.style({
 								"flex-row items-center rounded-lg p-2": true,
-								"bg-primary-medium/10": isFocused,
+								"dark:bg-primary-medium/15 bg-primary-light/30":
+									isFocused,
 							})}
 						>
 							<MaterialIcons
@@ -78,7 +80,7 @@ const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 							/>
 							{isFocused && (
 								<Text
-									style={tw`flex-grow text-xs text-center font-main-light text-light-light`}
+									style={tw`flex-grow text-xs text-center font-main-light`}
 								>
 									{label}
 								</Text>
