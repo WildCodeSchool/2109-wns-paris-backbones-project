@@ -102,7 +102,7 @@ export default function TabOneScreen({
                 </Accordion>
                 <Accordion title={"Projects"}>
                     <FlatList data={user.projects} horizontal={false} numColumns={2}
-                              columnWrapperStyle={tw`justify-around w-full`}
+                              columnWrapperStyle={tw``}
                               renderItem={({item}) => (
                                   <TouchableOpacity style={tw``} onPress={() => console.log("I touched project " + item.title)}>
                                       <ProjectCard project={item}/>

@@ -1,6 +1,6 @@
 import { Text, View } from "./Themed";
 import { ProjectData } from "../types/index";
-import { Image } from "react-native";
+import { Dimensions, Image } from "react-native";
 import tw from "../lib/tailwind";
 
 interface IProps {
@@ -10,16 +10,30 @@ interface IProps {
 const ProjectCard = ({ project }: IProps) => {
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
+	const cardWidth = (Dimensions.get("window").width * 45) / 100;
+	const imageWidth = (cardWidth * 2) / 5;
 
 	return (
 		<View
-			style={tw`bg-dark-transparent p-4 rounded-xl h-45 m-3 w-45 justify-center`}
+			style={{
+				...tw`bg-dark-transparent rounded-xl justify-center p-2 m-2`,
+				...{
+					width: cardWidth,
+					height: cardWidth,
+				},
+			}}
 		>
 			<Image
-				style={tw`w-3/5 h-20 rounded-xl self-center`}
+				style={{
+					...tw` rounded-xl self-center`,
+					...{
+						width: imageWidth,
+						height: imageWidth,
+					},
+				}}
 				source={{ uri: project.photo }}
 			/>
-			<View style={tw`place-items-center`}>
+			<View>
 				<Text
 					style={tw`bg-dark-transparent font-main-bold text-lg pt-3 text-center`}
 				>
