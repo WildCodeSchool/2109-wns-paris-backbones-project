@@ -34,6 +34,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import NotificationButton from "./NotificationButton";
 import TabBar from "./TabBar";
 import tw from "../lib/tailwind";
+import ProjectDetailScreen from "../screens/ProjectDetailScreen";
 
 export default function Navigation({
 	colorScheme,
@@ -72,6 +73,20 @@ function RootNavigator() {
 			<Stack.Group screenOptions={{ presentation: "modal" }}>
 				<Stack.Screen name="Modal" component={ModalScreen} />
 			</Stack.Group>
+			<Stack.Group
+				screenOptions={{
+					title: "Project",
+					headerStyle: tw`h-33`,
+					headerTitleStyle: tw`text-3xl font-main-bold text-light-light`,
+					headerTintColor: tw.color("primary-dark"),
+				}}
+			>
+				<Stack.Screen
+					name="ProjectDetail"
+					component={ProjectDetailScreen}
+					options={{ title: "Project" }}
+				/>
+			</Stack.Group>
 		</Stack.Navigator>
 	);
 }
@@ -87,7 +102,7 @@ function BottomTabNavigator() {
 
 	return (
 		<BottomTab.Navigator
-			initialRouteName="TabOne"
+			initialRouteName="Home"
 			tabBar={(props: BottomTabBarProps) => <TabBar {...props} />}
 			screenOptions={({
 				navigation,
@@ -105,7 +120,7 @@ function BottomTabNavigator() {
 			})}
 		>
 			<BottomTab.Screen
-				name="TabOne"
+				name="Home"
 				component={HomeScreen}
 				options={{
 					title: "Home",
@@ -113,7 +128,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabTwo"
+				name="Tasks"
 				component={TasksScreen}
 				options={{
 					title: "Tasks",
@@ -121,7 +136,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabThree"
+				name="Projects"
 				component={ProjectsScreen}
 				options={{
 					title: "Projects",
@@ -129,7 +144,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabFour"
+				name="Profile"
 				component={TabFourScreen}
 				options={{
 					title: "Profile",
