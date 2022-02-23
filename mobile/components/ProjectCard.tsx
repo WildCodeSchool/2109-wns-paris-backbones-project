@@ -16,7 +16,7 @@ const ProjectCard = ({ project }: IProps) => {
 	return (
 		<View
 			style={{
-				...tw`bg-dark-transparent rounded-xl justify-center p-2 m-2`,
+				...tw`bg-dark-dark rounded-xl justify-center p-2 m-2`,
 				...{
 					width: cardWidth,
 					height: cardWidth,
@@ -35,13 +35,11 @@ const ProjectCard = ({ project }: IProps) => {
 			/>
 			<View>
 				<Text
-					style={tw`bg-dark-transparent font-main-bold text-lg pt-3 text-center`}
+					style={tw`bg-dark-dark font-main-bold text-lg pt-3 text-center`}
 				>
 					{project.title}
 				</Text>
-				<View
-					style={tw`flex-row bg-dark-transparent justify-between pt-4`}
-				>
+				<View style={tw`flex-row bg-dark-dark justify-between pt-4`}>
 					<Text style={tw`font-main-light`}>
 						{taskCount} {taskCount > 1 ? "tasks" : "task"}
 					</Text>

@@ -11,9 +11,9 @@ const colors = {
 		light: "#FDABBE",
 	},
 	dark: {
-		darker: "#09051C",
+		darker: "#010101",
 		dark: "#252525",
-		medium: "#86848F",
+		medium: "#444",
 		light: "#CECDD2",
 		transparent: "rgba(206,205,210,0.15)",
 	},

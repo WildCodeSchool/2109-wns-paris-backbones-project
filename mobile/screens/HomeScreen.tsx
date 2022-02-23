@@ -2,12 +2,11 @@ import {FlatList, type GestureResponderEvent, StyleSheet, TouchableOpacity} from
 import {Text, View} from "../components/Themed";
 import {RootTabScreenProps} from "../types";
 import {gql, useQuery} from "@apollo/client";
-import {Btn} from "../components/Btn";
 import Reminder from "../components/Reminder";
 import Accordion from "../components/Accordion";
 import ProjectCard from "../components/ProjectCard";
 import AppLoading from "expo-app-loading";
-import tw from "../lib/tailwind";
+import UserBadge from "../components/UserBadge";
 
 export const GET_USER_BY_ID = gql`
     query GetUserById($userId: Float!) {
@@ -62,13 +61,7 @@ export const GET_USER_BY_ID = gql`
     }
 `;
 
-const onPress = (text: string) => (event: GestureResponderEvent) => {
-    console.log("text", text);
-};
-
-export default function TabOneScreen({
-                                         navigation,
-                                     }: RootTabScreenProps<"TabOne">) {
+export default function HomeScreen({navigation,}: RootTabScreenProps<"TabOne">) {
     const {loading, error, data} = useQuery(GET_USER_BY_ID, {
         variables: {
             userId: 1,
@@ -82,36 +75,18 @@ export default function TabOneScreen({
         return (
             <View style={styles.container}>
                 <Reminder tasks={user.tasks} title={"Reminder"}/>
-
                 <Accordion title={"Tasks"}>
-                    <Btn
-                        buttonType={"enabled"}
-                        content={"Test text youpi"}
-                        onPress={onPress("blablabli")}
-                    />
-                    <Btn
-                        buttonType={"enabled"}
-                        content={"Test text youpi"}
-                        onPress={onPress("blablabli")}
-                    />
-                    <Btn
-                        buttonType={"enabled"}
-                        content={"Test text youpi"}
-                        onPress={onPress("blablabli")}
-                    />
+                    <UserBadge user={user} />
                 </Accordion>
                 <Accordion title={"Projects"}>
-                    <FlatList data={user.projects} horizontal={false} numColumns={2}
-                              columnWrapperStyle={tw``}
-                              renderItem={({item}) => (
-                                  <TouchableOpacity style={tw``} onPress={() => console.log("I touched project " + item.title)}>
-                                      <ProjectCard project={item}/>
-                                  </TouchableOpacity>
-                              )}/>
+                    <FlatList data={user.projects} horizontal={false} numColumns={2} renderItem={({item}) => (
+                        <TouchableOpacity onPress={() => console.log("I touched project " + item.title)}>
+                            <ProjectCard project={item}/>
+                        </TouchableOpacity>
+                    )}/>
                 </Accordion>
             </View>
         );
-
     } else if (error) {
         return <Text>error: {error}</Text>
     } else {

@@ -18,7 +18,7 @@ const NotificationButton = ({ navigation, colorScheme }: IProps) => {
 				opacity: pressed ? 0.5 : 1,
 			})}
 		>
-			<View style={tw`bg-dark-transparent relative z-0 rounded-lg p-2`}>
+			<View style={tw`bg-dark-dark relative z-0 rounded-lg p-2`}>
 				<MaterialIcons
 					style={tw`text-3xl leading-1 relative  z-10`}
 					color={tw.color("primary-dark")}
