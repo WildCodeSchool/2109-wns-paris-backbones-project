@@ -35,7 +35,11 @@ const Accordion = ({ title, children }: IProps) => {
 						</Text>
 						<MaterialIcons
 							style={tw`text-4xl leading-1`}
-							color={tw.color("light-light")}
+							color={
+								tw.prefixMatch("dark")
+									? tw.color("light-light")
+									: tw.color("dark-dark")
+							}
 							name={
 								expanded
 									? "keyboard-arrow-up"
