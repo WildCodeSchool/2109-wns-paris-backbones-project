@@ -117,6 +117,8 @@ const runSeed = async () => {
 				const p = new Project();
 				p.title = project.title;
 				p.description = project.description;
+				p.photo =
+					"http://iaphare.org/wp-content/uploads/2018/11/Project-BG-2005.jpg";
 				p.start_date = new Date();
 				p.end_date = new Date();
 				p.users = project != projectName[2] ? users : [];
