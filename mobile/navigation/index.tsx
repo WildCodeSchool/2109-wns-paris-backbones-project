@@ -3,7 +3,6 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from "@expo/vector-icons";
 import {
 	type BottomTabBarProps,
 	createBottomTabNavigator,
@@ -34,6 +33,7 @@ import LinkingConfiguration from "./LinkingConfiguration";
 import NotificationButton from "./NotificationButton";
 import TabBar from "./TabBar";
 import tw from "../lib/tailwind";
+import ProjectDetailScreen from "../screens/ProjectDetailScreen";
 
 export default function Navigation({
 	colorScheme,
@@ -72,6 +72,17 @@ function RootNavigator() {
 			<Stack.Group screenOptions={{ presentation: "modal" }}>
 				<Stack.Screen name="Modal" component={ModalScreen} />
 			</Stack.Group>
+			<Stack.Group
+				screenOptions={{
+					headerTitleStyle: tw`text-3xl font-main-bold text-light-light`,
+					headerTintColor: tw.color("primary-dark"),
+				}}
+			>
+				<Stack.Screen
+					name="ProjectDetail"
+					component={ProjectDetailScreen}
+				/>
+			</Stack.Group>
 		</Stack.Navigator>
 	);
 }
@@ -87,7 +98,7 @@ function BottomTabNavigator() {
 
 	return (
 		<BottomTab.Navigator
-			initialRouteName="TabOne"
+			initialRouteName="Home"
 			tabBar={(props: BottomTabBarProps) => <TabBar {...props} />}
 			screenOptions={({
 				navigation,
@@ -105,7 +116,7 @@ function BottomTabNavigator() {
 			})}
 		>
 			<BottomTab.Screen
-				name="TabOne"
+				name="Home"
 				component={HomeScreen}
 				options={{
 					title: "Home",
@@ -113,7 +124,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabTwo"
+				name="Tasks"
 				component={TasksScreen}
 				options={{
 					title: "Tasks",
@@ -121,7 +132,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabThree"
+				name="Projects"
 				component={ProjectsScreen}
 				options={{
 					title: "Projects",
@@ -129,7 +140,7 @@ function BottomTabNavigator() {
 				}}
 			/>
 			<BottomTab.Screen
-				name="TabFour"
+				name="Profile"
 				component={TabFourScreen}
 				options={{
 					title: "Profile",
@@ -138,14 +149,4 @@ function BottomTabNavigator() {
 			/>
 		</BottomTab.Navigator>
 	);
-}
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-	name: React.ComponentProps<typeof FontAwesome>["name"];
-	color: string;
-}) {
-	return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }

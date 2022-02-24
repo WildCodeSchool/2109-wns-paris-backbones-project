@@ -1,10 +1,6 @@
-import {
-	FlatList,
-	type GestureResponderEvent,
-	StyleSheet,
-	TouchableOpacity,
-} from "react-native";
-import { Text, View } from "../components/Themed";
+import { FlatList, StyleSheet } from "react-native";
+import { Text } from "../components/Themed";
+import { View } from "react-native";
 import { RootTabScreenProps } from "../types";
 import { gql, useQuery } from "@apollo/client";
 import Reminder from "../components/Reminder";
@@ -13,7 +9,8 @@ import ProjectCard from "../components/ProjectCard";
 import AppLoading from "expo-app-loading";
 import UserBadge from "../components/UserBadge";
 import { TaskListItem } from "../components/TaskListItem";
-import { TaskData } from './../types/index';
+import { TaskData } from './../customTypes/';
+import SearchBar from "../components/SearchBar";
 
 export const GET_USER_BY_ID = gql`
 	query GetUserById($userId: Float!) {
@@ -68,9 +65,7 @@ export const GET_USER_BY_ID = gql`
 	}
 `;
 
-export default function HomeScreen({
-	navigation,
-}: RootTabScreenProps<"TabOne">) {
+export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
 		variables: {
 			userId: 1,
@@ -81,6 +76,7 @@ export default function HomeScreen({
 	if (!loading) {
 		return (
 			<View style={styles.container}>
+				<SearchBar />
 				<Reminder tasks={user.tasks} title={"Reminder"} />
 				<Accordion title={"Tasks"}>
 				<TaskListItem task={user.tasks.filter((task: TaskData) => task.id === 1)[0]} />
@@ -91,15 +87,10 @@ export default function HomeScreen({
 						horizontal={false}
 						numColumns={2}
 						renderItem={({ item }) => (
-							<TouchableOpacity
-								onPress={() =>
-									console.log(
-										"I touched project " + item.title
-									)
-								}
-							>
-								<ProjectCard project={item} />
-							</TouchableOpacity>
+							<ProjectCard
+								project={item}
+								navigation={navigation}
+							/>
 						)}
 					/>
 				</Accordion>

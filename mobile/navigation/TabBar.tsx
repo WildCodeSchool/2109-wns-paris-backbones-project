@@ -6,10 +6,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import tw from "../lib/tailwind";
 
 const iconsPerRoute = {
-	TabOne: "home-filled",
-	TabTwo: "check-box",
-	TabThree: "create-new-folder",
-	TabFour: "person",
+	Home: "home-filled",
+	Tasks: "check-box",
+	Projects: "create-new-folder",
+	Profile: "person",
 } as const;
 
 const TabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
