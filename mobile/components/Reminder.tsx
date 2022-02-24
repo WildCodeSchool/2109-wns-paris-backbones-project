@@ -28,7 +28,7 @@ const Reminder = ({ tasks, title }: IProps) => {
 					{format(new Date(), "E dd MMM")}
 				</Text>
 			</View>
-			<View style={tw`w-5/6`}>
+			<View>
 				<FlatList
 					horizontal
 					data={tasks.slice(0, 5)}
@@ -39,13 +39,13 @@ const Reminder = ({ tasks, title }: IProps) => {
 					renderItem={({ item }) => (
 						<View
 							style={{
-								width: width,
+								width: width - 16,
 								height: 120,
 								justifyContent: "center",
 							}}
 						>
 							<Text
-								style={tw`mb-2 text-2xl font-main-light text-light-light`}
+								style={tw`mb-2 text-2xl font-main-light text-light-light flex-wrap`}
 							>
 								{item.title}
 							</Text>
