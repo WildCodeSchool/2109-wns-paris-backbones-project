@@ -15,7 +15,10 @@ const ProjectCard = ({ project, navigation }: IProps) => {
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
 	const cardWidth = (Dimensions.get("window").width * 45) / 100;
-	const imageWidth = (cardWidth * 2) / 5;
+	const imageSize = {
+		width: (cardWidth * 2) / 5,
+		height: (cardWidth * 2) / 5,
+	};
 
 	return (
 		<TouchableOpacity
@@ -26,19 +29,13 @@ const ProjectCard = ({ project, navigation }: IProps) => {
 			<View
 				style={{
 					...tw`justify-center p-2 m-2 bg-dark-dark rounded-xl`,
-					...{
-						width: cardWidth,
-						height: cardWidth,
-					},
+					...imageSize,
 				}}
 			>
 				<Image
 					style={{
 						...tw`self-center  rounded-xl`,
-						...{
-							width: imageWidth,
-							height: imageWidth,
-						},
+						...imageSize,
 					}}
 					source={{ uri: project.photo }}
 				/>

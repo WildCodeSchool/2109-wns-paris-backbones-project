@@ -1,5 +1,4 @@
 import { Text, View } from "../components/Themed";
-import { ProjectData } from "../types/index";
 import { RootStackScreenProps } from "../types";
 import tw from "../lib/tailwind";
 import { Dimensions, FlatList, Image } from "react-native";
@@ -12,7 +11,10 @@ const ProjectDetailScreen = ({
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
 	const cardWidth = (Dimensions.get("window").width * 45) / 100;
-	const imageWidth = (cardWidth * 2) / 5;
+	const imageSize = {
+		width: (cardWidth * 2) / 5,
+		height: (cardWidth * 2) / 5,
+	};
 
 	return (
 		<>
@@ -26,10 +28,7 @@ const ProjectDetailScreen = ({
 					<Image
 						style={{
 							...tw`rounded-xl mt-4`,
-							...{
-								width: imageWidth,
-								height: imageWidth,
-							},
+							...imageSize,
 						}}
 						source={{ uri: project.photo }}
 					/>
