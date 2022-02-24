@@ -8,6 +8,8 @@ import Accordion from "../components/Accordion";
 import ProjectCard from "../components/ProjectCard";
 import AppLoading from "expo-app-loading";
 import UserBadge from "../components/UserBadge";
+import { TaskListItem } from "../components/TaskListItem";
+import { TaskData } from './../customTypes/';
 import SearchBar from "../components/SearchBar";
 
 export const GET_USER_BY_ID = gql`
@@ -77,7 +79,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 				<SearchBar />
 				<Reminder tasks={user.tasks} title={"Reminder"} />
 				<Accordion title={"Tasks"}>
-					<UserBadge user={user} />
+				<TaskListItem task={user.tasks.filter((task: TaskData) => task.id === 1)[0]} />
 				</Accordion>
 				<Accordion title={"Projects"}>
 					<FlatList
