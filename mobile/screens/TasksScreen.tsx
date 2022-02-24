@@ -4,7 +4,13 @@ import { TaskListItem } from "../components/TaskListItem";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
-export default function TasksScreen() {
+import { type TaskData } from "../types/index";
+
+interface IProps {
+	task: TaskData,
+}
+
+export default function TasksScreen({ task }: IProps) {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>Tab Two</Text>
@@ -14,10 +20,9 @@ export default function TasksScreen() {
 				darkColor="rgba(255,255,255,0.1)"
 			/>
 			<EditScreenInfo path="/screens/TasksScreen.tsx" />
-			<TaskListItem statusBadge="done" content="Créer le composant task list item" />
-			<TaskListItem statusBadge="to do" content="Importer les bons pictos de material ui" />
-			<TaskListItem statusBadge="in progress" content="Finish styling component" />
-			<TaskListItem statusBadge="late" content="Celebrate Laura's birthday" />
+			<TaskListItem task={task} />
+			<TaskListItem task={task} />
+			<TaskListItem task={task} />
 		</View>
 	);
 }
