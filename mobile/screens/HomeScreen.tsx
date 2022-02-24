@@ -7,6 +7,7 @@ import Accordion from "../components/Accordion";
 import ProjectCard from "../components/ProjectCard";
 import AppLoading from "expo-app-loading";
 import UserBadge from "../components/UserBadge";
+import SearchBar from "../components/SearchBar";
 
 export const GET_USER_BY_ID = gql`
 	query GetUserById($userId: Float!) {
@@ -72,6 +73,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 	if (!loading) {
 		return (
 			<View style={styles.container}>
+				<SearchBar />
 				<Reminder tasks={user.tasks} title={"Reminder"} />
 				<Accordion title={"Tasks"}>
 					<UserBadge user={user} />
