@@ -14,7 +14,7 @@ interface IProps {
 interface Statuses {
   [key: string]: { 
     status: "to do" | "done" | "in progress" | "late",
-    icon: "check-circle-outline" | "check-circle" | "access-time" | "more-horiz",
+    icon: "check-circle-outline" | "check-circle" | "access-time" | "timelapse",
     color: {
       dark: string,
       light: string,
