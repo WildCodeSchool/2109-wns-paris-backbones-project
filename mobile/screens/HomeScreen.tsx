@@ -1,10 +1,6 @@
-import {
-	FlatList,
-	type GestureResponderEvent,
-	StyleSheet,
-	TouchableOpacity,
-} from "react-native";
-import { Text, View } from "../components/Themed";
+import { FlatList, StyleSheet } from "react-native";
+import { Text } from "../components/Themed";
+import { View } from "react-native";
 import { RootTabScreenProps } from "../types";
 import { gql, useQuery } from "@apollo/client";
 import Reminder from "../components/Reminder";
@@ -67,9 +63,7 @@ export const GET_USER_BY_ID = gql`
 	}
 `;
 
-export default function HomeScreen({
-	navigation,
-}: RootTabScreenProps<"TabOne">) {
+export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
 		variables: {
 			userId: 1,
@@ -91,15 +85,10 @@ export default function HomeScreen({
 						horizontal={false}
 						numColumns={2}
 						renderItem={({ item }) => (
-							<TouchableOpacity
-								onPress={() =>
-									console.log(
-										"I touched project " + item.title
-									)
-								}
-							>
-								<ProjectCard project={item} />
-							</TouchableOpacity>
+							<ProjectCard
+								project={item}
+								navigation={navigation}
+							/>
 						)}
 					/>
 				</Accordion>

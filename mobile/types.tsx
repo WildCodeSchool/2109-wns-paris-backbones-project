@@ -9,6 +9,7 @@ import {
 	NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { ProjectData } from "./customTypes";
 
 declare global {
 	namespace ReactNavigation {
@@ -18,6 +19,7 @@ declare global {
 
 export type RootStackParamList = {
 	Root: NavigatorScreenParams<RootTabParamList> | undefined;
+	ProjectDetail: { project: ProjectData };
 	Modal: undefined;
 	NotFound: undefined;
 };
@@ -26,10 +28,10 @@ export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
 	NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
-	TabOne: undefined;
-	TabTwo: undefined;
-	TabThree: undefined;
-	TabFour: undefined;
+	Home: undefined;
+	Tasks: undefined;
+	Projects: undefined;
+	Profile: undefined;
 };
 
 export type RootTabScreenProps<Screen extends keyof RootTabParamList> =

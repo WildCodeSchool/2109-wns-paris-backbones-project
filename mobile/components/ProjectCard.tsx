@@ -1,45 +1,53 @@
-import { Text, View } from "./Themed";
-import { ProjectData } from "../types/index";
-import { Dimensions, Image } from "react-native";
+import { Text } from "./Themed";
+import { View } from "react-native";
+import { ProjectData } from "../customTypes";
+import { Dimensions, Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
+import { RootTabScreenProps } from "../types";
 
 interface IProps {
 	project: ProjectData;
+	navigation: RootTabScreenProps<
+		"Home" | "Tasks" | "Projects" | "Profile"
+	>["navigation"];
 }
 
-const ProjectCard = ({ project }: IProps) => {
+const ProjectCard = ({ project, navigation }: IProps) => {
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
-	const cardWidth = (Dimensions.get("window").width * 45) / 100;
-	const imageWidth = (cardWidth * 2) / 5;
+	const halfScreen = (Dimensions.get("window").width * 45) / 100;
+	const cardSize = {
+		width: halfScreen,
+		height: halfScreen,
+	};
+	const imageSize = {
+		width: (halfScreen * 2) / 5,
+		height: (halfScreen * 2) / 5,
+	};
 
 	return (
-		<View
-			style={{
-				...tw`justify-center p-2 m-2 bg-dark-dark rounded-xl`,
-				...{
-					width: cardWidth,
-					height: cardWidth,
-				},
+		<TouchableOpacity
+			onPress={() => {
+				navigation.navigate("ProjectDetail", { project: project });
 			}}
 		>
-			<Image
+			<View
 				style={{
-					...tw`self-center  rounded-xl`,
-					...{
-						width: imageWidth,
-						height: imageWidth,
-					},
+					...tw`justify-around p-2 m-2 bg-dark-dark rounded-xl`,
+					...cardSize,
 				}}
-				source={{ uri: project.photo }}
-			/>
-			<View>
-				<Text
-					style={tw`pt-3 text-lg text-center bg-dark-dark font-main-bold`}
-				>
+			>
+				<Image
+					style={{
+						...tw`self-center rounded-xl`,
+						...imageSize,
+					}}
+					source={{ uri: project.photo }}
+				/>
+				<Text style={tw`pt-3 text-lg text-center font-main-bold`}>
 					{project.title}
 				</Text>
-				<View style={tw`flex-row justify-between pt-4 bg-dark-dark`}>
+				<View style={tw`flex-row justify-between pt-4`}>
 					<Text style={tw`font-main-light`}>
 						{taskCount} {taskCount > 1 ? "tasks" : "task"}
 					</Text>
@@ -48,7 +56,7 @@ const ProjectCard = ({ project }: IProps) => {
 					</Text>
 				</View>
 			</View>
-		</View>
+		</TouchableOpacity>
 	);
 };
 

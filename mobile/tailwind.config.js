@@ -35,6 +35,9 @@ module.exports = {
 				"main-light": "Roboto_300Light",
 				"main-extralight": "Roboto_100Thin",
 			},
+			fontSize: {
+				xxs: ".5rem",
+			},
 		},
 	},
 	plugins: [],

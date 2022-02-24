@@ -31,33 +31,39 @@ const rolesName = [
 const usersName = [
 	{
 		firstName: "Myriam",
-		lastName: "Test",
+		lastName: "Mira",
 		email: "myriam@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/77079498?v=4",
 	},
 	{
 		firstName: "Laura",
-		lastName: "Test",
+		lastName: "Fremy",
 		email: "laura@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/75318984?v=4",
 	},
 	{
 		firstName: "Jonathan",
-		lastName: "Test",
+		lastName: "Carnos",
 		email: "jonathan@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/51161811?v=4",
 	},
 	{
 		firstName: "Nate",
-		lastName: "Test",
+		lastName: "Labreuil",
 		email: "nate@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/24679993?v=4",
 	},
 	{
 		firstName: "Thomas",
-		lastName: "Test",
+		lastName: "Bro",
 		email: "thomas@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/58857363?v=4",
 	},
 	{
 		firstName: "Bad",
 		lastName: "Boy",
 		email: "badboy@gmail.com",
+		avatar: "https://avatars.githubusercontent.com/u/58857363?v=4",
 	},
 ];
 const statusName = [
@@ -69,16 +75,75 @@ const statusName = [
 ];
 const projectName = [
 	{
-		title: "Appli",
-		description: "blablabla",
+		title: "Karim Président",
+		description:
+			"This project aims at making Karim our President: organizing the campaign, splitting preparatory work, etc.",
+		start_date: new Date(),
+		end_date: new Date(2022, 6, 12, 15, 0, 0),
+		photo: "http://iaphare.org/wp-content/uploads/2018/11/Project-BG-2005.jpg",
 	},
 	{
-		title: "Appli-2",
-		description: "blobloblo",
+		title: "Undefined For ALL",
+		description:
+			"It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+		start_date: new Date(),
+		end_date: new Date(2022, 6, 12, 15, 0, 0),
+		photo: "https://www.pme-web.com/wp-content/uploads/bfi_thumb/Outils-Gestion-de-projet-nbbkudn0pflrlumlok5nm2rumkqjeawlw2uxsd3ztk.png",
 	},
 	{
 		title: "Appli-Test",
 		description: "bliblibli",
+		start_date: new Date(),
+		end_date: new Date(2022, 6, 12, 15, 0, 0),
+		photo: "http://iaphare.org/wp-content/uploads/2018/11/Project-BG-2005.jpg",
+	},
+];
+
+const myTasks = [
+	{
+		title: "Create campaign posters",
+		description:
+			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+		effective_time: new Date(),
+		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
+		start_date: new Date(),
+		end_date: new Date(2022, 4, 12, 15, 0, 0),
+	},
+	{
+		title: "Ask Julien Keita for a salary raise",
+		description:
+			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+		effective_time: new Date(),
+		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
+		start_date: new Date(),
+		end_date: new Date(2022, 4, 12, 15, 0, 0),
+	},
+	{
+		title: "Gather a team of 18 amazing students",
+		description:
+			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+		effective_time: new Date(),
+		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
+		start_date: new Date(),
+		end_date: new Date(2022, 4, 12, 15, 0, 0),
+	},
+	{
+		title: "Subscribe to a cooking course",
+		description:
+			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
+		effective_time: new Date(),
+		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
+		start_date: new Date(),
+		end_date: new Date(2022, 4, 12, 15, 0, 0),
+	},
+	{
+		title: "Organize photoshoot",
+		description:
+			"In order to start making posters and advertise the campaign on and offline, we need to book a photoshoot Important: don’t forget to bring props (such as a Wild-flag banner, a crown, a 'foule en délire' background image, etc.)",
+		effective_time: new Date(),
+		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
+		start_date: new Date(),
+		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 ];
 
@@ -102,8 +167,7 @@ const runSeed = async () => {
 				u.firstName = user.firstName;
 				u.lastName = user.lastName;
 				u.email = user.email;
-				u.avatar =
-					"https://tooommm.github.io/profile/images/profile.jpg";
+				u.avatar = user.avatar;
 				u.password = "azerty";
 				await connection.manager.save(u);
 				console.log("Saved a new user with named: " + u.firstName);
@@ -117,10 +181,9 @@ const runSeed = async () => {
 				const p = new Project();
 				p.title = project.title;
 				p.description = project.description;
-				p.photo =
-					"http://iaphare.org/wp-content/uploads/2018/11/Project-BG-2005.jpg";
-				p.start_date = new Date();
-				p.end_date = new Date();
+				p.photo = project.photo;
+				p.start_date = project.start_date;
+				p.end_date = project.end_date;
 				p.users = project != projectName[2] ? users : [];
 				const createdProject = await connection.manager.save(p);
 				console.log("Saved a new project with named: " + p.title);
@@ -186,19 +249,22 @@ const runSeed = async () => {
 			console.log("CREATE TASKS");
 			for (const project of projects) {
 				let i = 1;
+				console.log(project.id);
+				const projectStatuses = statuses.filter(
+					async (status) => (await status?.project.id) === project.id
+				);
+				console.log(projectStatuses);
 				for (let index = 0; index < 5; index++) {
 					const t = new Task();
-					t.title = "task title " + index;
-					t.description = "task description " + index;
-					t.status = statuses.filter(
-						(status) => status.project.id === project.id
-					)[index]; // Shuffle maison des familles
+					t.title = myTasks[index].title;
+					t.description = myTasks[index].description;
+					t.status = projectStatuses[index];
 					t.project = project;
 					t.users = users.filter((user, index) => index % i === 0);
-					t.effective_time = new Date();
-					t.estimated_time = new Date();
-					t.start_date = new Date();
-					t.end_date = new Date();
+					t.effective_time = myTasks[index].effective_time;
+					t.estimated_time = myTasks[index].estimated_time;
+					t.start_date = myTasks[index].start_date;
+					t.end_date = myTasks[index].end_date;
 					const createdTask = await connection.manager.save(t);
 					console.log(
 						`Saved a new Task: ${t.title}. On project id: ${project.id}`

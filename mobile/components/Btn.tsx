@@ -1,10 +1,8 @@
 import React from "react";
 import {
 	type GestureResponderEvent,
-	StyleSheet,
 	Text,
 	TouchableOpacity,
-	View,
 } from "react-native";
 import { type Style } from "twrnc/dist/esm/types";
 import tw from "../lib/tailwind";

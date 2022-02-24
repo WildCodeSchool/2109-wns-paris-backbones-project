@@ -1,4 +1,4 @@
-import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable } from "react-native";
 import type { RootTabScreenProps } from "../types";
@@ -6,11 +6,13 @@ import tw from "../lib/tailwind";
 import { View } from "../components/Themed";
 
 interface IProps {
-	navigation: RootTabScreenProps<"TabOne" | "TabTwo">["navigation"];
+	navigation: RootTabScreenProps<
+		"Home" | "Tasks" | "Projects" | "Profile"
+	>["navigation"];
 	colorScheme: "light" | "dark";
 }
 
-const NotificationButton = ({ navigation, colorScheme }: IProps) => {
+const NotificationButton = ({ navigation }: IProps) => {
 	return (
 		<Pressable
 			onPress={() => navigation.navigate("Modal")}

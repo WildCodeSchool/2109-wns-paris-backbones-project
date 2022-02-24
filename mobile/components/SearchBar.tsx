@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "../components/Themed";
+import { Text, View } from "./Themed";
 import { TextInput, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
 import { MaterialIcons } from "@expo/vector-icons";

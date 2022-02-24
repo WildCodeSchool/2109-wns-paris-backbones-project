@@ -1,5 +1,5 @@
 import { Text, View } from "./Themed";
-import { UserData } from "../types/index";
+import { UserData } from "../customTypes";
 import { Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
 import { useState } from "react";
@@ -9,7 +9,7 @@ interface IProps {
 	size?: number;
 }
 
-const UserBadge = ({ user, size = 13 }: IProps) => {
+const UserBadge = ({ user, size = 10 }: IProps) => {
 	const [clicked, setClicked] = useState(false);
 	return (
 		<TouchableOpacity
@@ -22,12 +22,12 @@ const UserBadge = ({ user, size = 13 }: IProps) => {
 		>
 			<View>
 				<Image
-					style={tw`w-${size} h-${size} rounded-full border border-2 border${
+					style={tw`w-${size} h-${size} rounded-full self-center border border-2 border${
 						clicked ? "-primary-dark" : "-light-medium"
 					}`}
 					source={{ uri: user.avatar }}
 				/>
-				<Text style={tw`text-center`}>{user.firstName}</Text>
+				<Text style={tw`text-center text-xxs`}>{user.firstName}</Text>
 			</View>
 		</TouchableOpacity>
 	);
