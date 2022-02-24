@@ -186,13 +186,14 @@ const runSeed = async () => {
 			console.log("CREATE TASKS");
 			for (const project of projects) {
 				let i = 1;
+				const projectStatuses = statuses.filter(
+					async (status) => (await status?.project.id) === project.id
+				);
 				for (let index = 0; index < 5; index++) {
 					const t = new Task();
 					t.title = "task title " + index;
 					t.description = "task description " + index;
-					t.status = statuses.filter(
-						(status) => status.project.id === project.id
-					)[index]; // Shuffle maison des familles
+					t.status = projectStatuses[index];
 					t.project = project;
 					t.users = users.filter((user, index) => index % i === 0);
 					t.effective_time = new Date();
