@@ -1,5 +1,5 @@
 import { Text, View } from "./Themed";
-import { UserData } from "../types/index";
+import { UserData } from "../customTypes";
 import { Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
 import { useState } from "react";

@@ -9,7 +9,7 @@ import {
 	NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ProjectData } from "./types/index";
+import { ProjectData } from "./customTypes";
 
 declare global {
 	namespace ReactNavigation {

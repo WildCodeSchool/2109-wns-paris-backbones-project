@@ -1,29 +1,30 @@
-import { Text, View } from "../components/Themed";
+import { Text } from "../components/Themed";
+import { View } from "react-native";
 import { RootStackScreenProps } from "../types";
 import tw from "../lib/tailwind";
 import { Dimensions, FlatList, Image } from "react-native";
 import UserBadge from "../components/UserBadge";
 
 const ProjectDetailScreen = ({
+	navigation,
 	route,
 }: RootStackScreenProps<"ProjectDetail">) => {
 	const { project } = route.params;
+	navigation.setOptions({ title: project.title });
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
-	const cardWidth = (Dimensions.get("window").width * 45) / 100;
+	const halfScreen = (Dimensions.get("window").width * 45) / 100;
 	const imageSize = {
-		width: (cardWidth * 2) / 5,
-		height: (cardWidth * 2) / 5,
+		width: (halfScreen * 2) / 5,
+		height: (halfScreen * 2) / 5,
 	};
 
 	return (
-		<>
-			<View style={tw`bg-dark-dark mx-2 h-50 rounded-2xl`}>
-				<View style={tw`bg-dark-dark flex-row justify-around`}>
-					<Text
-						style={tw`text-lg text-center bg-dark-dark font-main-bold pt-7`}
-					>
-						{project.title}
+		<View style={tw`mt-9`}>
+			<View style={tw`bg-dark-dark mx-2 h-50 rounded-2xl `}>
+				<View style={tw`flex-row justify-around`}>
+					<Text style={tw`text-lg text-center font-main-bold pt-7`}>
+						Project: {project.title}
 					</Text>
 					<Image
 						style={{
@@ -34,7 +35,7 @@ const ProjectDetailScreen = ({
 					/>
 				</View>
 				<Text style={tw`mt-5 text-center`}>{project.description}</Text>
-				<View style={tw`flex-row justify-end mt-8 bg-dark-dark`}>
+				<View style={tw`flex-row justify-end mt-8 `}>
 					<Text style={tw`font-main-light`}>
 						{taskCount} {taskCount > 1 ? "tasks" : "task"}
 					</Text>
@@ -53,7 +54,7 @@ const ProjectDetailScreen = ({
 					</View>
 				)}
 			/>
-		</>
+		</View>
 	);
 };
 

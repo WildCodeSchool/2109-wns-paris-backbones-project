@@ -1,5 +1,5 @@
 import { Text, View } from "./Themed";
-import { ProjectData } from "../types/index";
+import { ProjectData } from "../customTypes";
 import { Dimensions, Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
 import { RootTabScreenProps } from "../types";
@@ -14,10 +14,14 @@ interface IProps {
 const ProjectCard = ({ project, navigation }: IProps) => {
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
-	const cardWidth = (Dimensions.get("window").width * 45) / 100;
+	const halfScreen = (Dimensions.get("window").width * 45) / 100;
+	const cardSize = {
+		width: halfScreen,
+		height: halfScreen,
+	};
 	const imageSize = {
-		width: (cardWidth * 2) / 5,
-		height: (cardWidth * 2) / 5,
+		width: (halfScreen * 2) / 5,
+		height: (halfScreen * 2) / 5,
 	};
 
 	return (
@@ -29,7 +33,7 @@ const ProjectCard = ({ project, navigation }: IProps) => {
 			<View
 				style={{
 					...tw`justify-center p-2 m-2 bg-dark-dark rounded-xl`,
-					...imageSize,
+					...cardSize,
 				}}
 			>
 				<Image

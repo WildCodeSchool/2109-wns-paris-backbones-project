@@ -75,8 +75,6 @@ function RootNavigator() {
 			</Stack.Group>
 			<Stack.Group
 				screenOptions={{
-					title: "Project",
-					headerStyle: tw`h-33`,
 					headerTitleStyle: tw`text-3xl font-main-bold text-light-light`,
 					headerTintColor: tw.color("primary-dark"),
 				}}

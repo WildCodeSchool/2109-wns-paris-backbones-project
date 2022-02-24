@@ -4,7 +4,7 @@ import tw from "../lib/tailwind";
 import GradientWrapper from "./GradientWrapper";
 import { format } from "date-fns";
 import { useState } from "react";
-import { TaskData } from "../types/index";
+import { TaskData } from "../customTypes";
 
 interface IProps {
 	tasks: TaskData[];
