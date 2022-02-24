@@ -2,22 +2,28 @@ import { Text } from "../components/Themed";
 import { View } from "react-native";
 import { RootStackScreenProps } from "../types";
 import tw from "../lib/tailwind";
-import { Dimensions, FlatList, Image } from "react-native";
+import { FlatList, Image } from "react-native";
 import UserBadge from "../components/UserBadge";
+import { useLayoutEffect } from "react";
+import screen from "../constants/Layout";
 
 const ProjectDetailScreen = ({
 	navigation,
 	route,
 }: RootStackScreenProps<"ProjectDetail">) => {
 	const { project } = route.params;
-	navigation.setOptions({ title: project.title });
+
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
-	const halfScreen = (Dimensions.get("window").width * 45) / 100;
+	const halfScreen = (screen.window.width * 45) / 100;
 	const imageSize = {
 		width: (halfScreen * 2) / 5,
 		height: (halfScreen * 2) / 5,
 	};
+
+	useLayoutEffect(() => {
+		navigation.setOptions({ title: project.title });
+	}, []);
 
 	return (
 		<View style={tw`mt-9`}>
