@@ -5,7 +5,7 @@ import tw from "../lib/tailwind";
 import { MaterialIcons } from "@expo/vector-icons";
 
 const SearchBar = () => {
-	const [text, onChangeText] = React.useState("aa");
+	const [text, onChangeText] = React.useState("");
 	return (
 		<View style={tw`flex-row w-5/6 my-6`}>
 			<View
