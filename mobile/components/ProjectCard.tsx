@@ -1,4 +1,5 @@
-import { Text, View } from "./Themed";
+import { Text } from "./Themed";
+import { View } from "react-native";
 import { ProjectData } from "../customTypes";
 import { Dimensions, Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
@@ -32,33 +33,27 @@ const ProjectCard = ({ project, navigation }: IProps) => {
 		>
 			<View
 				style={{
-					...tw`justify-center p-2 m-2 bg-dark-dark rounded-xl`,
+					...tw`justify-around p-2 m-2 bg-dark-dark rounded-xl`,
 					...cardSize,
 				}}
 			>
 				<Image
 					style={{
-						...tw`self-center  rounded-xl`,
+						...tw`self-center rounded-xl`,
 						...imageSize,
 					}}
 					source={{ uri: project.photo }}
 				/>
-				<View>
-					<Text
-						style={tw`pt-3 text-lg text-center bg-dark-dark font-main-bold`}
-					>
-						{project.title}
+				<Text style={tw`pt-3 text-lg text-center font-main-bold`}>
+					{project.title}
+				</Text>
+				<View style={tw`flex-row justify-between pt-4`}>
+					<Text style={tw`font-main-light`}>
+						{taskCount} {taskCount > 1 ? "tasks" : "task"}
 					</Text>
-					<View
-						style={tw`flex-row justify-between pt-4 bg-dark-dark`}
-					>
-						<Text style={tw`font-main-light`}>
-							{taskCount} {taskCount > 1 ? "tasks" : "task"}
-						</Text>
-						<Text style={tw`font-main-light`}>
-							{userCount} {userCount > 1 ? "users" : "user"}
-						</Text>
-					</View>
+					<Text style={tw`font-main-light`}>
+						{userCount} {userCount > 1 ? "users" : "user"}
+					</Text>
 				</View>
 			</View>
 		</TouchableOpacity>

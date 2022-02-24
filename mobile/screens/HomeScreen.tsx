@@ -1,5 +1,6 @@
 import { FlatList, StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
+import { Text } from "../components/Themed";
+import { View } from "react-native";
 import { RootTabScreenProps } from "../types";
 import { gql, useQuery } from "@apollo/client";
 import Reminder from "../components/Reminder";
