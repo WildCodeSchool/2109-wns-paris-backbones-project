@@ -15,7 +15,10 @@ interface Statuses {
   [key: string]: { 
     status: "to do" | "done" | "in progress" | "late",
     icon: "check-circle-outline" | "check-circle" | "access-time" | "more-horiz",
-    color: string,
+    color: {
+      dark: string,
+      light: string,
+    },
    },
 }
 
@@ -23,23 +26,35 @@ const statuses: Statuses = {
   toDo: {
     status: "to do",
     icon: "check-circle-outline",
-    color: `primary-dark`,
+    color: {
+      dark: 'light-light',
+      light: 'dark-medium',
+    },
   },
   done: {
     status: "done",
     icon: "check-circle",
-    color: `primary-dark`,
+    color: {
+      dark: 'primary-medium',
+      light: 'primary-medium',
+    },
   },
   // @todo: handle these statuses later, only using to do and done for now
   inProgress: {
     status: "in progress",
-    icon: "more-horiz",
-    color: `primary-dark`,
+    icon: "timelapse",
+    color: {
+      dark: 'light-light',
+      light: 'dark-medium',
+    },
   },
   late: {
     status: "late",
     icon: "access-time",
-    color: `primary-dark`,
+    color: {
+      dark: 'secondary-medium',
+      light: 'secondary-medium',
+    },
   },
 } as const;
 
@@ -74,10 +89,10 @@ export const TaskListItem = ({ task }: IProps) => {
       onPress={onPress}
       style={tw`flex-row items-center justify-start py-1`}
     >
-      <View style={tw`bg-dark-dark rounded-3xl w-5/6 flex-row items-center justify-start px-2 py-1`}>
+      <View style={tw`bg-light-dark dark:bg-dark-dark rounded-3xl w-5/6 flex-row items-center justify-start px-2 py-1`}>
         <MaterialIcons
           style={tw`text-3xl px-2 self-start`}
-          color={badgeStyle.color}
+          color={tw.prefixMatch('dark') ? tw.color(badgeStyle.color.dark) : tw.color(badgeStyle.color.light) }
           name={badgeStyle.icon}
         />
         <Text style={tw`text-dark-medium dark:text-light-light px-1`}>
