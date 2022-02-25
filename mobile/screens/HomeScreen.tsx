@@ -38,6 +38,11 @@ export const GET_USER_BY_ID = gql`
 					avatar
 					firstName
 				}
+				project {
+					id
+					title
+					photo
+				}
 			}
 			projects {
 				id

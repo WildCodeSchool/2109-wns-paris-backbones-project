@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
 import tw from "../lib/tailwind";
