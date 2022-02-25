@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, StyleSheet, Text } from "react-native";
 import { TaskListItem } from "../components/TaskListItem";
 import { View } from "../components/Themed";
 import { gql, useQuery } from "@apollo/client";
@@ -43,22 +43,29 @@ export default function TasksScreen({
 	});
 	const { getUserById: user } = data ?? {};
 
-	return (
-		<View style={styles.container}>
-			<SearchBar />
-			<FlatList
-				data={user.tasks}
-				horizontal={false}
-				renderItem={({ item }) => (
-					<TaskListItem
-						task={item}
-						navigation={navigation}
-						userId={userId}
-					/>
-				)}
-			/>
-		</View>
-	);
+	if (!loading && user) {
+		return (
+			<View style={styles.container}>
+				<SearchBar />
+				<FlatList
+					data={user.tasks}
+					horizontal={false}
+					renderItem={({ item }) => (
+						<TaskListItem
+							task={item}
+							navigation={navigation}
+							userId={userId}
+						/>
+					)}
+				/>
+			</View>
+		);
+	} else if (error) {
+		console.log(error);
+		return <Text>error !</Text>;
+	} else {
+		return <Text>LOADING...</Text>;
+	}
 }
 
 const styles = StyleSheet.create({
