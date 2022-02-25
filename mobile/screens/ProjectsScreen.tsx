@@ -1,22 +1,64 @@
-import { StyleSheet } from "react-native";
+import { gql, useQuery } from "@apollo/client";
+import React from "react";
+import { FlatList, StyleSheet, Text } from "react-native";
+import ProjectCard from "../components/ProjectCard";
+import SearchBar from "../components/SearchBar";
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
+import { View } from "../components/Themed";
+import { RootTabScreenProps } from "../types";
 
-export default function ProjectsScreen() {
-	return (
-		<View style={styles.container}>
-			<Text style={styles.title}>Tab Three</Text>
-			<View
-				style={styles.separator}
-				lightColor="#eee"
-				darkColor="rgba(255,255,255,0.1)"
-			/>
-			<EditScreenInfo path="/screens/ProjectsScreen.tsx" />
-		</View>
-	);
+export const GET_USER_BY_ID = gql`
+query GetUserById($userId: Float!) {
+	getUserById(userId: $userId) {
+	  id
+	  projects {
+		id
+		title
+		photo
+		tasks {
+		  id
+		}
+		users {
+		  id
+		}
+	  }
+	}
+  }
+`;
+
+export default function ProjectsScreen({ navigation }: RootTabScreenProps<"Projects">) {
+
+	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+		variables: {
+			userId: 1,
+		},
+	});
+	const { getUserById: user } = data ?? {};
+
+	if (error) {
+		return <Text>Oops, there was an error...</Text>
+	}
+
+	if (!loading && data) {
+		return (
+			<View style={styles.container}>
+				<SearchBar />
+				<FlatList
+					data={user.projects}
+					horizontal={false}
+					numColumns={2}
+					renderItem={({ item }) => (
+						<ProjectCard
+							project={item}
+							userId={user.id}
+							navigation={navigation}
+						/>
+					)}
+				/>
+			</View>
+		);
+	}
 }
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
