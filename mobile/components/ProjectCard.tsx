@@ -37,7 +37,7 @@ const ProjectCard = ({ project, navigation, userId }: IProps) => {
 		>
 			<View
 				style={{
-					...tw`justify-around p-2 m-2 bg-dark-dark rounded-xl`,
+					...tw`justify-around p-2 m-2 bg-light-dark dark:bg-dark-dark rounded-xl`,
 					...cardSize,
 				}}
 			>
