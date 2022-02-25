@@ -30,9 +30,6 @@ const Accordion = ({ title, children }: IProps) => {
 					onPress={() => expandAccordion()}
 				>
 					<View style={tw`flex-row`}>
-						<Text style={tw`text-2xl font-main-light `}>
-							{!expanded ? "View More" : "View Less"}
-						</Text>
 						<MaterialIcons
 							style={tw`text-4xl leading-1`}
 							color={

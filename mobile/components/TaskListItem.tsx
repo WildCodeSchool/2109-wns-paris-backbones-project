@@ -65,7 +65,7 @@ const statuses: Statuses = {
 } as const;
 
 export const TaskListItem = ({ task }: IProps) => {
-	const width = (screen.window.width * 5) / 6;
+	const width = (screen.window.width * 11) / 12;
 
 	let badgeStyle = statuses.toDo;
 
