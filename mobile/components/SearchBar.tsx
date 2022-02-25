@@ -7,7 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 const SearchBar = () => {
 	const [text, onChangeText] = React.useState("");
 	return (
-		<View style={tw`flex-row w-5/6 my-6`}>
+		<View style={tw`flex-row w-5/6 my-6 bg-transparent`}>
 			<View
 				style={tw`flex-row items-center flex-1 px-4 py-1 rounded-xl dark:bg-dark-dark bg-light-dark`}
 			>
@@ -16,7 +16,7 @@ const SearchBar = () => {
 				</Text>
 
 				<TextInput
-					style={tw`flex-1 ml-auto text-dark-darker dark:text-white`}
+					style={tw`flex-1 ml-auto text-dark-dark dark:text-light-light`}
 					onChangeText={onChangeText}
 					value={text}
 					placeholder={"Search projects or tasks..."}
