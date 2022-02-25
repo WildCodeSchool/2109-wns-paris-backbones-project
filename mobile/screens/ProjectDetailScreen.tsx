@@ -90,13 +90,12 @@ const ProjectDetailScreen = ({
 		const userTasks = project.tasks.filter(
 			(task) => !!task.users.find((user) => user.id === userId)
 		);
-		console.log("userTasks", userTasks);
 		const taskCount = project.tasks.length;
 		const userCount = project.users.length;
 		return (
 			<View>
 				<View style={tw`mt-9`}>
-					<View style={tw`bg-dark-dark mx-2 h-50 rounded-2xl `}>
+					<View style={tw`bg-dark-dark mx-2 h-auto rounded-2xl `}>
 						<View style={tw`flex-row justify-around`}>
 							<Text
 								style={tw`text-lg text-center font-main-bold pt-7`}

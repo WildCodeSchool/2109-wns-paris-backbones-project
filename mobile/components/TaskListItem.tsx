@@ -107,21 +107,28 @@ export const TaskListItem = ({ task }: IProps) => {
 					}
 					name={badgeStyle.icon}
 				/>
-				<Text style={tw`text-dark-medium dark:text-light-light px-1`}>
+				<Text
+					numberOfLines={1}
+					style={tw`text-dark-medium dark:text-light-light flex-nowrap px-1 w-8/12  `}
+				>
 					{task.title}
 				</Text>
+				<View style={tw`w-1`} />
+				<FlatList
+					data={task.users}
+					horizontal={true}
+					contentContainerStyle={tw`ml-auto`}
+					renderItem={({ item }) => (
+						<View style={tw`-ml-1`}>
+							<UserBadge
+								user={item}
+								withFirstName={false}
+								size={5}
+							/>
+						</View>
+					)}
+				/>
 			</View>
-
-			<FlatList
-				data={task.users}
-				horizontal={true}
-				contentContainerStyle={tw`ml-auto`}
-				renderItem={({ item }) => (
-					<View style={tw`-ml-1`}>
-						<UserBadge user={item} withFirstName={false} size={5} />
-					</View>
-				)}
-			/>
 		</TouchableOpacity>
 	);
 };
