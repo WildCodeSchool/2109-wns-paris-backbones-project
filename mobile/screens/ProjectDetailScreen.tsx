@@ -95,12 +95,12 @@ const ProjectDetailScreen = ({
 		return (
 			<View>
 				<View style={tw`mt-9`}>
-					<View style={tw`h-auto mx-2 bg-dark-dark rounded-2xl `}>
+					<View style={tw`h-auto mx-2 bg-light-dark dark:bg-dark-dark rounded-2xl `}>
 						<View style={tw`flex-row justify-around`}>
 							<Text
 								style={tw`text-lg text-center font-main-bold pt-7`}
 							>
-								Project: {project.title}
+								{project.title}
 							</Text>
 							<Image
 								style={{
