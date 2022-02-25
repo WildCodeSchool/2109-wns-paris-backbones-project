@@ -6,10 +6,11 @@ import { useState } from "react";
 
 interface IProps {
 	user: UserData;
+	withFirstName?: boolean;
 	size?: number;
 }
 
-const UserBadge = ({ user, size = 10 }: IProps) => {
+const UserBadge = ({ user, withFirstName = true, size = 10 }: IProps) => {
 	const [clicked, setClicked] = useState(false);
 	return (
 		<TouchableOpacity
@@ -27,7 +28,11 @@ const UserBadge = ({ user, size = 10 }: IProps) => {
 					}`}
 					source={{ uri: user.avatar }}
 				/>
-				<Text style={tw`text-center text-xxs`}>{user.firstName}</Text>
+				{withFirstName && (
+					<Text style={tw`text-center text-xxs`}>
+						{user.firstName}
+					</Text>
+				)}
 			</View>
 		</TouchableOpacity>
 	);

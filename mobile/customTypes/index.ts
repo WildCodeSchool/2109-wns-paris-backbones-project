@@ -6,6 +6,7 @@ export interface TaskData {
 	start_date: string;
 	end_date: string;
 	status: StatusData;
+	users: UserData[];
 }
 
 export interface RoleData {
@@ -39,4 +40,3 @@ export interface UserData {
 	projects: ProjectData[];
 	tasks: TaskData[];
 }
-
