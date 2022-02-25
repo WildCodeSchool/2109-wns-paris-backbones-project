@@ -95,7 +95,7 @@ const ProjectDetailScreen = ({
 		return (
 			<View>
 				<View style={tw`mt-9`}>
-					<View style={tw`bg-dark-dark mx-2 h-auto rounded-2xl `}>
+					<View style={tw`h-auto mx-2 bg-dark-dark rounded-2xl `}>
 						<View style={tw`flex-row justify-around`}>
 							<Text
 								style={tw`text-lg text-center font-main-bold pt-7`}
@@ -104,7 +104,7 @@ const ProjectDetailScreen = ({
 							</Text>
 							<Image
 								style={{
-									...tw`rounded-xl mt-4`,
+									...tw`mt-4 rounded-xl`,
 									...imageSize,
 								}}
 								source={{ uri: project.photo }}
@@ -117,7 +117,7 @@ const ProjectDetailScreen = ({
 							<Text style={tw`font-main-light`}>
 								{taskCount} {taskCount > 1 ? "tasks" : "task"}
 							</Text>
-							<Text style={tw`font-main-light mx-5`}>
+							<Text style={tw`mx-5 font-main-light`}>
 								{userCount} {userCount > 1 ? "users" : "user"}
 							</Text>
 						</View>
@@ -139,7 +139,11 @@ const ProjectDetailScreen = ({
 							data={userTasks}
 							horizontal={false}
 							renderItem={({ item }) => (
-								<TaskListItem task={item} />
+								<TaskListItem
+									task={item}
+									navigation={navigation}
+									userId={userId}
+								/>
 							)}
 						/>
 					</Accordion>
@@ -148,7 +152,11 @@ const ProjectDetailScreen = ({
 							data={project.tasks}
 							horizontal={false}
 							renderItem={({ item }) => (
-								<TaskListItem task={item} />
+								<TaskListItem
+									task={item}
+									navigation={navigation}
+									userId={userId}
+								/>
 							)}
 						/>
 					</Accordion>
