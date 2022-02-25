@@ -1,4 +1,5 @@
-import { Text, View } from "./Themed";
+import { Text } from "./Themed";
+import { View } from "react-native";
 import tw from "../lib/tailwind";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ReactNode, useState } from "react";
@@ -14,7 +15,7 @@ const Accordion = ({ title, children }: IProps) => {
 
 	const expandAccordion = () => {
 		LayoutAnimation.configureNext(
-			LayoutAnimation.create(700, "easeOut", "opacity")
+			LayoutAnimation.create(500, "easeOut", "opacity")
 		);
 		setExpanded(!expanded);
 	};
@@ -30,8 +31,7 @@ const Accordion = ({ title, children }: IProps) => {
 				>
 					<View style={tw`flex-row`}>
 						<Text style={tw`text-2xl font-main-light `}>
-							{" "}
-							View More{" "}
+							{!expanded ? "View More" : "View Less"}
 						</Text>
 						<MaterialIcons
 							style={tw`text-4xl leading-1`}

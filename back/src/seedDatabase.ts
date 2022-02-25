@@ -249,18 +249,19 @@ const runSeed = async () => {
 			console.log("CREATE TASKS");
 			for (const project of projects) {
 				let i = 1;
-				console.log(project.id);
 				const projectStatuses = statuses.filter(
 					async (status) => (await status?.project.id) === project.id
 				);
-				console.log(projectStatuses);
 				for (let index = 0; index < 5; index++) {
 					const t = new Task();
 					t.title = myTasks[index].title;
 					t.description = myTasks[index].description;
 					t.status = projectStatuses[index];
 					t.project = project;
-					t.users = users.filter((user, index) => index % i === 0);
+					t.users = [
+						users[index],
+						users[index + 1] ? users[index + 1] : users[0],
+					];
 					t.effective_time = myTasks[index].effective_time;
 					t.estimated_time = myTasks[index].estimated_time;
 					t.start_date = myTasks[index].start_date;

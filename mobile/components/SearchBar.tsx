@@ -9,7 +9,7 @@ const SearchBar = () => {
 	return (
 		<View style={tw`flex-row w-5/6 my-6`}>
 			<View
-				style={tw`flex-row items-center flex-1 px-4 py-1 rounded-xl dark:bg-dark-medium bg-light-dark`}
+				style={tw`flex-row items-center flex-1 px-4 py-1 rounded-xl dark:bg-dark-dark bg-light-dark`}
 			>
 				<Text style={tw`mr-4`}>
 					<MaterialIcons name="search" style={tw`text-3xl`} />
@@ -25,7 +25,7 @@ const SearchBar = () => {
 			</View>
 			<TouchableOpacity accessibilityRole="button" style={tw`ml-4`}>
 				<View
-					style={tw`px-4 py-1 rounded-xl dark:bg-dark-medium bg-light-dark`}
+					style={tw`px-4 py-1 rounded-xl dark:bg-dark-dark bg-light-dark`}
 				>
 					<Text>
 						<MaterialIcons name="sort" style={tw`text-3xl`} />

@@ -10,9 +10,10 @@ interface IProps {
 	navigation: RootTabScreenProps<
 		"Home" | "Tasks" | "Projects" | "Profile"
 	>["navigation"];
+	userId: number;
 }
 
-const ProjectCard = ({ project, navigation }: IProps) => {
+const ProjectCard = ({ project, navigation, userId }: IProps) => {
 	const taskCount = project.tasks.length;
 	const userCount = project.users.length;
 	const halfScreen = (Dimensions.get("window").width * 45) / 100;
@@ -28,7 +29,10 @@ const ProjectCard = ({ project, navigation }: IProps) => {
 	return (
 		<TouchableOpacity
 			onPress={() => {
-				navigation.navigate("ProjectDetail", { project: project });
+				navigation.navigate("ProjectDetail", {
+					projectId: project.id,
+					userId: userId,
+				});
 			}}
 		>
 			<View

@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList } from "react-native";
 import { Text } from "../components/Themed";
 import { View } from "react-native";
 import { RootTabScreenProps } from "../types";
@@ -7,10 +7,9 @@ import Reminder from "../components/Reminder";
 import Accordion from "../components/Accordion";
 import ProjectCard from "../components/ProjectCard";
 import AppLoading from "expo-app-loading";
-import UserBadge from "../components/UserBadge";
 import { TaskListItem } from "../components/TaskListItem";
-import { TaskData } from './../customTypes/';
 import SearchBar from "../components/SearchBar";
+import tw from "../lib/tailwind";
 
 export const GET_USER_BY_ID = gql`
 	query GetUserById($userId: Float!) {
@@ -33,6 +32,11 @@ export const GET_USER_BY_ID = gql`
 				status {
 					id
 					title
+				}
+				users {
+					id
+					avatar
+					firstName
 				}
 			}
 			projects {
@@ -75,11 +79,15 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 
 	if (!loading) {
 		return (
-			<View style={styles.container}>
+			<View style={tw`flex-1 items-center`}>
 				<SearchBar />
-				<Reminder tasks={user.tasks} title={"Reminder"} />
+				<Reminder tasks={user.tasks} title={"Tasks to do"} />
 				<Accordion title={"Tasks"}>
-				<TaskListItem task={user.tasks.filter((task: TaskData) => task.id === 1)[0]} />
+					<FlatList
+						data={user.tasks}
+						horizontal={false}
+						renderItem={({ item }) => <TaskListItem task={item} />}
+					/>
 				</Accordion>
 				<Accordion title={"Projects"}>
 					<FlatList
@@ -89,6 +97,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 						renderItem={({ item }) => (
 							<ProjectCard
 								project={item}
+								userId={user.id}
 								navigation={navigation}
 							/>
 						)}
@@ -102,18 +111,3 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
 		return <AppLoading />;
 	}
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: "center",
-	},
-	title: {
-		fontSize: 20,
-	},
-	separator: {
-		marginVertical: 30,
-		height: 1,
-		width: "80%",
-	},
-});

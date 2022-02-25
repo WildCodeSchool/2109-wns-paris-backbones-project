@@ -1,28 +1,52 @@
-import { StyleSheet } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { TaskListItem } from "../components/TaskListItem";
+import { View } from "../components/Themed";
+import { gql, useQuery } from "@apollo/client";
+import SearchBar from "../components/SearchBar";
 
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
+export const GET_USER_BY_ID = gql`
+	query GetUserById($userId: Float!) {
+		getUserById(userId: $userId) {
+			id
+			firstName
+			lastName
+			email
+			avatar
+			roles {
+				id
+				title
+			}
+			tasks {
+				id
+				title
+				description
+				start_date
+				end_date
+				status {
+					id
+					title
+				}
+			}
+		}
+	}
+`;
 
-import { type TaskData } from "../types/index";
+export default function TasksScreen() {
+	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
+		variables: {
+			userId: 1,
+		},
+	});
+	const { getUserById: user } = data ?? {};
 
-interface IProps {
-	task: TaskData,
-}
-
-export default function TasksScreen({ task }: IProps) {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Tab Two</Text>
-			<View
-				style={styles.separator}
-				lightColor="#eee"
-				darkColor="rgba(255,255,255,0.1)"
+			<SearchBar />
+			<FlatList
+				data={user.tasks}
+				horizontal={false}
+				renderItem={({ item }) => <TaskListItem task={item} />}
 			/>
-			<EditScreenInfo path="/screens/TasksScreen.tsx" />
-			<TaskListItem task={task} />
-			<TaskListItem task={task} />
-			<TaskListItem task={task} />
 		</View>
 	);
 }
