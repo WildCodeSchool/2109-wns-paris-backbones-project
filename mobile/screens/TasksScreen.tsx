@@ -3,6 +3,7 @@ import { TaskListItem } from "../components/TaskListItem";
 import { View } from "../components/Themed";
 import { gql, useQuery } from "@apollo/client";
 import SearchBar from "../components/SearchBar";
+import type { RootTabScreenProps } from "../types";
 
 export const GET_USER_BY_ID = gql`
 	query GetUserById($userId: Float!) {
@@ -31,10 +32,13 @@ export const GET_USER_BY_ID = gql`
 	}
 `;
 
-export default function TasksScreen() {
+export default function TasksScreen({
+	navigation,
+}: RootTabScreenProps<"Tasks">) {
+	const userId = 1;
 	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
 		variables: {
-			userId: 1,
+			userId: userId,
 		},
 	});
 	const { getUserById: user } = data ?? {};
@@ -45,7 +49,13 @@ export default function TasksScreen() {
 			<FlatList
 				data={user.tasks}
 				horizontal={false}
-				renderItem={({ item }) => <TaskListItem task={item} />}
+				renderItem={({ item }) => (
+					<TaskListItem
+						task={item}
+						navigation={navigation}
+						userId={userId}
+					/>
+				)}
 			/>
 		</View>
 	);

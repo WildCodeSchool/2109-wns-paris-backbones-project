@@ -34,6 +34,7 @@ import NotificationButton from "./NotificationButton";
 import TabBar from "./TabBar";
 import tw from "../lib/tailwind";
 import ProjectDetailScreen from "../screens/ProjectDetailScreen";
+import TaskDetailScreen from "../screens/TaskDetailScreen";
 
 export default function Navigation({
 	colorScheme,
@@ -82,6 +83,7 @@ function RootNavigator() {
 					name="ProjectDetail"
 					component={ProjectDetailScreen}
 				/>
+				<Stack.Screen name="TaskDetail" component={TaskDetailScreen} />
 			</Stack.Group>
 		</Stack.Navigator>
 	);

@@ -75,23 +75,30 @@ export const GET_USER_BY_ID = gql`
 `;
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<"Home">) {
+	const userId = 1;
 	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
 		variables: {
-			userId: 1,
+			userId: userId,
 		},
 	});
 	const { getUserById: user } = data ?? {};
 
 	if (!loading) {
 		return (
-			<View style={tw`flex-1 items-center`}>
+			<View style={tw`items-center flex-1`}>
 				<SearchBar />
 				<Reminder tasks={user.tasks} title={"Tasks to do"} />
 				<Accordion title={"Tasks"}>
 					<FlatList
 						data={user.tasks}
 						horizontal={false}
-						renderItem={({ item }) => <TaskListItem task={item} />}
+						renderItem={({ item }) => (
+							<TaskListItem
+								task={item}
+								navigation={navigation}
+								userId={userId}
+							/>
+						)}
 					/>
 				</Accordion>
 				<Accordion title={"Projects"}>
