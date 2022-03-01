@@ -11,6 +11,7 @@ import {
 	Roboto_700Bold,
 	Roboto_100Thin,
 	Roboto_300Light,
+	Roboto_400Regular,
 } from "@expo-google-fonts/roboto";
 import AppLoading from "expo-app-loading";
 import tw from "./lib/tailwind";
@@ -36,6 +37,7 @@ export default function App() {
 		Roboto_700Bold,
 		Roboto_100Thin,
 		Roboto_300Light,
+		Roboto_400Regular,
 	});
 
 	if (!isLoadingComplete && !fontsLoaded) {

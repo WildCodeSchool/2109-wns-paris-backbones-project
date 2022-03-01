@@ -3,40 +3,41 @@ import React from "react";
 import { FlatList, StyleSheet, Text } from "react-native";
 import ProjectCard from "../components/ProjectCard";
 import SearchBar from "../components/SearchBar";
-
 import { View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
 
 export const GET_USER_BY_ID = gql`
-query GetUserById($userId: Float!) {
-	getUserById(userId: $userId) {
-	  id
-	  projects {
-		id
-		title
-		photo
-		tasks {
-		  id
+	query GetUserById($userId: Float!) {
+		getUserById(userId: $userId) {
+			id
+			projects {
+				id
+				title
+				photo
+				tasks {
+					id
+				}
+				users {
+					id
+				}
+			}
 		}
-		users {
-		  id
-		}
-	  }
 	}
-  }
 `;
 
-export default function ProjectsScreen({ navigation }: RootTabScreenProps<"Projects">) {
-
+export default function ProjectsScreen({
+	navigation,
+}: RootTabScreenProps<"Projects">) {
+	const userId = 1;
 	const { loading, error, data } = useQuery(GET_USER_BY_ID, {
 		variables: {
-			userId: 1,
+			userId: userId,
 		},
 	});
 	const { getUserById: user } = data ?? {};
 
 	if (error) {
-		return <Text>Oops, there was an error...</Text>
+		return <Text>Oops, there was an error...</Text>;
 	}
 
 	if (!loading && data) {

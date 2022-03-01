@@ -100,7 +100,7 @@ const TaskDetailScreen = ({
 							</Text>
 							<Text
 								numberOfLines={1}
-								style={tw`w-7/12 text-left text-right truncate text-light-dark`}
+								style={tw`w-7/12 text-left text-right text-light-dark`}
 							>
 								In project
 								{` ${

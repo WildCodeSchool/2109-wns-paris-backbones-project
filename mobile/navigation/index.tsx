@@ -22,7 +22,7 @@ import NotFoundScreen from "../screens/NotFoundScreen";
 import HomeScreen from "../screens/HomeScreen";
 import TasksScreen from "../screens/TasksScreen";
 import ProjectsScreen from "../screens/ProjectsScreen";
-import TabFourScreen from "../screens/ProjectsScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import {
 	RootStackParamList,
 	RootTabParamList,
@@ -143,7 +143,7 @@ function BottomTabNavigator() {
 			/>
 			<BottomTab.Screen
 				name="Profile"
-				component={TabFourScreen}
+				component={ProfileScreen}
 				options={{
 					title: "Profile",
 					//   tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
