@@ -122,4 +122,16 @@ export class TaskResolver {
 			throw error;
 		}
 	}
+
+	//DELETE
+	@Mutation(() => [Task])
+	async deleteTask(@Arg("taskId") taskId: number) {
+		try {
+			const task = await Task.findOneOrFail(taskId);
+			await task.remove();
+			return await Task.find();
+		} catch (error) {
+			throw error;
+		}
+	}
 }

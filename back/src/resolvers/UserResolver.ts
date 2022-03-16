@@ -122,6 +122,7 @@ export class UserResolver {
 		}
 	}
 
+	//DELETE
 	@Mutation(() => [BackBonesUser])
 	async deleteUser(@Arg("userId") userId: number) {
 		try {
