@@ -128,7 +128,7 @@ export class TaskResolver {
 	async deleteTask(@Arg("taskId") taskId: number) {
 		try {
 			const task = await Task.findOneOrFail(taskId);
-			await task.remove();
+			await task.softRemove();
 			return await Task.find();
 		} catch (error) {
 			throw error;

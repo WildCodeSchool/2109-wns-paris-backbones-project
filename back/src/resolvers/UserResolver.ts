@@ -127,7 +127,7 @@ export class UserResolver {
 	async deleteUser(@Arg("userId") userId: number) {
 		try {
 			const user = await BackBonesUser.findOneOrFail(userId);
-			await user.remove();
+			await user.softRemove();
 			return await BackBonesUser.find();
 		} catch (error) {
 			throw error;
