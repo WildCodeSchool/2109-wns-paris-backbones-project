@@ -102,11 +102,15 @@ export class TaskResolver {
 					`Task with title ${input.title} already exists on this project`
 				);
 			}
+			const usersToNotify = input.users;
+			if (input.users) {
+				input.users = [...input.users, ...(await task?.users)];
+			}
 			Object.assign(task, input);
 			await task.save();
 			console.log(`Task ${task.id} Updated: [project: ${project.title}]`);
-			if (input.users) {
-				const users = await BackBonesUser.findByIds(input.users);
+			if (usersToNotify) {
+				const users = await BackBonesUser.findByIds(usersToNotify);
 				await createNotification(
 					`${project.title}: You have a new task: ${task.title}`,
 					users,

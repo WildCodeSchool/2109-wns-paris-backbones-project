@@ -30,13 +30,13 @@ export class CreateUserInput {
 	avatar: string;
 
 	@Field(() => [TaskInput], { nullable: true })
-	tasks: [Task];
+	tasks: Task[];
 
 	@Field(() => [ProjectInput], { nullable: true })
-	projects: [Project];
+	projects: Project[];
 
 	@Field(() => [RoleInput], { nullable: true })
-	roles: [Role];
+	roles: Role[];
 }
 
 @InputType()
@@ -57,11 +57,11 @@ export class UpdateUserInput {
 	avatar: string;
 
 	@Field(() => [TaskInput], { nullable: true })
-	tasks: [Task];
+	tasks: Task[];
 
 	@Field(() => [ProjectInput], { nullable: true })
-	projects: [Project];
+	projects: Project[];
 
 	@Field(() => [RoleInput], { nullable: true })
-	roles: [Role];
+	roles: Role[];
 }
