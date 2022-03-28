@@ -7,6 +7,7 @@ import {
 	JoinTable,
 	BaseEntity,
 	ManyToOne,
+	DeleteDateColumn,
 } from "typeorm";
 import { Project } from "./Project";
 import { Role } from "./Role";
@@ -40,6 +41,9 @@ export class BackBonesUser extends BaseEntity {
 	@Column()
 	password: string;
 
+	@DeleteDateColumn()
+	deletedDate: Date;
+
 	@Field(() => [Role], { nullable: true })
 	@ManyToMany(() => Role, (role) => role.users, {
 		lazy: true,
@@ -68,6 +72,7 @@ export class BackBonesUser extends BaseEntity {
 	@ManyToOne(() => Notification, (notification) => notification.user, {
 		lazy: true,
 		nullable: true,
+		cascade: true,
 	})
 	notifications: Notification[];
 }

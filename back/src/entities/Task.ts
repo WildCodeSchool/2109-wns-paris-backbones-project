@@ -6,6 +6,7 @@ import {
 	ManyToOne,
 	ManyToMany,
 	BaseEntity,
+	DeleteDateColumn,
 } from "typeorm";
 import { Status } from "./Status";
 import { BackBonesUser } from "./User";
@@ -44,6 +45,9 @@ export class Task extends BaseEntity {
 	@Column({ nullable: true })
 	end_date: Date;
 
+	@DeleteDateColumn()
+	deletedDate: Date;
+
 	@Field(() => Status, { nullable: true })
 	@ManyToOne(() => Status, (status) => status.tasks, {
 		lazy: true,
@@ -69,6 +73,7 @@ export class Task extends BaseEntity {
 	@ManyToOne(() => Notification, (notification) => notification.task, {
 		lazy: true,
 		nullable: true,
+		cascade: true,
 	})
 	notifications: Notification[];
 }

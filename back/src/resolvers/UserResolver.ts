@@ -121,4 +121,16 @@ export class UserResolver {
 			throw error;
 		}
 	}
+
+	//DELETE
+	@Mutation(() => [BackBonesUser])
+	async deleteUser(@Arg("userId") userId: number) {
+		try {
+			const user = await BackBonesUser.findOneOrFail(userId);
+			await user.softRemove();
+			return await BackBonesUser.find();
+		} catch (error) {
+			throw error;
+		}
+	}
 }
