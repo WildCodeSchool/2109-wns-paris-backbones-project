@@ -39,7 +39,7 @@ const Reminder = ({ tasks, title }: IProps) => {
 					renderItem={({ item }) => (
 						<View style={{ width: width - 16 }}>
 							<Text
-								style={tw` text-xl font-main-light font-main-regular flex-wrap mb-1`}
+								style={tw` text-xl font-main-light font-main-regular text-light-light flex-wrap mb-1`}
 							>
 								{item.title}
 							</Text>
@@ -49,12 +49,12 @@ const Reminder = ({ tasks, title }: IProps) => {
 							>
 								{item.description}
 							</Text>
-							<Text style={tw`font-main-bold`}>
+							<Text style={tw`font-main-bold text-light-light`}>
 								End date:{" "}
 								{format(new Date(item.end_date), "E dd MMM")}
 							</Text>
 							<View style={tw`flex-row self-end`}>
-								<Text style={tw`ml-2 self-center`}>
+								<Text style={tw`ml-2 self-center text-light-light`}>
 									{item.project.title}
 								</Text>
 							</View>
