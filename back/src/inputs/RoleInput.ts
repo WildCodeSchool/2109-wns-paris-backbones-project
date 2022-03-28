@@ -16,7 +16,7 @@ export class CreateRoleInput {
 	title: string;
 
 	@Field(() => [UserInput], { nullable: true })
-	users: [BackBonesUser];
+	users: BackBonesUser[];
 
 	@Field(() => ProjectInput)
 	project: Project;
@@ -28,5 +28,5 @@ export class UpdateRoleInput {
 	title: string;
 
 	@Field(() => [UserInput], { nullable: true })
-	users: [BackBonesUser];
+	users: BackBonesUser[];
 }

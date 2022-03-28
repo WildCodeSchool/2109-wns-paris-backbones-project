@@ -47,5 +47,5 @@ export class UpdateProjectInput {
 	end_date: Date;
 
 	@Field(() => [UserInput], { nullable: true })
-	users: [BackBonesUser];
+	users: BackBonesUser[];
 }

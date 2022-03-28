@@ -16,7 +16,7 @@ export class CreateStatusInput {
 	title: string;
 
 	@Field(() => [TaskInput], { nullable: true })
-	tasks: [Task];
+	tasks: Task[];
 
 	@Field(() => ProjectInput)
 	project: Project;
@@ -28,5 +28,5 @@ export class UpdateStatusInput {
 	title: string;
 
 	@Field(() => [TaskInput], { nullable: true })
-	tasks: [Task];
+	tasks: Task[];
 }

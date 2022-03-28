@@ -36,7 +36,7 @@ export class CreateTaskInput {
 	status: Status;
 
 	@Field(() => [UserInput], { nullable: true })
-	users: [BackBonesUser];
+	users: BackBonesUser[];
 
 	@Field(() => ProjectInput)
 	project: Project;
@@ -66,5 +66,5 @@ export class UpdateTaskInput {
 	status: Status;
 
 	@Field(() => [UserInput], { nullable: true })
-	users: [BackBonesUser];
+	users: BackBonesUser[];
 }

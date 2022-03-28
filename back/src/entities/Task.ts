@@ -6,6 +6,7 @@ import {
 	ManyToOne,
 	ManyToMany,
 	BaseEntity,
+	DeleteDateColumn,
 } from "typeorm";
 import { Status } from "./Status";
 import { BackBonesUser } from "./User";
@@ -43,6 +44,9 @@ export class Task extends BaseEntity {
 	@Field({ nullable: true })
 	@Column({ nullable: true })
 	end_date: Date;
+
+	@DeleteDateColumn()
+	deletedDate: Date;
 
 	@Field(() => Status, { nullable: true })
 	@ManyToOne(() => Status, (status) => status.tasks, {

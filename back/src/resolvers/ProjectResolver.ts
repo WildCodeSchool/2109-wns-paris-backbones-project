@@ -65,13 +65,17 @@ export class ProjectResolver {
 	) {
 		try {
 			const project = await Project.findOneOrFail(projectId);
+			const usersToNotify = input.users;
+			if (input.users) {
+				input.users = [...input?.users, ...(await project?.users)];
+			}
 			Object.assign(project, input);
 			await Project.save(project);
 			console.log(
 				`Project ${project.id} Updated: [title: ${project.title}]`
 			);
-			if (input.users) {
-				const users = await BackBonesUser.findByIds(input.users);
+			if (usersToNotify) {
+				const users = await BackBonesUser.findByIds(usersToNotify);
 				await createNotification(
 					`You've been added to the project ${project.title}! Keep calm and take your mark`,
 					users,
