@@ -28,14 +28,18 @@
 		"typeorm-uml": "^1.6.4"
 	},
 	"dependencies": {
+		"@types/bcrypt": "^5.0.0",
 		"@types/better-sqlite3": "^7.4.1",
 		"@types/jest": "^27.0.3",
+		"@types/jsonwebtoken": "^8.5.8",
 		"apollo-server": "^3.4.0",
+		"bcrypt": "^5.0.1",
 		"better-sqlite3": "^7.4.5",
 		"class-validator": "^0.13.1",
 		"dotenv": "^10.0.0",
 		"graphql": "^15.7.1",
 		"jest": "^27.3.1",
+		"jsonwebtoken": "^8.5.1",
 		"pg": "^8.4.0",
 		"reflect-metadata": "^0.1.10",
 		"ts-jest": "^27.0.7",

@@ -1,6 +1,8 @@
 {
 	"compilerOptions": {
-		"lib": ["es2021"],
+		"lib": [
+			"es2021"
+		],
 		"target": "es2021",
 		"module": "commonjs",
 		"sourceMap": true,
@@ -15,8 +17,13 @@
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
 		"strictPropertyInitialization": false,
-		"allowJs": false
+		"allowJs": false,
+		"allowSyntheticDefaultImports": true
 	},
-	"include": ["./src/**/*"],
-	"exclude": ["node_modules"]
+	"include": [
+		"./src/**/*"
+	],
+	"exclude": [
+		"node_modules"
+	]
 }
