@@ -16,12 +16,13 @@ const UserBadge = ({ user, withFirstName = true, size = 10 }: IProps) => {
 		<TouchableOpacity
 			onPress={() => {
 				console.log(
-					`arrête d'apputer sur la tête de ${user.firstName} ${user.lastName}... Si tu veux son mail c'est ${user.email}`
+					`arrête d'appuyer sur la tête de ${user.firstName} ${user.lastName}... Si tu veux son mail c'est ${user.email}`
 				);
 				setClicked(!clicked);
 			}}
+			
 		>
-			<View>
+			<View style={tw`bg-transparent`}>
 				<Image
 					style={tw`w-${size} h-${size} rounded-full self-center border border-2 border${
 						clicked ? "-primary-dark" : "-light-medium"
