@@ -7,6 +7,7 @@ import { Task } from "./entities/Task";
 import { Status } from "./entities/Status";
 import { Project } from "./entities/Project";
 import { createNotification } from "./utils/resolverHelpers";
+import * as bcrypt from "bcrypt";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -168,7 +169,7 @@ const runSeed = async () => {
 				u.lastName = user.lastName;
 				u.email = user.email;
 				u.avatar = user.avatar;
-				u.password = "azerty";
+				u.password = await bcrypt.hashSync("azerty", 10);
 				await connection.manager.save(u);
 				console.log("Saved a new user with named: " + u.firstName);
 			}

@@ -54,6 +54,7 @@ export class Notification extends BaseEntity {
 	@ManyToOne(() => Project, (project) => project.notifications, {
 		lazy: true,
 		nullable: true,
+		onDelete: "CASCADE",
 	})
 	project: Project;
 }

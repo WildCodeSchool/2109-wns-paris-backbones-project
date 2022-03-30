@@ -9,6 +9,8 @@ import {
 import { Task } from "../entities/Task";
 import { Role } from "../entities/Role";
 import { Project } from "../entities/Project";
+import * as bcrypt from "bcrypt";
+import * as jwt from "jsonwebtoken";
 
 @Resolver()
 export class UserResolver {
@@ -32,6 +34,8 @@ export class UserResolver {
 	async addUser(@Arg("createUserInput") input: CreateUserInput) {
 		try {
 			const user = BackBonesUser.create(input);
+			input.password = await bcrypt.hashSync(input.password, 10);
+
 			//REFACTO A FAIRE
 			const tasks: Task[] = [];
 			const roles: Role[] = [];
@@ -82,6 +86,9 @@ export class UserResolver {
 		try {
 			const user = await BackBonesUser.findOneOrFail(userId);
 			const projects = await Project.findByIds(input.projects);
+			if (input.password) {
+				input.password = bcrypt.hashSync(input.password, 10);
+			}
 
 			//REFACTO A FAIRE
 			const tasks: Task[] = [];

@@ -8,6 +8,8 @@ import { ProjectResolver } from "./resolvers/ProjectResolver";
 import { buildSchema } from "type-graphql";
 import { config } from "dotenv";
 import { NotificationResolver } from "./resolvers/NotificationResolver";
+import { customAuthChecker } from "./auth";
+import { AuthResolver } from "./resolvers/AuthResolver";
 
 config({ path: `.env.${process.env.NODE_ENV}` });
 
@@ -36,10 +38,15 @@ async function main() {
 			RoleResolver,
 			ProjectResolver,
 			NotificationResolver,
+			AuthResolver,
 		],
+		authChecker: customAuthChecker,
 	});
 	const server = new ApolloServer({
 		schema,
+		context: ({ req }) => {
+			return { token: req.headers.authorization, userId: null };
+		},
 	});
 	await server.listen(4000);
 	console.log("Apollo Server has started! visit: http://localhost:4000/");

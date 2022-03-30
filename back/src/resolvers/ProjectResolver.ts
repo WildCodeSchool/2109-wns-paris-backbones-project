@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Project } from "../entities/Project";
 import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
 import { errorHandler } from "../utils/errorHandler";
@@ -23,13 +23,21 @@ export class ProjectResolver {
 	}
 
 	// CREATE
+	@Authorized()
 	@Mutation(() => Project)
-	async addProject(@Arg("createProjectInput") input: CreateProjectInput) {
+	async addProject(
+		@Arg("createProjectInput") input: CreateProjectInput,
+		@Ctx() context: { userId: number }
+	) {
 		try {
+			const user = await BackBonesUser.findOneOrFail(context.userId);
+			input.users = input.users ? [...input.users, user] : [user];
 			const project = Project.create(input);
+
 			if (!project.title) {
 				errorHandler("project title can't be null");
 			}
+
 			await project.save();
 			console.log(
 				`Project ${project.id} Created: [title: ${project.title}]`
