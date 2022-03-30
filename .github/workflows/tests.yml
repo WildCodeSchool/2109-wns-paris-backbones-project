@@ -10,8 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Goto back and run tests
         run: cd back && yarn && yarn test
-    env:
-      DB_NAME: test
+    environment: test
   test-front:
     runs-on: ubuntu-latest
     steps:
