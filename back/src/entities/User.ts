@@ -68,6 +68,7 @@ export class BackBonesUser extends BaseEntity {
 	@ManyToOne(() => Notification, (notification) => notification.user, {
 		lazy: true,
 		nullable: true,
+		cascade: true,
 	})
 	notifications: Notification[];
 }

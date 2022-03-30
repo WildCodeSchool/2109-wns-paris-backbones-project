@@ -32,11 +32,18 @@ import {
 	GET_STATUS_BY_ID,
 	ADD_STATUS,
 	UPDATE_STATUS,
+	SIGNIN,
 } from "./gqlQueries/gqlQueries";
+import { AuthResolver } from "../resolvers/AuthResolver";
+import { customAuthChecker } from "../auth";
+import { config } from "dotenv";
 
 let server: ApolloServer;
 
+let userJwt: string;
+
 beforeAll(async () => {
+	config({ path: `.env.${process.env.NODE_ENV}` });
 	const connectionOptions = await getConnectionOptions("test");
 	await createConnection({ ...connectionOptions, name: "default" });
 	const schema = await buildSchema({
@@ -46,15 +53,24 @@ beforeAll(async () => {
 			StatusResolver,
 			RoleResolver,
 			ProjectResolver,
+			AuthResolver,
 		],
+		authChecker: customAuthChecker,
 	});
 	server = new ApolloServer({
 		schema,
+		context: ({ req }) => {
+			return { token: req?.headers.authorization, userId: null };
+		},
 	});
 	await server.listen(9000);
 	console.log(
 		"Apollo Server Test has started! visit: http://localhost:9000/"
 	);
+	const response = await server.executeOperation(
+		SIGNIN("thomas@gmail.com", "azerty")
+	);
+	userJwt = response.data?.signIn;
 });
 
 afterAll(async () => {
@@ -85,6 +101,14 @@ describe("test data base", () => {
 });
 
 describe("test Resolvers", () => {
+	describe("test AuthResolver", () => {
+		it("should return token for login", async () => {
+			const response = await server.executeOperation(
+				SIGNIN("myriam@gmail.com", "azerty")
+			);
+			expect(response.data?.signIn).toBeDefined();
+		});
+	});
 	describe("test UserResolver", () => {
 		it("test query getUsers comparing data in db  ", async () => {
 			const users = await BackBonesUser.find();
@@ -370,7 +394,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addProject expect createdProject id equal to project with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_PROJECT("brand new project")
+				ADD_PROJECT("brand new project"),
+				{ req: { headers: { authorization: userJwt } } } as any
 			);
 			const createdProject = await Project.findOne(
 				response.data?.addProject.id

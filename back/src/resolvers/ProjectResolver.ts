@@ -31,7 +31,7 @@ export class ProjectResolver {
 	) {
 		try {
 			const user = await BackBonesUser.findOneOrFail(context.userId);
-			input.users = [...input.users, user];
+			input.users = input.users ? [...input.users, user] : [user];
 			const project = Project.create(input);
 
 			if (!project.title) {

@@ -45,7 +45,7 @@ async function main() {
 	const server = new ApolloServer({
 		schema,
 		context: ({ req }) => {
-			return { token: req.headers.authorization, user: null };
+			return { token: req.headers.authorization, userId: null };
 		},
 	});
 	await server.listen(4000);

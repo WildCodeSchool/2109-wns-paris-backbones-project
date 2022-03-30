@@ -69,6 +69,7 @@ export class Task extends BaseEntity {
 	@ManyToOne(() => Notification, (notification) => notification.task, {
 		lazy: true,
 		nullable: true,
+		cascade: true,
 	})
 	notifications: Notification[];
 }

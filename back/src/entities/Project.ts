@@ -73,6 +73,7 @@ export class Project extends BaseEntity {
 	@OneToMany(() => Notification, (notification) => notification.project, {
 		lazy: true,
 		nullable: true,
+		cascade: true,
 	})
 	notifications: Notification[];
 }

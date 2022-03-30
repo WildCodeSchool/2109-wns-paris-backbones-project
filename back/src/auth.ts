@@ -13,7 +13,7 @@ type RemoveIndex<T> = {
 };
 
 interface CustomPayload extends RemoveIndex<JwtPayload> {
-	userId: string;
+	userId: number;
 	token: string;
 }
 
@@ -39,6 +39,7 @@ export const customAuthChecker: AuthChecker<CustomPayload> = async ({
 			return false;
 		}
 
+		context.userId = user.id;
 		return true;
 	} catch (err) {
 		console.log(err);
