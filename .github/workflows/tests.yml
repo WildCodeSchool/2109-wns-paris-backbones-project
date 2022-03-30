@@ -5,12 +5,14 @@ on: pull_request
 jobs:
   test-back:
     runs-on: ubuntu-latest
-    environment: test
     steps:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Goto back and run tests
         run: cd back && yarn && yarn test
+    env:
+      DB_NAME: ${{ secrets.DB_NAME }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
   test-front:
     runs-on: ubuntu-latest
     steps:
