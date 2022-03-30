@@ -5,12 +5,12 @@ on: pull_request
 jobs:
   test-back:
     runs-on: ubuntu-latest
+    environment: test
     steps:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Goto back and run tests
         run: cd back && yarn && yarn test
-    environment: test
   test-front:
     runs-on: ubuntu-latest
     steps:
