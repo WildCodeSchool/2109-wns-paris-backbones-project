@@ -12,4 +12,4 @@ RUN yarn
 COPY src src
 COPY public public
 
-CMD yarn dev
+CMD yarn start

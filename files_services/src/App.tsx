@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import  axios from "axios";
+import axios from "axios";
 
 const FILES_SERVICE_URI = "http://localhost:3020";
 
@@ -30,6 +30,7 @@ function App() {
 
   const sendForm = () => {
     // send to API
+    console.log(firstname, lastname, avatar);
     if (!firstname || !lastname || !avatar) {
       return alert("Firstname, lastname and avatar required");
     } else {

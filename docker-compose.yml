@@ -30,3 +30,5 @@ services:
     depends_on:
       - back
     command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
+
+  
