@@ -22,7 +22,7 @@ export class AuthResolver {
 					);
 					return token;
 				} else {
-					return null;
+					errorHandler("Invalid credentials", 1);
 				}
 			} else {
 				errorHandler("Invalid credentials", 1);
