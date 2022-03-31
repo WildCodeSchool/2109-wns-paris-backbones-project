@@ -73,7 +73,7 @@ function App() {
 			<AuthenticationHeader />
 			{loading && <div>Loading, plz wait :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
-			{!loading && !error && (
+			{!loading && !error && userId && (
 				<TasksList connectedUserId={userId} tasks={tasks} />
 			)}
 		</div>

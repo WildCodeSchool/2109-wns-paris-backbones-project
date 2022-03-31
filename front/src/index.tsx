@@ -6,13 +6,29 @@ import {
 	ApolloClient,
 	InMemoryCache,
 	ApolloProvider,
-	useQuery,
-	gql,
+	// useQuery,
+	// gql,
+	createHttpLink,
 } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
 
-const client = new ApolloClient({
+const httpLink = createHttpLink({
 	// TODO: replace uri with env var later
 	uri: "http://localhost:4000/",
+  });
+  
+  const authLink = setContext((_, { headers }) => {
+	const token = localStorage.getItem("token");
+	return {
+	  headers: {
+		...headers,
+		authorization: token,
+	  },
+	};
+  });
+
+const client = new ApolloClient({
+	link: authLink.concat(httpLink),
 	cache: new InMemoryCache(),
 });
 
