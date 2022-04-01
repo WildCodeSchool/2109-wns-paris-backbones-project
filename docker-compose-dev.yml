@@ -1,35 +1,35 @@
 version: "3.8"
 
 services:
-  postgresDB:
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./pg_data:/var/lib/postgres/data
-      - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+    postgresDB:
+      image: postgres
+      restart: always
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      volumes:
+        - ./pg_data:/var/lib/postgres/data
+        - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
 
-  back:
-    build:
-      context: ./back
-      dockerfile: Dockerfile.dev
-    ports:
-      - "4000:4000"
-    volumes:
-      - ./back/src:/back/src
-    depends_on:
-      - postgresDB
-    command: sh -c "yarn seed:dev && yarn dev"
+    back:
+      build:
+        context: ./back
+        dockerfile: Dockerfile.dev
+      ports:
+        - "4000:4000"
+      volumes:
+        - ./back/src:/back/src
+      depends_on:
+        - postgresDB
+      command: sh -c "yarn seed:dev && yarn dev"
 
-  front:
-    build: ./front
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./front/src:/front/src
-    depends_on:
-      - back
-    command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
+    front:
+      build: ./front
+      ports:
+        - "3000:3000"
+      volumes:
+        - ./front/src:/front/src
+      depends_on:
+        - back
+      command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
 

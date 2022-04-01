@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { setUserId } from "../../state/actions";
-
-import { useMutation, useQuery, gql } from "@apollo/client";
+import { useMutation, gql, useLazyQuery, useQuery } from "@apollo/client";
 
 const LOGIN = gql`
 	mutation SignIn($password: String!, $email: String!) {
@@ -22,37 +21,75 @@ const GET_USER = gql`
 const AuthenticationHeader = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [firstName, setFirstName] = useState("");
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-	const [getToken, { data }] = useMutation(LOGIN);
-	if (data) {
-		console.log(data);
-		localStorage.setItem("token", data.signIn);
-	}
-	const { data: userData } = useQuery(GET_USER);
 	const dispatch = useContext(DispatchProvider);
+
+	// sign in
+	const [signIn, { loading, error }] = useMutation(LOGIN, {
+		onCompleted: (data) => {
+			if (data.signIn) {
+				console.log("sign in success");
+				localStorage.setItem("token", data.signIn);
+			}
+		},
+	});
+
+	// check if user is logged in
+	const [
+		getUserData,
+		{ loading: userLoading, error: userError, data: userData },
+	] = useLazyQuery(GET_USER, {
+		onCompleted: (data) => {
+			if (data.getAuthorizedUser) {
+				console.log("user is logged in");
+				dispatch(setUserId(data.getAuthorizedUser.id));
+				setFirstName(data.getAuthorizedUser.firstName);
+				setIsLoggedIn(true);
+			}
+		},
+	});
+
+	const { data: userDataTest } = useQuery(GET_USER, {
+		onCompleted: (data) => {
+			if (data.getAuthorizedUser) {
+				console.log("user is logged in");
+				dispatch(setUserId(data.getAuthorizedUser.id));
+				setFirstName(data.getAuthorizedUser.firstName);
+				setIsLoggedIn(true);
+			}
+		},
+	});
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		dispatch(setUserId(""));
+		setIsLoggedIn(false);
+	};
 
 	return (
 		<header className="App-header flex justify-center">
-			{userData && userData.getAuthorizedUser ? (
+			{isLoggedIn ? (
 				<div className="flex justify-center">
-					<h1 className="text-2xl">
-						Welcome {userData.getAuthorizedUser.firstName}
-					</h1>
+					<h1 className="text-2xl">Welcome {firstName}</h1>
+					<button onClick={() => handleLogout()}>logout</button>
 				</div>
 			) : (
 				<div className="flex justify-center">
 					<form
 						onSubmit={(e) => {
 							e.preventDefault();
-							getToken({
+							signIn({
 								variables: {
 									email,
 									password,
 								},
 							})
 								.then((r) => {
-									console.log(r);
-									dispatch(setUserId(r.data.signIn));
+									getUserData().then((r) => {
+										console.log(r);
+									});
 								})
 								.catch((e) => {
 									console.log(e);
