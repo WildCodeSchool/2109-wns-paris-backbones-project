@@ -1,5 +1,5 @@
 import express from "express";
-import filesRouter from "./routes/files";
+import filesRouter from "./src/routes/files";
 
 async function init() {
   const app = express();
@@ -13,7 +13,7 @@ async function init() {
   });
 
   app.listen(8080, () => {
-    console.log("Files service alive!");
+    console.log("Files service on Express alive!");
   });
 }
 

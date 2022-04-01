@@ -33,3 +33,8 @@ services:
       - back
     command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
 
+  # files_services:
+  #   build: ./files_services
+  #   ports:
+  #     - "3001:3001"
+
