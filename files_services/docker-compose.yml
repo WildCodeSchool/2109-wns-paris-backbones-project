@@ -1,13 +1,13 @@
-version: '3'
+version: "3.8"
 
 services:
-  app:
-    build: .
+  back-files-services:
+    build: ./back_files_services
     ports:
-      - 3000:3000
-    volumes:
-      - ./files_services/src:/files_services/src
-  filesservice:
-    image: files_services
+      - "8080:8080"
+
+  front-files-services:
+    build: ./front_files_services
     ports:
-      - 3020:8080
+      - "3020:3020"
+
