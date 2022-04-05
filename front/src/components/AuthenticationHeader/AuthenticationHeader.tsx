@@ -1,7 +1,13 @@
 import React, { useContext, useMemo, useState } from "react";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { setUserId } from "../../state/actions";
-import { useMutation, gql, useLazyQuery, useQuery } from "@apollo/client";
+import {
+	useMutation,
+	gql,
+	useLazyQuery,
+	useQuery,
+	useApolloClient,
+} from "@apollo/client";
 
 const LOGIN = gql`
 	mutation SignIn($password: String!, $email: String!) {
@@ -22,55 +28,64 @@ const AuthenticationHeader = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [firstName, setFirstName] = useState("");
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 	const dispatch = useContext(DispatchProvider);
+	const client = useApolloClient();
 
-	// sign in
 	const [signIn, { loading, error }] = useMutation(LOGIN, {
 		onCompleted: (data) => {
 			if (data.signIn) {
-				console.log("sign in success");
 				localStorage.setItem("token", data.signIn);
 			}
 		},
 	});
 
-	// check if user is logged in
 	const [
 		getUserData,
 		{ loading: userLoading, error: userError, data: userData },
 	] = useLazyQuery(GET_USER, {
 		onCompleted: (data) => {
 			if (data.getAuthorizedUser) {
-				console.log("user is logged in");
 				dispatch(setUserId(data.getAuthorizedUser.id));
 				setFirstName(data.getAuthorizedUser.firstName);
-				setIsLoggedIn(true);
 			}
 		},
 	});
 
-	const { data: userDataTest } = useQuery(GET_USER, {
-		onCompleted: (data) => {
-			if (data.getAuthorizedUser) {
-				console.log("user is logged in");
-				dispatch(setUserId(data.getAuthorizedUser.id));
-				setFirstName(data.getAuthorizedUser.firstName);
-				setIsLoggedIn(true);
-			}
-		},
-	});
+	// check if user is logged in
+	useMemo(() => {
+		if (localStorage.getItem("token")) {
+			getUserData();
+		}
+	}, [getUserData]);
 
-	const handleLogout = () => {
-		localStorage.removeItem("token");
-		dispatch(setUserId(""));
-		setIsLoggedIn(false);
+	const handleSignIn = async () => {
+		try {
+			await signIn({
+				variables: {
+					email: email,
+					password: password,
+				},
+			});
+			await getUserData();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const handleLogout = async () => {
+		try {
+			localStorage.removeItem("token");
+			await client.resetStore();
+			dispatch(setUserId(""));
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
 		<header className="App-header flex justify-center">
-			{isLoggedIn ? (
+			{localStorage.getItem("token") ? (
 				<div className="flex justify-center">
 					<h1 className="text-2xl">Welcome {firstName}</h1>
 					<button onClick={() => handleLogout()}>logout</button>
@@ -78,22 +93,9 @@ const AuthenticationHeader = () => {
 			) : (
 				<div className="flex justify-center">
 					<form
-						onSubmit={(e) => {
+						onSubmit={async (e) => {
 							e.preventDefault();
-							signIn({
-								variables: {
-									email,
-									password,
-								},
-							})
-								.then((r) => {
-									getUserData().then((r) => {
-										console.log(r);
-									});
-								})
-								.catch((e) => {
-									console.log(e);
-								});
+							await handleSignIn();
 						}}
 					>
 						<input
