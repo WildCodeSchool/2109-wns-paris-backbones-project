@@ -12,6 +12,8 @@ services:
       - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
 
   back:
+    env_file: 
+      - .env
     build:
       context: ./back
       dockerfile: Dockerfile.prod
