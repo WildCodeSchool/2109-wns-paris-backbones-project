@@ -3,6 +3,7 @@ import { TasksList } from "./components/TasksList/TasksList";
 import { StateProvider } from "./state/GlobalStateProvider";
 import AuthenticationHeader from "./components/AuthenticationHeader/AuthenticationHeader";
 import { useQuery, gql } from "@apollo/client";
+import { setUserId } from "./state/actions";
 
 // Par convention, les noms de variables pour une query sont en capslock/underscores
 const GET_DATA = gql`
@@ -70,10 +71,13 @@ function App() {
 
 	return (
 		<div className="bg-pink-700 App">
-			<AuthenticationHeader />
+			<div>
+				<AuthenticationHeader />
+				<h1>{userId ? userId : "toto"}</h1>
+			</div>
 			{loading && <div>Loading, plz wait :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
-			{!loading && !error && (
+			{!loading && !error && userId && (
 				<TasksList connectedUserId={userId} tasks={tasks} />
 			)}
 		</div>

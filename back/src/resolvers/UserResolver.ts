@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { BackBonesUser } from "../entities/User";
 import { CreateUserInput, UpdateUserInput } from "../inputs/UserInput";
 import { errorHandler } from "../utils/errorHandler";
@@ -11,6 +11,7 @@ import { Role } from "../entities/Role";
 import { Project } from "../entities/Project";
 import * as bcrypt from "bcrypt";
 import * as jwt from "jsonwebtoken";
+import { Token } from "graphql";
 
 @Resolver()
 export class UserResolver {
@@ -24,6 +25,16 @@ export class UserResolver {
 	async getUserById(@Arg("userId") userId: number) {
 		try {
 			return await BackBonesUser.findOneOrFail(userId);
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	@Authorized()
+	@Query(() => BackBonesUser)
+	async getAuthorizedUser(@Ctx() context: {userId: number}) {
+		try {
+			return await BackBonesUser.findOneOrFail(context.userId);
 		} catch (error) {
 			throw error;
 		}

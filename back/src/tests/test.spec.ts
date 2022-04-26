@@ -43,8 +43,6 @@ let userJwt: string;
 
 beforeAll(async () => {
 	config({ path: `.env.${process.env.NODE_ENV}` });
-	console.log(process.env.NODE_ENV);
-	console.log(process.env.JWT_SECRET);
 	const connectionOptions = await getConnectionOptions("test");
 	await createConnection({ ...connectionOptions, name: "default" });
 	const schema = await buildSchema({

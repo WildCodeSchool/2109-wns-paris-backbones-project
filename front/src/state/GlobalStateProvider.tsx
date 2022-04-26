@@ -6,6 +6,7 @@ import type { IAction, IState } from "./types";
 const initialState: IState = {
 	userId: "",
 };
+
 export const StateProvider = React.createContext(initialState);
 
 const initialDispatch: React.Dispatch<IAction> = () => {};
