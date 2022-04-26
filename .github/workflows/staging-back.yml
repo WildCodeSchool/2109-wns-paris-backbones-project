@@ -39,7 +39,7 @@ jobs:
         name: Build and push
         with:
           context: ./back
-          file: ./back/Dockerfile
+          file: ./back/Dockerfile.prod
           secrets: |
             "docker_hub_username=${{ secrets.DOCKER_HUB_USERNAME }}"
             "docker_hub_back_image_name=${{ secrets.DOCKER_HUB_BACK_IMAGE_NAME }}"
