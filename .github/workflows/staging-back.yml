@@ -44,4 +44,4 @@ jobs:
             "docker_hub_username=${{ secrets.DOCKER_HUB_USERNAME }}"
             "docker_hub_back_image_name=${{ secrets.DOCKER_HUB_BACK_IMAGE_NAME }}"
           push: true
-          tags: docker_hub_username/docker_hub_back_image_name:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_BACK_IMAGE_NAME }}:latest
