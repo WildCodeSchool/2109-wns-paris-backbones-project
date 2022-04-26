@@ -21,8 +21,6 @@ ENV NODE_ENV=${NODE_ENV}
 COPY package.json ./
 COPY yarn.lock ./
 COPY ormconfig.js ./
-COPY .env.test ./
-COPY .env.prod ./
 RUN yarn install --production
 RUN yarn seed:prod
 
