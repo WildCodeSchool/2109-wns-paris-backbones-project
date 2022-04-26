@@ -40,5 +40,9 @@ jobs:
         with:
           context: ./front
           file: ./front/Dockerfile
+          secrets: |
+            "docker_hub_username=${{ secrets.DOCKER_HUB_USERNAME }}"
+            "docker_hub_front_image_name=${{ secrets.DOCKER_HUB_FRONT_IMAGE_NAME }}"
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_FRONT_IMAGE_NAME }}:latest
+          # tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_FRONT_IMAGE_NAME }}:latest
+          tags: docker_hub_username/docker_hub_front_image_name:latest
