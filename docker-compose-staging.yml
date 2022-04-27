@@ -8,8 +8,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./pg_data:/var/lib/postgres/data
-      - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+      - ./staging_pg_data:/var/lib/postgres/data
+      - ./staging_sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
 
   back:
     image: ticketappwns/ticketapp_back
@@ -21,10 +21,22 @@ services:
 
   front:
     image: ticketappwns/ticketapp_front
-    ports:
-      - "3001:3000"
     volumes:
-      - ./front/src:/front/src
+      - web-front-build:/front/dist
+    command: sh -c "yarn build"
+
+  nginx:
+    image: nginx:1.21.3
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - web-front-build:/web-front-build
+      - ./logs:/var/log/nginx
+    ports:
+      - ${GATEWAY_PORT:-3001}:80
     depends_on:
+      - front
       - back
-    command: sh -c "dockerize -wait tcp://back:4000 -timeout 300s -wait-retry-interval 5s  yarn dev"
+    restart: always
+
+volumes:
+  web-front-build:
