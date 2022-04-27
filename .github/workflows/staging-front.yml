@@ -39,6 +39,6 @@ jobs:
         name: Build and push
         with:
           context: ./front
-          file: ./front/Dockerfile.dev
+          file: ./front/Dockerfile.prod
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_FRONT_IMAGE_NAME }}:latest
