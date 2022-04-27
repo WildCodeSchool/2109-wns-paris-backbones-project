@@ -12,19 +12,17 @@ services:
       - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
 
   back:
-    build:
-      context: ./back
-      dockerfile: Dockerfile.prod
+    image: ticketappwns/ticketapp_back
     ports:
-      - "4000:4000"
+      - "4001:4000"
     depends_on:
       - postgresDB
     command: sh -c "yarn seed:prod && yarn start"
 
   front:
-    build: ./front
+    image: ticketappwns/ticketapp_front
     ports:
-      - "3000:3000"
+      - "3001:3000"
     volumes:
       - ./front/src:/front/src
     depends_on:
