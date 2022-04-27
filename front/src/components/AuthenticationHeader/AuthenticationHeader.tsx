@@ -87,7 +87,9 @@ const AuthenticationHeader = () => {
 		<header className="App-header flex justify-center">
 			{localStorage.getItem("token") ? (
 				<div className="flex justify-center">
-					<h1 className="text-2xl">Welcome {firstName}</h1>
+					<h1 className="text-2xl">
+						Welcome {firstName} ça marche fort
+					</h1>
 					<button onClick={() => handleLogout()}>logout</button>
 				</div>
 			) : (
