@@ -55,7 +55,11 @@ const Form = () => {
 	// check if user is logged in
 	useMemo(() => {
 		if (localStorage.getItem("token")) {
-			getUserData();
+			getUserData()
+				.then()
+				.catch((err) => {
+					console.log(err);
+				});
 		}
 	}, [getUserData]);
 
