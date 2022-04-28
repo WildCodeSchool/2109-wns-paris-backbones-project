@@ -8,28 +8,31 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./pg_data:/var/lib/postgres/data
-      - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+      - ./staging_pg_data:/var/lib/postgres/data
+      - ./staging_sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 10s
       timeout: 5s
 
   back:
     image: ticketappwns/ticketapp_back
+    env_file:
+      - /home/wns_student/ticketapp-staging/.env.prod
     ports:
-      - "4000:4000"
+      - "4001:4000"
     depends_on:
       postgresDB:
         condition: service_healthy
-    command: sh -c "yarn seed:prod && yarn build && yarn prod"
+    command: sh -c "yarn seed:prod && yarn start"
 
   front:
     image: ticketappwns/ticketapp_front
     volumes:
       - web-front-build:/front/dist
     command: sh -c "yarn build"
-
+    depends_on:
+      - back
   nginx:
     image: nginx:1.21.3
     volumes:
@@ -37,7 +40,7 @@ services:
       - web-front-build:/web-front-build
       - ./logs:/var/log/nginx
     ports:
-      - ${GATEWAY_PORT:-3000}:80
+      - ${GATEWAY_PORT:-3001}:80
     depends_on:
       - front
       - back
@@ -45,3 +48,5 @@ services:
 
 volumes:
   web-front-build:
+
+

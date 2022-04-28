@@ -11,7 +11,7 @@ jobs:
       - name: Goto back and run tests
         run: cd back && yarn && yarn test
     env:
-      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_NAME: ${{ secrets.DB_NAME_TEST }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
   test-front:
     runs-on: ubuntu-latest

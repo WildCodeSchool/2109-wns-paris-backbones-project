@@ -70,6 +70,10 @@ function App() {
 		getTasks: tasks,
 	} = data ?? {};
 
+	if (error) {
+		console.log("BRAND NEW ERROR 3", error);
+	}
+
 	return (
 		<div className="h-screen bg-slate-900">
 			<Header/>

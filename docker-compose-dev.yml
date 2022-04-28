@@ -24,7 +24,9 @@ services:
       command: sh -c "yarn seed:dev && yarn dev"
 
     front:
-      build: ./front
+      build:
+        context: ./front
+        dockerfile: Dockerfile.dev
       ports:
         - "3000:3000"
       volumes:

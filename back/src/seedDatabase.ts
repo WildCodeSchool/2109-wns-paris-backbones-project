@@ -12,6 +12,7 @@ import * as bcrypt from "bcrypt";
 config({ path: `.env.${process.env.NODE_ENV}` });
 
 console.log(`seedDatabase starting in ${process.env.NODE_ENV} environment`);
+console.log(`DB name: ${process.env.DB_NAME}`);
 
 //Create test DB
 const Database = require("better-sqlite3");
