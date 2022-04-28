@@ -24,7 +24,7 @@ const GET_USER = gql`
 	}
 `;
 
-const AuthenticationHeader = () => {
+const Form = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [firstName, setFirstName] = useState("");
@@ -35,7 +35,6 @@ const AuthenticationHeader = () => {
 	const [signIn, { loading, error }] = useMutation(LOGIN, {
 		onCompleted: (data) => {
 			if (data.signIn) {
-				console.log("USER CONNECTED token: ", data.signIn);
 				localStorage.setItem("token", data.signIn);
 			}
 		},
@@ -89,35 +88,63 @@ const AuthenticationHeader = () => {
 	};
 
 	return (
-		<header className="App-header flex justify-center">
+		<header className="flex justify-center App-header">
 			{localStorage.getItem("token") ? (
-				<div className="flex justify-center">
-					<h1 className="text-2xl">
-						Welcome {firstName} tests are OK
-					</h1>
-					<button onClick={() => handleLogout()}>logout</button>
+				<div className="flex flex-col justify-center">
+					<h1 className="text-2xl text-white">Welcome {firstName}</h1>
+
+					<button
+						className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+						type="submit"
+						onClick={() => handleLogout()}
+					>
+						LogOut
+					</button>
 				</div>
 			) : (
-				<div className="flex justify-center">
+				<div className="w-full max-w-xs">
 					<form
 						onSubmit={async (e) => {
 							e.preventDefault();
 							await handleSignIn();
 						}}
+						className="px-8 pt-6 pb-8 mb-4 rounded shadow-md bg-slate-700"
 					>
-						<input
-							type="email"
-							placeholder="Email"
-							value={email}
-							onChange={(e) => setEmail(e.target.value)}
-						/>
-						<input
-							type="password"
-							placeholder="Password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-						/>
-						<button type="submit">Login</button>
+						<div className="mb-4">
+							<h1 className="text-xl font-semibold text-center text-white">
+								Connexion
+							</h1>
+							<label className="block mb-2 text-sm font-bold text-green-200">
+								Email
+							</label>
+							<input
+								className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+								type="mail"
+								placeholder="Email"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+							/>
+						</div>
+						<div className="mb-6">
+							<label className="block mb-2 text-sm font-bold text-green-200">
+								Password
+							</label>
+							<input
+								className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+								type="password"
+								placeholder="***********"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+							/>
+						</div>
+						<div className="flex items-center justify-between">
+							<button
+								className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+								type="submit"
+							>
+								Sign In
+							</button>
+						</div>
 					</form>
 				</div>
 			)}
@@ -125,4 +152,4 @@ const AuthenticationHeader = () => {
 	);
 };
 
-export default AuthenticationHeader;
+export default Form;

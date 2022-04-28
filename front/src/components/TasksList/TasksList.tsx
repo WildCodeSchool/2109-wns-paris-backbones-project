@@ -18,7 +18,7 @@ interface IProps {
 }
 
 export const TasksList = ({ connectedUserId, tasks }: IProps) => (
-	<ul className="flex">
+	<ul className="flex bg-slate-700">
 		{tasks
 			.filter(
 				// NOTE: FOR NOW: if user is not connected, by default, we still want to display all tasks
@@ -30,7 +30,7 @@ export const TasksList = ({ connectedUserId, tasks }: IProps) => (
 			.map(({ title, status, users, id: taskId }) => {
 				return (
 					<li
-						className="flex-1 border border-purple-800 p-2"
+						className="flex-1 p-2 border"
 						key={taskId}
 					>
 						<header className="flex justify-between">
