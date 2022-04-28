@@ -22,8 +22,7 @@ ENV DB_NAME=${NODE_ENV}
 COPY package.json ./
 COPY yarn.lock ./
 COPY ormconfig.js ./
-COPY .env.test ./
-COPY .env.prod ./
+
 RUN yarn install --production
 
 CMD yarn start
