@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { TasksList } from "./components/TasksList/TasksList";
 import { StateProvider } from "./state/GlobalStateProvider";
-import AuthenticationHeader from "./components/AuthenticationHeader/AuthenticationHeader";
+import Form from "./components/Form/Form";
 import { useQuery, gql } from "@apollo/client";
 import { setUserId } from "./state/actions";
+import Header from "./components/Header/Header";
 
 // Par convention, les noms de variables pour une query sont en capslock/underscores
 const GET_DATA = gql`
@@ -70,9 +71,10 @@ function App() {
 	} = data ?? {};
 
 	return (
-		<div className="bg-pink-700 App">
+		<div className="h-screen bg-slate-900">
+			<Header/>
 			<div>
-				<AuthenticationHeader />
+				<Form />
 				<h1>{userId ? userId : "toto"}</h1>
 			</div>
 			{loading && <div>Loading, plz wait :D</div>}
