@@ -35,6 +35,7 @@ const AuthenticationHeader = () => {
 	const [signIn, { loading, error }] = useMutation(LOGIN, {
 		onCompleted: (data) => {
 			if (data.signIn) {
+				console.log("USER CONNECTED token: ", data.signIn);
 				localStorage.setItem("token", data.signIn);
 			}
 		},
@@ -55,7 +56,11 @@ const AuthenticationHeader = () => {
 	// check if user is logged in
 	useMemo(() => {
 		if (localStorage.getItem("token")) {
-			getUserData();
+			getUserData()
+				.then()
+				.catch((err) => {
+					console.log(err);
+				});
 		}
 	}, [getUserData]);
 
