@@ -22,9 +22,8 @@ export function IconTasks(props) {
 			viewBox="0 0 24 24"
 			width="24"
 			height="24"
-		>
 			{...props}
-
+		>
 			<path
 				fill="currentColor"
 				d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zm-9.707 10.13l-2.475-2.476-1.414 1.415 3.889 3.889 5.657-5.657-1.414-1.414-4.243 4.242z"
@@ -33,36 +32,19 @@ export function IconTasks(props) {
 	);
 }
 
-export function IconProject(props) {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 24 24"
-			width="24"
-			height="24"
-		>
-			{...props}
-			<path
-				fill="currentColor"
-				d="M3 21a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2H20a1 1 0 0 1 1 1v3H4v9.996L6 11h16.5l-2.31 9.243a1 1 0 0 1-.97.757H3z"
-			/>
-		</svg>
-	);
-}
-
-export function IconProfile(props) {
-	return (
-		<svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 24 24"
-			width="24"
-			height="24"
-		>
-			{...props}
-			<path
-				fill="currentColor"
-				d="M4 22a8 8 0 1 1 16 0H4zm8-9c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6z"
-			/>
-		</svg>
-	);
-}
+// export function IconProject(props) {
+// 	return (
+// 		<svg
+// 			xmlns="http://www.w3.org/2000/svg"
+// 			viewBox="0 0 24 24"
+// 			width="24"
+// 			height="24"
+// 			{...props}
+// 		>
+// 			<path
+// 				fill="currentColor"
+// 				d="M21 2.992v18.016a1 1 0 0 1-.993.992H3.993A.993.993 0 0 1 3 21.008V2.992A1 1 0 0 1 3.993 2h16.014c.548 0 .993.444.993.992zm-9.707 10.13l-2.475-2.476-1.414 1.415 3.889 3.889 5.657-5.657-1.414-1.414-4.243 4.242z"
+// 			/>
+// 		</svg>
+// 	);
+// }

@@ -1,6 +1,6 @@
 import React from "react";
 import NavLink from "../NavLink/NavLink";
-import { IconHome } from "../Icons/Icons";
+import { IconHome,  IconTasks } from "../Icons/Icons";
 
 function Header() {
 	const routes = [
@@ -12,17 +12,17 @@ function Header() {
 		{
 			href: "/tasks",
 			label: "Tâches",
-			icon: <IconHome />,
+			icon: <IconTasks />,
 		},
 		{
 			href: "/projets",
 			label: "Projects",
-			icon: <IconHome />,
+			icon: <IconTasks />,
 		},
 		{
 			href: "/account",
 			label: "Profile",
-			icon: <IconHome />,
+			icon: <IconTasks/>,
 		},
 	];
 	return (
