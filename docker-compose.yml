@@ -10,13 +10,18 @@ services:
     volumes:
       - ./pg_data:/var/lib/postgres/data
       - ./sql/create_database.sql:/docker-entrypoint-initdb.d/create_database.sql
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
 
   back:
     image: ticketappwns/ticketapp_back
     ports:
       - "4000:4000"
     depends_on:
-      - postgresDB
+      postgresDB:
+        condition: service_healthy
     command: sh -c "yarn seed:prod && yarn build && yarn prod"
 
   front:
