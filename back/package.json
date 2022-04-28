@@ -6,7 +6,6 @@
 	"type": "commonjs",
 	"scripts": {
 		"build": "tsc",
-		"prod": "node build/index.js",
 		"start": "NODE_ENV=prod node build/index.js",
 		"dev": "NODE_ENV=prod nodemon src/index.ts",
 		"seed:test": "NODE_ENV=test ts-node src/seedDatabase.ts",

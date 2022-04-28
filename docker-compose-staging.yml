@@ -17,7 +17,7 @@ services:
       - "4001:4000"
     depends_on:
       - postgresDB
-    command: sh -c "yarn seed:prod && yarn build && yarn prod"
+    command: sh -c "yarn seed:prod && yarn start"
 
   front:
     image: ticketappwns/ticketapp_front

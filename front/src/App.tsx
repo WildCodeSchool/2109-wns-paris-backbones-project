@@ -70,7 +70,7 @@ function App() {
 	} = data ?? {};
 
 	if (error) {
-		console.log("BRAND NEW ERROR 2", error);
+		console.log("BRAND NEW ERROR 3", error);
 	}
 
 	return (
