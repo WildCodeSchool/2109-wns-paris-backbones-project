@@ -1,11 +1,11 @@
-export function IconHome(props) {
+export function IconHome() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			width="24"
 			height="24"
-			{...props}
+			
 		>
 			<path
 				fill="currentColor"
@@ -15,14 +15,14 @@ export function IconHome(props) {
 	);
 }
 
-export function IconTasks(props) {
+export function IconTasks() {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			width="24"
 			height="24"
-			{...props}
+			
 		>
 			<path
 				fill="currentColor"

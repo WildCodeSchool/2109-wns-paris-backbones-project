@@ -1,12 +1,12 @@
 import React, {FC} from 'react'
 
-interface Route {
+export interface Route {
     label: string;
     href: string;
     icon: FC
   } 
 
-function NavLink({route}) {
+function NavLink(route : Route) {
 
   return (
     <div className='flex items-center justify-center'>
