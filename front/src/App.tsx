@@ -69,6 +69,10 @@ function App() {
 		getTasks: tasks,
 	} = data ?? {};
 
+	if (error) {
+		console.log("BRAND NEW ERROR", error);
+	}
+
 	return (
 		<div className="bg-pink-700 App">
 			<div>

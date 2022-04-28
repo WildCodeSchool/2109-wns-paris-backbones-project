@@ -24,7 +24,8 @@ services:
     volumes:
       - web-front-build:/front/dist
     command: sh -c "yarn build"
-
+    depends_on:
+      - back
   nginx:
     image: nginx:1.21.3
     volumes:
