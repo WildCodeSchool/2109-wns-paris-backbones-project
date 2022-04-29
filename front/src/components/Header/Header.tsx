@@ -34,7 +34,7 @@ function Header() {
 	];
 	return (
 		<nav className="flex items-center justify-between p-4 bg-dark-darker">
-			<p className="text-xl font-bold text-light-light">TicketApp</p>
+			<p className="text-xl font-bold text-primary-darker">TicketApp</p>
 			<ul className="flex gap-10">
 				{routes.map((route, index) => (
 					<NavLink key={index} route={route} />
