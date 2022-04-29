@@ -9,9 +9,9 @@ const Button = ({ label, state = "enabled" } :IButton) => {
 
     let stateStyling;
 
-    let enabledStyling = "bg-gradient-to-r from-green-300 to-green-500 rounded hover:bg-green-700";
-    let disabledStyling = "bg-gradient-to-r from-gray-300 to-gray-500 rounded hover:bg-gray-700";
-    let dangerStyling = "bg-gradient-to-r from-pink-300 to-pink-500 rounded hover:bg-pink-700";
+    let enabledStyling = "bg-gradient-to-r from-primary-light to-primary-dark rounded hover:bg-green-700 text-light-light";
+    let disabledStyling = "bg-gradient-to-r from-gray-300 to-gray-400 rounded hover:bg-gray-600 text-dark-medium";
+    let dangerStyling = "bg-gradient-to-r from-secondary-light to-secondary-dark rounded hover:bg-pink-700 text-light-light";
 
     if (state === "enabled") {
         stateStyling = enabledStyling;
@@ -22,7 +22,7 @@ const Button = ({ label, state = "enabled" } :IButton) => {
     };
 
     return (
-        <button className={`flex flex-col justify-center px-4 py-2 font-bold text-white ${stateStyling} focus:outline-none focus:shadow-outline`}>
+        <button className={`flex flex-col justify-center px-4 py-2 font-bold ${stateStyling} focus:outline-none focus:shadow-outline`}>
             {label}
         </button>
     );
