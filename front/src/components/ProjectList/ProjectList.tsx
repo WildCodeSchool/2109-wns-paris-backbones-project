@@ -1,26 +1,22 @@
 import { Project } from "../types";
+import ProjectCard from "../ProjectCard/ProjectCard";
+
 
 interface ProjectListProps {
 	projects: Project[];
 }
 
 function ProjectList({ projects }: ProjectListProps) {
-	//return list of all project name
 	return (
-		<div className="project-list">
-			{projects.map((project) => (
-				<div
-					className="project-list-item bg-light-light"
-					key={project.id}
-				>
-					<div className="project-list-item-name text-dark-light">
-						{project.title}
-					</div>
-					<div className="project-list-item-description">
-						{project.description}
-					</div>
-				</div>
-			))}
+		<div>
+			<h1 className="dark:text-light-light text-2xl text-center">
+				Projects
+			</h1>
+			<div className="project-list flex justify-center justify-around">
+				{projects.map((project) => (
+					<ProjectCard key={project.id} project={project} />
+				))}
+			</div>
 		</div>
 	);
 }

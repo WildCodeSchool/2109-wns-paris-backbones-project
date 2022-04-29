@@ -9,8 +9,15 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 1 }],
-		project: { id: 1 },
+		users: [
+			{
+				id: 1,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 	{
 		id: 2,
@@ -18,8 +25,15 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 2 }],
-		project: { id: 1 },
+		users: [
+			{
+				id: 2,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 	{
 		id: 3,
@@ -27,8 +41,16 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 3 }],
-		project: { id: 1 },
+
+		users: [
+			{
+				id: 3,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 	{
 		id: 4,
@@ -36,8 +58,16 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 4 }],
-		project: { id: 1 },
+
+		users: [
+			{
+				id: 4,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 	{
 		id: 5,
@@ -45,8 +75,16 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 6 }],
-		project: { id: 1 },
+
+		users: [
+			{
+				id: 6,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 	{
 		id: 6,
@@ -54,8 +92,16 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
-		users: [{ id: 7 }],
-		project: { id: 1 },
+
+		users: [
+			{
+				id: 7,
+				firstName: "John",
+				lastName: "Doe",
+				email: "email@email.com",
+			},
+		],
+		project: { id: 1, title: "Projet 1" },
 	},
 ];
 

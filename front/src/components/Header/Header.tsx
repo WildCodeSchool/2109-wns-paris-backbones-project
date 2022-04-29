@@ -1,5 +1,6 @@
 import React from "react";
 import NavLink from "../NavLink/NavLink";
+import { IconHome, IconTasks } from "../Icons/Icons";
 import HomeIcon from '@material-ui/icons/Home'
 import CheckBoxIcon from '@material-ui/icons/CheckBox'
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder'
@@ -25,6 +26,12 @@ function Header() {
 		{
 			href: "/account",
 			label: "Profile",
+			icon: <IconTasks />,
+		},
+	];
+	return (
+		<header className="flex items-center justify-between p-4 bg-dark-darker">
+			<p className="text-xl font-bold text-light-light">TicketApp</p>
 			icon: <PersonIcon />,
 			
 		},
