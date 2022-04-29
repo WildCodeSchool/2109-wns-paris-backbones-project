@@ -1,6 +1,6 @@
 export interface Project {
 	id: number;
-	title?: string;
+	title: string;
 	description?: string;
 	photo?: string;
 	start_date?: Date;
@@ -14,9 +14,9 @@ export interface Project {
 
 export interface BackBonesUser {
 	id: number;
-	firstName?: string;
-	lastName?: string;
-	email?: string;
+	firstName: string;
+	lastName: string;
+	email: string;
 	avatar?: string;
 	password?: string;
 	deletedDate?: Date;
@@ -36,14 +36,14 @@ export interface Task {
 	end_date?: Date;
 	deletedDate?: Date;
 	status?: Status;
-	project?: Project;
-	users: BackBonesUser[];
+	project: Project;
+	users?: BackBonesUser[];
 	notifications?: Notification[];
 }
 
 export interface Notification {
 	id: number;
-	title?: string;
+	title: string;
 	description?: string;
 	read?: boolean;
 	created_at?: Date;
@@ -54,14 +54,14 @@ export interface Notification {
 
 export interface Role {
 	id: number;
-	title?: string;
+	title: string;
 	users?: BackBonesUser[];
 	project?: Project;
 }
 
 export interface Status {
 	id: number;
-	title?: string;
+	title: string;
 	tasks?: Task[];
 	project?: Project;
 }

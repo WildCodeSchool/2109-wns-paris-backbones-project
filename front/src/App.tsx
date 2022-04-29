@@ -85,7 +85,7 @@ function App() {
 			</div>
 			{loading && <div>Loading, plz wait :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
-			{!loading && !error && userData?.projects && (
+			{!loading && !error && userData?.projects && userData.tasks && (
 				//<TasksList connectedUserId={userId} tasks={tasks} />
 				<>
 					<ProjectList projects={userData.projects} />
