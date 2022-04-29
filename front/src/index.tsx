@@ -13,14 +13,13 @@ import {
 import { setContext } from "@apollo/client/link/context";
 
 const httpLink = createHttpLink({
-	// TODO: replace uri with env var later
-	uri: "/graphql",
+	// uri: "/graphql",
+	//in dev mode use localhost:4000
+	uri: "http://localhost:4000/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
-	console.log("new context");
 	const token = localStorage.getItem("token");
-	console.log(token);
 	return {
 		headers: {
 			...headers,
