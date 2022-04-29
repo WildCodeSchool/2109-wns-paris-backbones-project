@@ -78,7 +78,7 @@ function App() {
 	}, [userId]);
 
 	return (
-		<div className="h-screen bg-dark-darker">
+		<div className="h-screen bg-dark-dark">
 			<Header />
 			<div>
 				<Form />
