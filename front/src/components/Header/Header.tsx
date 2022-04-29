@@ -30,7 +30,7 @@ function Header() {
 		},
 	];
 	return (
-		<nav className="flex items-center justify-between p-4 m-4 rounded-md bg-dark-medium">
+		<nav className="flex items-center justify-between p-4 mx-4 rounded-md bg-dark-medium">
 			<div className="flex gap-4">
 				<CheckBoxIcon  className="text-primary-darker"/>
 				<article>
