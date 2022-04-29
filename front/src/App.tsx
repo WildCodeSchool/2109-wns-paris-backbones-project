@@ -78,6 +78,7 @@ function App() {
 	}, [userId]);
 
 	return (
+
 		<div className="h-screen bg-dark-darker">
 			<Header />
 			<div>

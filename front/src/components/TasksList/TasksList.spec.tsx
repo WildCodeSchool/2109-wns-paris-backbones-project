@@ -41,6 +41,7 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
+
 		users: [
 			{
 				id: 3,
@@ -57,6 +58,7 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
+
 		users: [
 			{
 				id: 4,
@@ -73,6 +75,7 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
+
 		users: [
 			{
 				id: 6,
@@ -89,6 +92,7 @@ const tasksData: Task[] = [
 		description:
 			"C'est une tâche à faire, de préférence plus tôt que tard quand même",
 		status: { id: 1, title: "A faire" },
+
 		users: [
 			{
 				id: 7,

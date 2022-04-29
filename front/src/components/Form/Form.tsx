@@ -88,7 +88,7 @@ const Form = () => {
 	};
 
 	return (
-		<header className="flex justify-center App-header">
+		<header className="flex justify-center py-40 App-header">
 			{localStorage.getItem("token") ? (
 				<div className="flex flex-col justify-center">
 					<h1 className="text-2xl text-white">Welcome {firstName}</h1>
@@ -102,7 +102,7 @@ const Form = () => {
 					</button>
 				</div>
 			) : (
-				<div className="w-full max-w-xs">
+				<div className="w-full max-w-xs ">
 					<form
 						onSubmit={async (e) => {
 							e.preventDefault();
