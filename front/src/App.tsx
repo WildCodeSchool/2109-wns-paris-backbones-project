@@ -78,7 +78,6 @@ function App() {
 	}, [userId]);
 
 	return (
-
 		<div className="h-screen bg-dark-darker">
 			<Header />
 			<div>
@@ -87,7 +86,7 @@ function App() {
 			{loading && <div>Loading, plz wait thanks :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
 			{!loading && !error && userData?.projects && userData.tasks && (
-				//<TasksList connectedUserId={userId} tasks={tasks} />
+				//<TasksList connectedUserId={userId} tasks={tasks}  />
 				<>
 					<ProjectList projects={userData.projects} />
 					<TasksList tasks={userData.tasks} />
