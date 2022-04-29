@@ -34,7 +34,7 @@ function Header() {
 			<div className="flex gap-4">
 				<CheckBoxIcon  className="text-primary-darker"/>
 				<article>
-					<p className="text-3xl font-bold text-primary-darker">TicketApp</p>
+					<p className="text-2xl font-bold text-primary-darker">TicketApp</p>
 					<p className="text-sm text-light-light">Check your boxes</p>
 				</article>
 				
