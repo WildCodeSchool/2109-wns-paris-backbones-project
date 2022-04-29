@@ -1,90 +1,96 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { TasksList } from "./components/TasksList/TasksList";
 import { StateProvider } from "./state/GlobalStateProvider";
 import Form from "./components/Form/Form";
-import { useQuery, gql } from "@apollo/client";
-import { setUserId } from "./state/actions";
+import { gql, useLazyQuery } from "@apollo/client";
 import Header from "./components/Header/Header";
+import ProjectList from "./components/ProjectList/ProjectList";
+import { BackBonesUser } from "./components/types";
 
-// Par convention, les noms de variables pour une query sont en capslock/underscores
-const GET_DATA = gql`
-	query GetData {
-		getProjects {
-			title
-			id
-			description
-			statuses {
-				title
-			}
-			tasks {
-				id
-			}
-			users {
-				id
-			}
-		}
-		getTasks {
-			id
-			title
-			description
-			effective_time
-			estimated_time
-			start_date
-			end_date
-			status {
-				title
-			}
-			users {
-				id
-			}
-			project {
-				id
-			}
-		}
-		getUsers {
+const GET_USER_DATA = gql`
+	query GetUserById($userId: Float!) {
+		getUserById(userId: $userId) {
 			id
 			firstName
-			projects {
-				id
-			}
-			tasks {
-				id
-			}
 			lastName
 			email
 			avatar
-			password
-			roles {
+			tasks {
+				id
 				title
+			}
+			projects {
+				id
+				title
+				description
+				photo
+				start_date
+				end_date
+				tasks {
+					id
+					title
+					description
+					start_date
+					end_date
+					status {
+						id
+						title
+					}
+					project {
+						id
+						title
+						photo
+					}
+				}
+				users {
+					id
+					firstName
+					lastName
+					email
+					avatar
+				}
 			}
 		}
 	}
 `;
 
 function App() {
+	const [userData, setUserData] = React.useState<BackBonesUser | null>(null);
 	const { userId } = useContext(StateProvider);
-	const { loading, error, data } = useQuery(GET_DATA);
-	const {
-		getProjects: projects,
-		getUsers: users,
-		getTasks: tasks,
-	} = data ?? {};
 
-	if (error) {
-		console.log("BRAND NEW ERROR 3", error);
-	}
+	const [getUserData, { loading, error, data }] = useLazyQuery(
+		GET_USER_DATA,
+		{
+			variables: { userId },
+		}
+	);
+
+	useEffect(() => {
+		if (userId) {
+			getUserData()
+				.then(({ data }) => {
+					setUserData(data.getUserById);
+				})
+				.catch((error) => {
+					console.log("Fetching User Data Error", error);
+				});
+		}
+	}, [userId]);
 
 	return (
-		<div className="h-screen bg-slate-900">
-			<Header/>
+		<div className="h-screen bg-dark-darker">
+			<Header />
 			<div>
 				<Form />
-				<h1>{userId ? userId : "toto"}</h1>
 			</div>
 			{loading && <div>Loading, plz wait :D</div>}
 			{error && <div>Oops, something went wrong :'(</div>}
-			{!loading && !error && userId && (
-				<TasksList connectedUserId={userId} tasks={tasks} />
+			{!loading && !error && userData?.projects && (
+				//<TasksList connectedUserId={userId} tasks={tasks} />
+				<>
+					<ProjectList projects={userData.projects} />
+					<TasksList tasks={userData.tasks} />
+				</>
 			)}
 		</div>
 	);

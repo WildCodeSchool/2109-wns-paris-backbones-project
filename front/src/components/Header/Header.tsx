@@ -1,6 +1,6 @@
 import React from "react";
 import NavLink from "../NavLink/NavLink";
-import { IconHome,  IconTasks } from "../Icons/Icons";
+import { IconHome, IconTasks } from "../Icons/Icons";
 
 function Header() {
 	const routes = [
@@ -22,12 +22,12 @@ function Header() {
 		{
 			href: "/account",
 			label: "Profile",
-			icon: <IconTasks/>,
+			icon: <IconTasks />,
 		},
 	];
 	return (
-		<header className="flex items-center justify-between p-4 bg-slate-800">
-			<p className="text-xl font-bold text-green-500">TicketApp</p>
+		<header className="flex items-center justify-between p-4 bg-dark-darker">
+			<p className="text-xl font-bold text-light-light">TicketApp</p>
 			<ul className="flex gap-10">
 				{routes.map((route, index) => (
 					<NavLink key={index} route={route} />
