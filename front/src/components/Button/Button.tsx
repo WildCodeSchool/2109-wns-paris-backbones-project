@@ -9,9 +9,9 @@ const Button = ({ label, state = "enabled" } :IButton) => {
 
     let stateStyling;
 
-    let enabledStyling = "bg-green-500 rounded hover:bg-green-700";
-    let disabledStyling = "bg-gray-500 rounded hover:bg-gray-700";
-    let dangerStyling = "bg-pink-500 rounded hover:bg-pink-700";
+    let enabledStyling = "bg-gradient-to-r from-green-300 to-green-500 rounded hover:bg-green-700";
+    let disabledStyling = "bg-gradient-to-r from-gray-300 to-gray-500 rounded hover:bg-gray-700";
+    let dangerStyling = "bg-gradient-to-r from-pink-300 to-pink-500 rounded hover:bg-pink-700";
 
     if (state === "enabled") {
         stateStyling = enabledStyling;
