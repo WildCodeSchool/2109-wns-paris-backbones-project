@@ -74,24 +74,23 @@ function App() {
 				.catch((error) => {
 					console.log("Fetching User Data Error", error);
 				});
+		} else {
+			setUserData(null);
 		}
 	}, [userId]);
 
 	return (
 		<div className="h-screen bg-dark-darker">
-			<Header />
-			<div>
-				<Form />
-			</div>
-			{loading && <div>Loading, plz wait thanks :D</div>}
-			{error && <div>Oops, something went wrong :'(</div>}
+			{!userData && <Form />}
 			{!loading && !error && userData?.projects && userData.tasks && (
-				//<TasksList connectedUserId={userId} tasks={tasks}  />
 				<>
+					<Header user={userData} />
 					<ProjectList projects={userData.projects} />
 					<TasksList tasks={userData.tasks} />
 				</>
 			)}
+			{loading && <div>Loading, plz wait thanks :D</div>}
+			{error && <div>Oops, something went wrong :'(</div>}
 		</div>
 	);
 }

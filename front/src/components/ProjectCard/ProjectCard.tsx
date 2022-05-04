@@ -13,8 +13,6 @@ function ProjectCard({ project }: ProjectCardProps) {
 		project.users && setUserCount(project.users.length);
 	}, [project.tasks, project.users]);
 
-	console.log(project);
-
 	return (
 		<div className="project-card p-2 m-2 bg-light-dark dark:bg-dark-dark rounded-xl w-4/12 flex flex-col items-center justify-center">
 			<img

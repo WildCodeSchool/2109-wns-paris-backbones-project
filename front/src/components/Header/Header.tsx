@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import NavLink from "../NavLink/NavLink";
 import HomeIcon from "@material-ui/icons/Home";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
 import PersonIcon from "@material-ui/icons/Person";
+import { setUserId } from "../../state/actions";
+import { DispatchProvider } from "../../state/GlobalStateProvider";
+import { BackBonesUser } from "../types";
 
-function Header() {
+interface HeaderProps {
+	user: null | BackBonesUser;
+}
+
+function Header({ user }: HeaderProps) {
+	const dispatch = useContext(DispatchProvider);
 	const routes = [
 		{
 			href: "/",
@@ -28,6 +36,12 @@ function Header() {
 			icon: <PersonIcon />,
 		},
 	];
+
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		dispatch(setUserId(0));
+	};
+
 	return (
 		<nav className="flex items-center justify-between p-4 mx-4 rounded-md bg-dark-medium">
 			<div className="flex gap-4">
@@ -45,6 +59,14 @@ function Header() {
 					<NavLink key={index} route={route} />
 				))}
 			</ul>
+			{user && (
+				<button
+					className="text-sm text-light-light p-2 rounded-full bg-primary-darker"
+					onClick={handleLogout}
+				>
+					Logout
+				</button>
+			)}
 		</nav>
 	);
 }

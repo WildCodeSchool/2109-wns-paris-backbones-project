@@ -1,13 +1,7 @@
 import React, { useContext, useMemo, useState } from "react";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { setUserId } from "../../state/actions";
-import {
-	useMutation,
-	gql,
-	useLazyQuery,
-	useQuery,
-	useApolloClient,
-} from "@apollo/client";
+import { useMutation, gql, useLazyQuery } from "@apollo/client";
 
 const LOGIN = gql`
 	mutation SignIn($password: String!, $email: String!) {
@@ -27,10 +21,8 @@ const GET_USER = gql`
 const Form = () => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [firstName, setFirstName] = useState("");
 
 	const dispatch = useContext(DispatchProvider);
-	const client = useApolloClient();
 
 	const [signIn, { loading, error }] = useMutation(LOGIN, {
 		onCompleted: (data) => {
@@ -47,7 +39,6 @@ const Form = () => {
 		onCompleted: (data) => {
 			if (data.getAuthorizedUser) {
 				dispatch(setUserId(data.getAuthorizedUser.id));
-				setFirstName(data.getAuthorizedUser.firstName);
 			}
 		},
 	});
@@ -77,31 +68,9 @@ const Form = () => {
 		}
 	};
 
-	const handleLogout = async () => {
-		try {
-			localStorage.removeItem("token");
-			await client.resetStore();
-			dispatch(setUserId(""));
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
 	return (
-		<header className="flex justify-center py-40 App-header">
-			{localStorage.getItem("token") ? (
-				<div className="flex flex-col justify-center">
-					<h1 className="text-2xl text-white">Welcome {firstName}</h1>
-
-					<button
-						className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
-						type="submit"
-						onClick={() => handleLogout()}
-					>
-						LogOut
-					</button>
-				</div>
-			) : (
+		<div className="flex justify-center py-40 App-header">
+			{!userData && (
 				<div className="w-full max-w-xs ">
 					<form
 						onSubmit={async (e) => {
@@ -148,7 +117,7 @@ const Form = () => {
 					</form>
 				</div>
 			)}
-		</header>
+		</div>
 	);
 };
 
