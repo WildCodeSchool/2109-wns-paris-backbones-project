@@ -80,14 +80,15 @@ const Form = () => {
 						className="px-8 pt-6 pb-8 mb-4 rounded shadow-md bg-slate-700"
 					>
 						<div className="mb-4">
-							<h1 className="text-xl font-semibold text-center text-white">
+							<h1 className="text-xl font-main-bold text-center text-white">
 								Connexion
 							</h1>
-							<label className="block mb-2 text-sm font-bold text-green-200">
+							<label className="block mb-2 text-sm font-main-bold text-primary-light">
 								Email
 							</label>
+							<input hidden type="text" autoComplete="username" />
 							<input
-								className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+								className="w-full px-3 py-2 leading-tight text-dark-medium rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 								type="mail"
 								placeholder="Email"
 								value={email}
@@ -95,13 +96,14 @@ const Form = () => {
 							/>
 						</div>
 						<div className="mb-6">
-							<label className="block mb-2 text-sm font-bold text-green-200">
+							<label className="block mb-2 text-sm font-bold text-primary-light">
 								Password
 							</label>
 							<input
 								className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 								type="password"
 								placeholder="***********"
+								autoComplete="current-password"
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>

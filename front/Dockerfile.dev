@@ -4,6 +4,7 @@ RUN mkdir /front
 WORKDIR /front
 
 COPY package.json ./
+COPY manifest.json ./
 COPY yarn.lock ./
 COPY tsconfig.json ./
 COPY ./tailwind.config.js ./

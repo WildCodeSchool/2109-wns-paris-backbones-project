@@ -3,16 +3,18 @@ import NavLink from "../NavLink/NavLink";
 import HomeIcon from "@material-ui/icons/Home";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
-import PersonIcon from "@material-ui/icons/Person";
 import { setUserId } from "../../state/actions";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { BackBonesUser } from "../types";
+import UserBadge from "../UserBadge/UserBadge";
+import { useApolloClient } from "@apollo/client";
 
 interface HeaderProps {
 	user: null | BackBonesUser;
 }
 
 function Header({ user }: HeaderProps) {
+	const client = useApolloClient();
 	const dispatch = useContext(DispatchProvider);
 	const routes = [
 		{
@@ -30,15 +32,11 @@ function Header({ user }: HeaderProps) {
 			label: "Projects",
 			icon: <CreateNewFolderIcon />,
 		},
-		{
-			href: "/account",
-			label: "Profile",
-			icon: <PersonIcon />,
-		},
 	];
 
-	const handleLogout = () => {
+	const handleLogout = async () => {
 		localStorage.removeItem("token");
+		await client.resetStore();
 		dispatch(setUserId(0));
 	};
 
@@ -55,18 +53,21 @@ function Header({ user }: HeaderProps) {
 			</div>
 
 			<ul className="flex gap-10">
-				{routes.map((route, index) => (
-					<NavLink key={index} route={route} />
-				))}
+				<NavLink route={routes[0]} />
+				<NavLink route={routes[1]} />
+				<NavLink route={routes[2]} />
+				{user && (
+					<>
+						<UserBadge name={user.firstName} avatar={user.avatar} />
+						<button
+							className="text-sm text-light-light p-2 rounded-xl bg-primary-darker"
+							onClick={handleLogout}
+						>
+							Logout
+						</button>
+					</>
+				)}
 			</ul>
-			{user && (
-				<button
-					className="text-sm text-light-light p-2 rounded-full bg-primary-darker"
-					onClick={handleLogout}
-				>
-					Logout
-				</button>
-			)}
 		</nav>
 	);
 }
