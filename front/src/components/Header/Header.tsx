@@ -42,14 +42,16 @@ function Header({ user }: HeaderProps) {
 	};
 
 	return (
-		<nav className="flex items-center justify-between p-4 mx-4 rounded-md bg-dark-medium">
+		<nav className="flex items-center justify-between p-4 mx-4 rounded-md dark:bg-dark-medium bg-light-light">
 			<div className="flex gap-4">
 				<CheckBoxIcon className="text-primary-darker" />
 				<article>
 					<p className="text-2xl font-bold text-primary-darker">
 						TicketApp
 					</p>
-					<p className="text-sm text-light-light">Check your boxes</p>
+					<p className="text-sm dark:text-light-light text-dark-dark">
+						Check your boxes
+					</p>
 				</article>
 			</div>
 

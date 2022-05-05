@@ -10,7 +10,9 @@ function NavLink({ route }: { route: Route }) {
 	return (
 		<div className="flex items-center justify-center gap-2">
 			<div className=" text-primary-darker">{route.icon}</div>
-			<p className="text-white">{route.label}</p>
+			<p className="dark:text-light-light text-dark-dark">
+				{route.label}
+			</p>
 		</div>
 	);
 }

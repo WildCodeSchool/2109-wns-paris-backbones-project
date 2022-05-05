@@ -40,7 +40,7 @@ const UserBadge = ({
 			/>
 			{withFirstName && (
 				<div className="text-center">
-					<span className="text-sm text-light-medium font-main-extralight">
+					<span className="text-sm dark:text-light-light text-dark-dark font-main-extralight">
 						{user.firstName}
 					</span>
 				</div>
