@@ -14,16 +14,16 @@ function ProjectCard({ project }: ProjectCardProps) {
 	}, [project.tasks, project.users]);
 
 	return (
-		<div className="project-card p-2 m-2 bg-light-dark dark:bg-dark-dark rounded-xl w-4/12 flex flex-col items-center justify-center">
+		<div className="project-card p-4 m-4 bg-light-dark dark:bg-dark-dark rounded-xl w-2/12 flex flex-col items-center justify-center">
 			<img
-				className="project-card-image rounded-xl  w-1/2"
+				className="project-card-image rounded-xl aspect-square w-2/3"
 				src={project.photo}
 				alt={project.title}
 			/>
 			<span className="pt-3 text-lg text-center font-main-bold dark:text-light-light">
 				{project.title}
 			</span>
-			<div className="flex gap-96 pt-4 font-main-light dark:text-light-light">
+			<div className="flex gap-20 pt-4 font-main-light dark:text-light-light">
 				<span>
 					{taskCount} {taskCount > 1 ? "tasks" : "task"}
 				</span>

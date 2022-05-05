@@ -8,6 +8,7 @@ import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { BackBonesUser } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
 import { useApolloClient } from "@apollo/client";
+import Button from "../Button/Button";
 
 interface HeaderProps {
 	user: null | BackBonesUser;
@@ -58,13 +59,12 @@ function Header({ user }: HeaderProps) {
 				<NavLink route={routes[2]} />
 				{user && (
 					<>
-						<UserBadge name={user.firstName} avatar={user.avatar} />
-						<button
-							className="text-sm text-light-light p-2 rounded-xl bg-primary-darker"
+						<UserBadge user={user} />
+						<Button
 							onClick={handleLogout}
-						>
-							Logout
-						</button>
+							state={"enabled"}
+							label={"Logout"}
+						/>
 					</>
 				)}
 			</ul>

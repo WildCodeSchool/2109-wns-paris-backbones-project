@@ -18,6 +18,17 @@ const GET_USER_DATA = gql`
 			tasks {
 				id
 				title
+				description
+				status {
+					id
+					title
+				}
+				users {
+					id
+					firstName
+					lastName
+					avatar
+				}
 			}
 			projects {
 				id

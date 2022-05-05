@@ -34,6 +34,7 @@ module.exports = {
 				"main-bold": "Roboto_700Bold",
 				"main-light": "Roboto_300Light",
 				"main-extralight": "Roboto_100Thin",
+				"main-black": "Roboto_900Black",
 			},
 			fontSize: {
 				xxs: ".5rem",

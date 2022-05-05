@@ -1,15 +1,16 @@
 import React from "react";
 import { Task } from "../types";
+import TaskCard from "../TaskCard/TaskCard";
 
 export const TasksList = ({ tasks }: { tasks: Task[] }) => (
-	<ul className="flex bg-slate-700">
-		{tasks.map((task) => (
-			<li key={task.id} className="w-1/2 p-2">
-				<ul>
-					<li>{task.title}</li>
-					<li>{task.description}</li>
-				</ul>
-			</li>
-		))}
-	</ul>
+	<div className="tasks-list my-2">
+		<h1 className="dark:text-light-light text-2xl text-center">Tasks</h1>
+		<div className="flex flex-col items-center justify-center">
+			<ul className="w-3/4">
+				{tasks.map((task) => (
+					<TaskCard key={task.id} task={task} />
+				))}
+			</ul>
+		</div>
+	</div>
 );
