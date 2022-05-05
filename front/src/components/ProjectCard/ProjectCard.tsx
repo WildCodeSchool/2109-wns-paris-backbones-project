@@ -20,10 +20,10 @@ function ProjectCard({ project }: ProjectCardProps) {
 				src={project.photo}
 				alt={project.title}
 			/>
-			<span className="pt-3 text-lg text-center font-main-bold dark:text-light-light">
+			<span className="pt-3 text-lg text-center font-main-bold">
 				{project.title}
 			</span>
-			<div className="flex gap-20 pt-4 font-main-light dark:text-light-light">
+			<div className="flex gap-20 pt-4 font-main-light">
 				<span>
 					{taskCount} {taskCount > 1 ? "tasks" : "task"}
 				</span>

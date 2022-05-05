@@ -4,7 +4,7 @@ import TaskCard from "../TaskCard/TaskCard";
 
 export const TasksList = ({ tasks }: { tasks: Task[] }) => (
 	<div className="tasks-list my-2">
-		<h1 className="dark:text-light-light text-2xl text-center">Tasks</h1>
+		<h1 className="text-2xl text-center">Tasks</h1>
 		<div className="flex flex-col items-center justify-center">
 			<ul className="w-3/4">
 				{tasks.map((task) => (

@@ -49,9 +49,7 @@ function Header({ user }: HeaderProps) {
 					<p className="text-2xl font-bold text-primary-darker">
 						TicketApp
 					</p>
-					<p className="text-sm dark:text-light-light text-dark-dark">
-						Check your boxes
-					</p>
+					<p className="text-sm">Check your boxes</p>
 				</article>
 			</div>
 

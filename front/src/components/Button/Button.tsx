@@ -10,11 +10,11 @@ const Button = ({ label, state = "enabled", onClick }: ButtonProps) => {
 	let stateStyling;
 
 	const enabledStyling =
-		"bg-gradient-to-r from-primary-light to-primary-dark rounded hover:bg-green-700 text-light-light";
+		"bg-gradient-to-r from-primary-light to-primary-dark rounded hover:bg-green-700";
 	const disabledStyling =
-		"bg-gradient-to-r from-gray-300 to-gray-400 rounded hover:bg-gray-600 text-dark-medium";
+		"bg-gradient-to-r from-gray-300 to-gray-400 rounded hover:bg-gray-600";
 	const dangerStyling =
-		"bg-gradient-to-r from-secondary-light to-secondary-dark rounded hover:bg-pink-700 text-light-light";
+		"bg-gradient-to-r from-secondary-light to-secondary-dark rounded hover:bg-pink-700";
 
 	switch (state) {
 		case "enabled":

@@ -8,9 +8,7 @@ interface ProjectListProps {
 function ProjectList({ projects }: ProjectListProps) {
 	return (
 		<div>
-			<h1 className="dark:text-light-light text-2xl text-center">
-				Projects
-			</h1>
+			<h1 className="text-2xl text-center">Projects</h1>
 			<div className="flex flex-wrap justify-center">
 				{projects.map((project) => (
 					<ProjectCard key={project.id} project={project} />

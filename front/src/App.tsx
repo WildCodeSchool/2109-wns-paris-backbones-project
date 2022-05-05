@@ -91,7 +91,7 @@ function App() {
 	}, [userId]);
 
 	return (
-		<div className="h-screen dark:bg-dark-darker bg-light-medium">
+		<div className="h-screen">
 			{!userData && <Form />}
 			{!loading && !error && userData?.projects && userData.tasks && (
 				<>

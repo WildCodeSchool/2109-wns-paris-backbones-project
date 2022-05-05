@@ -2,6 +2,7 @@ import React, { useContext, useMemo, useState } from "react";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { setUserId } from "../../state/actions";
 import { useMutation, gql, useLazyQuery } from "@apollo/client";
+import Button from "../Button/Button";
 
 const LOGIN = gql`
 	mutation SignIn($password: String!, $email: String!) {
@@ -77,18 +78,18 @@ const Form = () => {
 							e.preventDefault();
 							await handleSignIn();
 						}}
-						className="px-8 pt-6 pb-8 mb-4 rounded shadow-md bg-slate-700"
+						className="px-8 pt-6 pb-8 mb-4 rounded shadow-md bg-light-dark dark:bg-dark-medium"
 					>
 						<div className="mb-4">
-							<h1 className="text-xl font-main-bold text-center text-white">
+							<h1 className="text-xl font-main-bold text-center">
 								Connexion
 							</h1>
-							<label className="block mb-2 text-sm font-main-bold text-primary-light">
+							<label className="block mb-2 text-sm font-main-bold">
 								Email
 							</label>
 							<input hidden type="text" autoComplete="username" />
 							<input
-								className="w-full px-3 py-2 leading-tight text-dark-medium rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+								className="w-full px-3 py-2 leading-tight rounded shadow appearance-none focus:outline-none focus:shadow-outline dark:text-dark-dark"
 								type="mail"
 								placeholder="Email"
 								value={email}
@@ -96,11 +97,11 @@ const Form = () => {
 							/>
 						</div>
 						<div className="mb-6">
-							<label className="block mb-2 text-sm font-bold text-primary-light">
+							<label className="block mb-2 text-sm font-bold">
 								Password
 							</label>
 							<input
-								className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+								className="w-full px-3 py-2 mb-3 text-dark-dark leading-tight border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 								type="password"
 								placeholder="***********"
 								autoComplete="current-password"
@@ -109,12 +110,11 @@ const Form = () => {
 							/>
 						</div>
 						<div className="flex items-center justify-between">
-							<button
-								className="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
-								type="submit"
-							>
-								Sign In
-							</button>
+							<Button
+								onClick={handleSignIn}
+								label={"Sign in"}
+								state={"enabled"}
+							/>
 						</div>
 					</form>
 				</div>
