@@ -10,8 +10,6 @@ import { Task } from "../entities/Task";
 import { Role } from "../entities/Role";
 import { Project } from "../entities/Project";
 import * as bcrypt from "bcrypt";
-import * as jwt from "jsonwebtoken";
-import { Token } from "graphql";
 
 @Resolver()
 export class UserResolver {
@@ -32,7 +30,7 @@ export class UserResolver {
 
 	@Authorized()
 	@Query(() => BackBonesUser)
-	async getAuthorizedUser(@Ctx() context: {userId: number}) {
+	async getAuthorizedUser(@Ctx() context: { userId: number }) {
 		try {
 			return await BackBonesUser.findOneOrFail(context.userId);
 		} catch (error) {

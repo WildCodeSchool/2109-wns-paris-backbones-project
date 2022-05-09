@@ -37,7 +37,7 @@ function Header({ user }: HeaderProps) {
 
 	const handleLogout = async () => {
 		localStorage.removeItem("token");
-		await client.resetStore();
+		await client.clearStore();
 		dispatch(setUserId(0));
 	};
 

@@ -1,7 +1,7 @@
 import type { SET_USERID } from "./actions";
 
 export interface IState {
-	userId: string;
+	userId: number;
 }
 
 export interface IAction {

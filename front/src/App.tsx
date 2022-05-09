@@ -1,15 +1,17 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import { TasksList } from "./components/TasksList/TasksList";
 import { StateProvider } from "./state/GlobalStateProvider";
-import Form from "./components/Form/Form";
+import SignInForm from "./components/Form/SignInForm";
 import { gql, useLazyQuery } from "@apollo/client";
 import Header from "./components/Header/Header";
 import ProjectList from "./components/ProjectList/ProjectList";
 import { BackBonesUser } from "./components/types";
+import SignUpForm from "./components/Form/SignUpForm";
+import { setUserId } from "./state/actions";
 
 const GET_USER_DATA = gql`
-	query GetUserById($userId: Float!) {
-		getUserById(userId: $userId) {
+	query GetAuthorizedUser {
+		getAuthorizedUser {
 			id
 			firstName
 			lastName
@@ -66,38 +68,54 @@ const GET_USER_DATA = gql`
 `;
 
 function App() {
-	const [userData, setUserData] = React.useState<BackBonesUser | null>(null);
+	const [userData, setUserData] = useState<BackBonesUser | null>(null);
 	const { userId } = useContext(StateProvider);
 
-	const [getUserData, { loading, error, data }] = useLazyQuery(
-		GET_USER_DATA,
-		{
-			variables: { userId },
-		}
-	);
+	const [
+		getUserData,
+		{ loading: loading, error: error, data: authUserData },
+	] = useLazyQuery(GET_USER_DATA, {
+		onCompleted: (data) => {
+			if (data?.getAuthorizedUser) {
+				setUserId(data.getAuthorizedUser.id);
+				setUserData(data.getAuthorizedUser);
+			}
+		},
+		onError: (err) => {
+			setUserData(null);
+		},
+		errorPolicy: "all",
+	});
 
-	useEffect(() => {
-		if (userId) {
+	// check if user is logged in
+	// if userId === 0, user is not logged in
+	useMemo(() => {
+		if (localStorage.getItem("token")) {
 			getUserData()
-				.then(({ data }) => {
-					setUserData(data.getUserById);
-				})
-				.catch((error) => {
-					console.log("Fetching User Data Error", error);
+				.then()
+				.catch((err) => {
+					console.log(err);
 				});
-		} else {
+		} else if (userId === 0) {
 			setUserData(null);
 		}
 	}, [userId]);
 
 	return (
 		<div className="h-screen">
-			{!userData && <Form />}
-			{!loading && !error && userData?.projects && userData.tasks && (
+			{!userData && (
+				<>
+					<SignInForm />
+					<SignUpForm />
+				</>
+			)}
+			{userData && (
 				<>
 					<Header user={userData} />
-					<ProjectList projects={userData.projects} />
-					<TasksList tasks={userData.tasks} />
+					{userData.projects && (
+						<ProjectList projects={userData.projects} />
+					)}
+					{userData.tasks && <TasksList tasks={userData.tasks} />}
 				</>
 			)}
 			{loading && <div>Loading, plz wait thanks :D</div>}
