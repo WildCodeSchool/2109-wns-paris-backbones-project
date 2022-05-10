@@ -19,7 +19,7 @@ const SignInForm = () => {
 
 	const dispatch = useContext(DispatchProvider);
 
-	const [signIn, { loading, error }] = useMutation(LOGIN, {
+	const [signIn] = useMutation(LOGIN, {
 		onCompleted: (data) => {
 			if (data.signIn) {
 				localStorage.setItem("token", data.signIn.token);
@@ -84,7 +84,7 @@ const SignInForm = () => {
 					</div>
 					<div className="flex items-center justify-between">
 						<Button
-							onClick={handleSignIn}
+							onClick={async () => handleSignIn()}
 							label={"Sign in"}
 							state={"enabled"}
 						/>

@@ -66,8 +66,6 @@ export class AuthResolver {
 				errorHandler("User already exists", 1);
 			} else {
 				const newUser = await BackBonesUser.create(input).save();
-				console.log(`User ${newUser.id} Created`);
-				console.log(typeof newUser.id);
 				if (newUser) {
 					console.log(
 						`User ${newUser.id} Created: [firstName: ${newUser.firstName}]`

@@ -29,19 +29,17 @@ const SignUpForm = () => {
 		return emailRegex.test(email);
 	};
 
-	const [signUp, { loading, error }] = useMutation(CREATE_USER, {
+	const [signUp] = useMutation(CREATE_USER, {
 		onCompleted: (data) => {
 			if (data.signUp) {
 				localStorage.setItem("token", data.signUp.token);
 				dispatch(setUserId(data.signUp.userId));
 			}
 		},
-		onError: (err) => {
-			console.log(err);
-		},
 	});
 
 	const handleSignUp = async () => {
+		console.log("signup");
 		if (isEmailValid(email) && password === confirmPassword) {
 			try {
 				await signUp({
@@ -156,7 +154,7 @@ const SignUpForm = () => {
 					</div>
 					<div className="flex items-center justify-between">
 						<Button
-							onClick={handleSignUp}
+							onClick={async () => await handleSignUp}
 							label={"Sign up"}
 							state={"enabled"}
 						/>
