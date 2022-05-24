@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export interface Route {
 	label: string;
@@ -8,10 +9,10 @@ export interface Route {
 
 function NavLink({ route }: { route: Route }) {
 	return (
-		<div className="flex items-center justify-center gap-2">
+		<Link to={route.href} className="flex items-center justify-center gap-2">
 			<div className="text-primary-medium">{route.icon}</div>
 			<p>{route.label}</p>
-		</div>
+		</Link>
 	);
 }
 
