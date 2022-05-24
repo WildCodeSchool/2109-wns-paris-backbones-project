@@ -125,9 +125,17 @@ export class TaskResolver {
 
 	//DELETE
 	@Mutation(() => [Task])
-	async deleteTask(@Arg("taskId") taskId: number) {
-		try {
+	async deleteTask(
+		@Arg("taskId") taskId: number,
+		// @Arg("deleteTaskInput", { nullable: true }) input: UpdateTaskInput
+	) { try {
 			const task = await Task.findOneOrFail(taskId);
+			const users = await task?.users;
+			const userNotOnProject = users.map((user) => !user);
+			if (userNotOnProject) {
+				errorHandler(`user is not allowed :D`);
+				return;
+			}
 			await task.softRemove();
 			return await Task.find();
 		} catch (error) {
