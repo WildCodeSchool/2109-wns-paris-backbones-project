@@ -9,6 +9,7 @@ import {
 	createHttpLink,
 	ApolloLink,
 } from "@apollo/client";
+import { BrowserRouter } from "react-router-dom";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 
@@ -47,9 +48,11 @@ const client = new ApolloClient({
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ApolloProvider client={client}>
-			<GlobalStateProvider />
-		</ApolloProvider>
+		<BrowserRouter>
+			<ApolloProvider client={client}>
+				<GlobalStateProvider />
+			</ApolloProvider>
+		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById("root")
 );
