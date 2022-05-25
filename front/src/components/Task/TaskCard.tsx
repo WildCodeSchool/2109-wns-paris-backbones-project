@@ -1,25 +1,25 @@
 import React, { Fragment, useState } from "react";
 import { Task } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
-import { Dialog, Transition } from '@headlessui/react';
-
+import { Dialog, Transition } from "@headlessui/react";
+import TaskDetail from "../Task/TaskDetail";
 
 interface TaskCardProps {
-	task: Task
+	task: Task;
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
 	const { title, users } = task;
-	let [isOpen, setIsOpen] = useState(false)
+	let [isOpen, setIsOpen] = useState(false);
 
 	function closeModal() {
 		setIsOpen(false);
-		console.log('coucou close');
+		console.log("coucou close");
 	}
 
 	function openModal() {
 		setIsOpen(true);
-		console.log('coucou open');
+		console.log("coucou open");
 	}
 
 	return (
@@ -31,7 +31,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
 			>
 				<div className="flex flex-row items-center justify-start w-full px-2 py-1 my-3 task-holder bg-light-dark dark:bg-dark-dark rounded-3xl">
 					<div className="icon"></div>
-					<span className="w-8/12 px-1 task-title flex-nowrap">{title}</span>
+					<span className="w-8/12 px-1 task-title flex-nowrap">
+						{title}
+					</span>
 					{users && (
 						<ul className="flex flex-row ml-auto">
 							{users.map((user) => (
@@ -46,8 +48,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 					)}
 				</div>
 			</button>
-			
-			
+
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={closeModal}>
 					<Transition.Child
@@ -74,27 +75,27 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveTo="opacity-0 scale-95"
 							>
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-									<Dialog.Title
-										as="h3"
-										className="text-lg font-medium leading-6 text-gray-900"
-									>
-										Payment successful
-									</Dialog.Title>
-									<div className="mt-2">
-										<p className="text-sm text-gray-500">
-											Your payment has been successfully submitted. We’ve sent
-											you an email with all of the details of your order.
-										</p>
-									</div>
+									<TaskDetail title='Title' description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '/>
 
-									<div className="mt-4">
-										<button
-											type="button"
-											className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-											onClick={closeModal}
-										>
-											Got it, thanks!
-										</button>
+									<div className="flex">
+										<div className="mt-4">
+											<button
+												type="button"
+												className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+											>
+												Edit
+											</button>
+										</div>
+
+										<div className="mt-4">
+											<button
+												type="button"
+												className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+												onClick={closeModal}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>
@@ -102,7 +103,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
 					</div>
 				</Dialog>
 			</Transition>
-		</>)
+		</>
+	);
 };
 
 export default TaskCard;
