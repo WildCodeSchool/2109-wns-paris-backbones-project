@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Task } from "../types";
-import TaskCard from "../TaskCard/TaskCard";
-import Dropdown from "../Dropdown/Dropdown";
+import TaskCard from "../Task/TaskCard";
+import Dropdown from "../utils/Dropdown";
 
 export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 	const [tasksToShow, setTasksToShow] = useState(tasks);
@@ -34,11 +34,11 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 	}
 
 	return (
-		<div className="tasks-list my-2">
+		<div className="my-2 tasks-list">
 			<h1 className="text-2xl text-center">Tasks</h1>
-			<div className="filter-container flex justify-center">
+			<div className="flex justify-center filter-container">
 				<Dropdown
-					className="filter-dropdown w-2/12"
+					className="w-2/12 filter-dropdown"
 					onChange={filterTasksByStatus}
 					title={"Status"}
 					options={statusList}

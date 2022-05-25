@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { setUserId } from "../../state/actions";
 import { useMutation, gql } from "@apollo/client";
-import Button from "../Button/Button";
+import Button from "../utils/Button";
 
 const LOGIN = gql`
 	mutation SignIn($signInInput: SignInInput!) {

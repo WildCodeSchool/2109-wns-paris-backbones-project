@@ -1,5 +1,5 @@
 import React from "react";
-import { TasksList } from "../components/TasksList/TasksList";
+import { TasksList } from "../components/Task/TasksList";
 import { BackBonesUser } from "../components/types";
 import { gql, useLazyQuery } from "@apollo/client";
 import { useState, useEffect, useContext } from "react";

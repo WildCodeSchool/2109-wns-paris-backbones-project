@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import Button from "../Button/Button";
+import Button from "../utils/Button";
 import { gql, useMutation } from "@apollo/client";
 import { setUserId } from "../../state/actions";
 import { DispatchProvider } from "../../state/GlobalStateProvider";

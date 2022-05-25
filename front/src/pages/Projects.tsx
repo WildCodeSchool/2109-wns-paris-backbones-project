@@ -1,5 +1,5 @@
 import React from "react";
-import ProjectList from "../components/ProjectList/ProjectList";
+import ProjectList from "../components/Project/ProjectList";
 import { BackBonesUser } from "../components/types";
 import { gql, useLazyQuery } from "@apollo/client";
 import { useState, useEffect, useContext } from "react";

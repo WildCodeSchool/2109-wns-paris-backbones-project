@@ -9,7 +9,7 @@ import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { BackBonesUser } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
 import { useApolloClient } from "@apollo/client";
-import Button from "../Button/Button";
+import Button from "../utils/Button";
 
 
 
