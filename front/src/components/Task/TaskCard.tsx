@@ -10,7 +10,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ task }: TaskCardProps) => {
 	const { title, users } = task;
-	let [isOpen, setIsOpen] = useState(true)
+	let [isOpen, setIsOpen] = useState(false)
 
 	function closeModal() {
 		setIsOpen(false);
@@ -27,13 +27,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
 			<button
 				type="button"
 				onClick={openModal}
-				className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+				className="px-4 py-2 text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 			>
-				<div className="task-holder flex flex-row w-full items-center justify-start px-2 py-1 my-3 bg-light-dark dark:bg-dark-dark rounded-3xl">
+				<div className="flex flex-row items-center justify-start w-full px-2 py-1 my-3 task-holder bg-light-dark dark:bg-dark-dark rounded-3xl">
 					<div className="icon"></div>
-					<span className="task-title w-8/12 px-1 flex-nowrap">{title}</span>
+					<span className="w-8/12 px-1 task-title flex-nowrap">{title}</span>
 					{users && (
-						<ul className="ml-auto flex flex-row">
+						<ul className="flex flex-row ml-auto">
 							{users.map((user) => (
 								<UserBadge
 									key={user.id}
@@ -46,7 +46,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
 					)}
 				</div>
 			</button>
-
+			
+			
 			<Transition appear show={isOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-10" onClose={closeModal}>
 					<Transition.Child
@@ -62,7 +63,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 					</Transition.Child>
 
 					<div className="fixed inset-0 overflow-y-auto">
-						<div className="flex min-h-full items-center justify-center p-4 text-center">
+						<div className="flex items-center justify-center min-h-full p-4 text-center">
 							<Transition.Child
 								as={Fragment}
 								enter="ease-out duration-300"
@@ -72,7 +73,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
 									<Dialog.Title
 										as="h3"
 										className="text-lg font-medium leading-6 text-gray-900"
@@ -89,7 +90,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 									<div className="mt-4">
 										<button
 											type="button"
-											className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+											className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
 											onClick={closeModal}
 										>
 											Got it, thanks!
