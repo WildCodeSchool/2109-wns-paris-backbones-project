@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
-import { TasksList } from "./components/TasksList/TasksList";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Tasks from "./pages/Tasks";
+import Projects from "./pages/Projects";
 import { StateProvider } from "./state/GlobalStateProvider";
 import SignInForm from "./components/Form/SignInForm";
 import { gql, useLazyQuery } from "@apollo/client";
 import Header from "./components/Header/Header";
-import ProjectList from "./components/ProjectList/ProjectList";
+
 import { BackBonesUser } from "./components/types";
 import SignUpForm from "./components/Form/SignUpForm";
 
@@ -90,25 +93,29 @@ function App() {
 	}, [userId]);
 
 	return (
-		<div className="h-screen">
-			{!userData && (
-				<>
-					<SignInForm />
-					<SignUpForm />
-				</>
-			)}
-			{userData && (
-				<>
-					<Header user={userData} />
-					{userData.projects && (
-						<ProjectList projects={userData.projects} />
-					)}
-					{userData.tasks && <TasksList tasks={userData.tasks} />}
-				</>
-			)}
-			{loading && <div>Loading, plz wait thanks :D</div>}
-			{error && <div>Oops, something went wrong :'(</div>}
-		</div>
+		<>
+			<div className="h-screen">
+				{!userData && (
+					<>
+						<SignInForm />
+						<SignUpForm />
+					</>
+				)}
+
+				{userData && (
+					<>
+						<Header user={userData} />
+						<Routes>
+							<Route path="/" element={<Home />} />
+							<Route path="projects" element={<Projects />} />
+							<Route path="tasks" element={<Tasks />} />
+						</Routes>
+					</>
+				)}
+				{loading && <div>Loading, plz wait thanks :D</div>}
+				{error && <div>Oops, something went wrong :'(</div>}
+			</div>
+		</>
 	);
 }
 
