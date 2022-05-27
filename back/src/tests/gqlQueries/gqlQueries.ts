@@ -467,15 +467,20 @@ export const UPDATE_STATUS = (
 
 export const SIGNIN = (email: String, password: String) => {
 	const mutationSignin: DocumentNode = gql`
-		mutation SignIn($password: String!, $email: String!) {
-			signIn(password: $password, email: $email)
+		mutation SignIn($signInInput: SignInInput!) {
+			signIn(signInInput: $signInInput) {
+				token
+				userId
+			}
 		}
 	`;
 	return {
 		query: mutationSignin,
 		variables: {
-			email: email,
-			password: password,
+			signInInput: {
+				email: email,
+				password: password,
+			},
 		},
 	};
 };

@@ -38,8 +38,13 @@ import { AuthResolver } from "../resolvers/AuthResolver";
 import { customAuthChecker } from "../auth";
 import { config } from "dotenv";
 
+interface IuserJwt {
+	token: string;
+	userId: number;
+}
+
 let server: ApolloServer;
-let userJwt: string;
+let userJwt: IuserJwt;
 
 beforeAll(async () => {
 	config({ path: `.env.${process.env.NODE_ENV}` });
@@ -394,7 +399,7 @@ describe("test Resolvers", () => {
 		it("test mutation addProject expect createdProject id equal to project with same id", async () => {
 			const response = await server.executeOperation(
 				ADD_PROJECT("brand new project"),
-				{ req: { headers: { authorization: userJwt } } } as any
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			const createdProject = await Project.findOne(
 				response.data?.addProject.id
