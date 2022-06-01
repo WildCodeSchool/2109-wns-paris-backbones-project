@@ -91,11 +91,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveTo="opacity-0 scale-95"
 							>
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-									<TaskDetail
-										title={title}
-										description={description}
-									/>
-
+									<TaskDetail task={task} />
 									<div className="flex">
 										<div className="mt-4">
 											<button
