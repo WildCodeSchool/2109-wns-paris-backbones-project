@@ -3,13 +3,15 @@ import { Task } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
 import { Dialog, Transition } from "@headlessui/react";
 import TaskDetail from "../Task/TaskDetail";
+import { gql, useMutation } from "@apollo/client";
 
 interface TaskCardProps {
 	task: Task;
+	handleDelete: (taskId: number) => void;
 }
 
-const TaskCard = ({ task }: TaskCardProps) => {
-	const { title, users } = task;
+const TaskCard = ({ task, handleDelete }: TaskCardProps) => {
+	const { title, users, description } = task;
 	let [isOpen, setIsOpen] = useState(false);
 
 	function closeModal() {
@@ -75,7 +77,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveTo="opacity-0 scale-95"
 							>
 								<Dialog.Panel className="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-									<TaskDetail title='Title' description='Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. '/>
+									<TaskDetail
+										title={title}
+										description={description}
+									/>
 
 									<div className="flex">
 										<div className="mt-4">
@@ -91,7 +96,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
 											<button
 												type="button"
 												className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-												onClick={closeModal}
+												onClick={() => {
+													closeModal();
+													handleDelete(task.id);
+												}}
 											>
 												Delete
 											</button>

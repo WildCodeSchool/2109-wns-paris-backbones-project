@@ -5,7 +5,7 @@ import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import UnfoldMoreOutlinedIcon from "@material-ui/icons/UnfoldMoreOutlined";
 
 interface DropdownProps {
-	onChange: (option: string) => void;
+	setSelectedStatus: (status: string) => void;
 	title: string;
 	options: string[];
 	selected: string;
@@ -15,7 +15,7 @@ interface DropdownProps {
 const Dropdown = ({
 	title,
 	options,
-	onChange,
+	setSelectedStatus,
 	selected,
 	className,
 }: DropdownProps) => {
@@ -30,7 +30,7 @@ const Dropdown = ({
 	}
 
 	useEffect(() => {
-		onChange(selectedItem);
+		setSelectedStatus(selectedItem);
 	}, [selectedItem]);
 
 	return (

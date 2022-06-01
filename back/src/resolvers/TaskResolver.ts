@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Task } from "../entities/Task";
 import { CreateTaskInput, UpdateTaskInput } from "../inputs/TaskInput";
 import { errorHandler } from "../utils/errorHandler";
@@ -124,20 +124,33 @@ export class TaskResolver {
 	}
 
 	//DELETE
-	@Mutation(() => [Task])
+	@Authorized()
+	@Mutation(() => Boolean)
 	async deleteTask(
 		@Arg("taskId") taskId: number,
-		// @Arg("deleteTaskInput", { nullable: true }) input: UpdateTaskInput
-	) { try {
+		@Ctx("userId") userId: number
+	) {
+		try {
 			const task = await Task.findOneOrFail(taskId);
 			const users = await task?.users;
-			const userNotOnProject = users.map((user) => !user);
-			if (userNotOnProject) {
-				errorHandler(`user is not allowed :D`);
+			const isUserOnTask = users.some((user) => user.id === userId);
+			if (!isUserOnTask) {
+				errorHandler(`you are not on this task`);
 				return;
 			}
+			const taskTitle = task.title;
+			const projectTitle = task.project?.title;
 			await task.softRemove();
-			return await Task.find();
+			console.log(`Task ${task.id} Deleted`);
+			const userToNotify = users.filter((user) => user.id !== userId);
+			if (userToNotify) {
+				await createNotification(
+					`${projectTitle}: Your task ${taskTitle} has been deleted`,
+					userToNotify,
+					task
+				);
+			}
+			return true;
 		} catch (error) {
 			throw error;
 		}

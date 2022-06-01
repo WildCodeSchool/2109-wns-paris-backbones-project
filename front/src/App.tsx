@@ -102,13 +102,21 @@ function App() {
 					</>
 				)}
 
-				{userData && (
+				{userData?.projects && userData?.tasks && (
 					<>
 						<Header user={userData} />
 						<Routes>
 							<Route path="/" element={<Home />} />
-							<Route path="projects" element={<Projects />} />
-							<Route path="tasks" element={<Tasks />} />
+							<Route
+								path="projects"
+								element={
+									<Projects projects={userData.projects} />
+								}
+							/>
+							<Route
+								path="tasks"
+								element={<Tasks tasks={userData.tasks} />}
+							/>
 						</Routes>
 					</>
 				)}

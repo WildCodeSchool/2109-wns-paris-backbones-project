@@ -2,12 +2,32 @@ import React, { useEffect, useState } from "react";
 import { Task } from "../types";
 import TaskCard from "../Task/TaskCard";
 import Dropdown from "../utils/Dropdown";
+import { gql, useApolloClient, useMutation } from "@apollo/client";
+
+const DELETE_TASK_MUTATION = gql`
+	mutation DeleteTask($taskId: Float!) {
+		deleteTask(taskId: $taskId)
+	}
+`;
 
 export const TasksList = ({ tasks }: { tasks: Task[] }) => {
-	const [tasksToShow, setTasksToShow] = useState(tasks);
 	const [statusList, setStatusList] = useState<string[]>([]);
+	const [selectedStatus, setSelectedStatus] = useState<string>("");
+
+	const [deleteTask, { loading, error }] = useMutation(DELETE_TASK_MUTATION);
+
+	const client = useApolloClient();
+
+	const handleDelete = async (taskId: number) => {
+		tasks = tasks.filter((task) => task.id !== taskId);
+		await deleteTask({
+			variables: { taskId: taskId },
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
 
 	useEffect(() => {
+		console.log("tasks", tasks);
 		const statuses = tasks
 			.map((task) => task.status)
 			.filter((value, index, self) => self.indexOf(value) === index);
@@ -30,7 +50,7 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 				return false;
 			}
 		});
-		setTasksToShow(filteredTasks);
+		return filteredTasks;
 	}
 
 	return (
@@ -39,7 +59,7 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 			<div className="flex justify-center filter-container">
 				<Dropdown
 					className="w-2/12 filter-dropdown"
-					onChange={filterTasksByStatus}
+					setSelectedStatus={setSelectedStatus}
 					title={"Status"}
 					options={statusList}
 					selected={statusList[0]}
@@ -47,8 +67,12 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 			</div>
 			<div className="flex flex-col items-center justify-center">
 				<ul className="w-3/4">
-					{tasksToShow.map((task) => (
-						<TaskCard key={task.id} task={task} />
+					{filterTasksByStatus(selectedStatus).map((task) => (
+						<TaskCard
+							key={task.id}
+							task={task}
+							handleDelete={handleDelete}
+						/>
 					))}
 				</ul>
 			</div>
