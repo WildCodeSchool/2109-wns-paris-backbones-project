@@ -18,10 +18,7 @@ interface CustomPayload extends RemoveIndex<JwtPayload> {
 }
 
 export const customAuthChecker: AuthChecker<CustomPayload> = async ({
-	root,
-	args,
 	context,
-	info,
 }) => {
 	const userRepo = getRepository(BackBonesUser);
 	const userJwt = context.token;

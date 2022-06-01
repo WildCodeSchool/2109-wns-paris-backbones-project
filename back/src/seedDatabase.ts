@@ -170,7 +170,7 @@ const runSeed = async () => {
 				u.lastName = user.lastName;
 				u.email = user.email;
 				u.avatar = user.avatar;
-				u.password = await bcrypt.hashSync("azerty", 10);
+				u.password = bcrypt.hashSync("azerty", 10);
 				await connection.manager.save(u);
 				console.log("Saved a new user with named: " + u.firstName);
 			}

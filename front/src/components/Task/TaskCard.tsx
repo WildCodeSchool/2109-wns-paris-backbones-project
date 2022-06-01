@@ -5,14 +5,28 @@ import { Dialog, Transition } from "@headlessui/react";
 import TaskDetail from "../Task/TaskDetail";
 import { gql, useMutation } from "@apollo/client";
 
+const DELETE_TASK_MUTATION = gql`
+	mutation DeleteTask($taskId: Float!) {
+		deleteTask(taskId: $taskId)
+	}
+`;
+
 interface TaskCardProps {
 	task: Task;
-	handleDelete: (taskId: number) => void;
 }
 
-const TaskCard = ({ task, handleDelete }: TaskCardProps) => {
+const TaskCard = ({ task }: TaskCardProps) => {
 	const { title, users, description } = task;
 	let [isOpen, setIsOpen] = useState(false);
+
+	const [deleteTask, { loading, error }] = useMutation(DELETE_TASK_MUTATION);
+
+	const handleDelete = async () => {
+		await deleteTask({
+			variables: { taskId: task.id },
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
 
 	function closeModal() {
 		setIsOpen(false);
@@ -96,10 +110,9 @@ const TaskCard = ({ task, handleDelete }: TaskCardProps) => {
 											<button
 												type="button"
 												className="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-												onClick={() => {
-													closeModal();
-													handleDelete(task.id);
-												}}
+												onClick={async () =>
+													await handleDelete()
+												}
 											>
 												Delete
 											</button>

@@ -43,7 +43,7 @@ export class UserResolver {
 	async addUser(@Arg("createUserInput") input: CreateUserInput) {
 		try {
 			const user = BackBonesUser.create(input);
-			input.password = await bcrypt.hashSync(input.password, 10);
+			input.password = bcrypt.hashSync(input.password, 10);
 
 			//REFACTO A FAIRE
 			const tasks: Task[] = [];
