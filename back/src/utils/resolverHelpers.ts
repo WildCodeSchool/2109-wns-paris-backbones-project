@@ -32,6 +32,41 @@ export const resolveNotOnProject = (
 	return result.length > 0 ? result : false;
 };
 
+export const resolveOnProject = (
+	inputArray: any[] | undefined,
+	projectsArray: any[] | undefined
+) => {
+	let result = [];
+	if (inputArray && inputArray[0] && projectsArray) {
+		result = inputArray.filter((element) => {
+			return projectsArray?.map((el) => el.id).includes(element.id);
+		});
+	}
+	return result.length > 0 ? result : false;
+};
+
+export const resolveNewUsersList = (
+	usersOnTask: any[] | undefined,
+	usersInput: any[] | undefined
+) => {
+	let result: any | undefined = [];
+	const userToAdd = resolveNotOnProject(usersInput, usersOnTask);
+	const userToRemove = resolveOnProject(usersInput, usersOnTask);
+	if (usersOnTask && userToRemove) {
+		result = usersOnTask.filter((element) => {
+			return !userToRemove.map((el) => el.id).includes(element.id);
+		});
+	} else if (usersOnTask && userToAdd) {
+		result = [...usersOnTask, ...userToAdd];
+	} else if (usersOnTask && userToAdd && userToRemove) {
+		const newUsersOnTask = usersOnTask.filter((element) => {
+			return !userToRemove.map((el) => el.id).includes(element.id);
+		});
+		result = [...newUsersOnTask, ...userToAdd];
+	}
+	return result;
+};
+
 export const createNotification = async (
 	description: string,
 	users: BackBonesUser[],

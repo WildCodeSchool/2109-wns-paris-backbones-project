@@ -36,6 +36,11 @@ const GET_USER_DATA = gql`
 					id
 					title
 					photo
+					users {
+						id
+						firstName
+						avatar
+					}
 				}
 				status {
 					id

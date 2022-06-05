@@ -1,7 +1,8 @@
 import React from "react";
 import { Dialog } from "@headlessui/react";
-import { Task } from "../types";
+import { BackBonesUser, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
+import DropdownUsers from "../utils/DropdownUsers";
 
 const UPDATE_TASK = gql`
 	mutation UpdateTask($TaskId: Float!, $updateTaskInput: UpdateTaskInput) {
@@ -48,7 +49,24 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 		});
 	};
 
-	console.log(updatedTask);
+	const updateTaskUsers = async (user: BackBonesUser) => {
+		setUpdatedTask({
+			...updatedTask,
+			users: [...updatedTask.users, user],
+		});
+		await updateTask({
+			variables: {
+				TaskId: task.id,
+				updateTaskInput: {
+					users: [{ id: user?.id }],
+				},
+			},
+			onError: (error) => {
+				console.log(error);
+			},
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
 
 	return (
 		<Dialog.Panel>
@@ -64,6 +82,14 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 					placeholder="Title"
 				/>
 			</Dialog.Title>
+			{project.users && updatedTask.users && (
+				<DropdownUsers
+					title="Add user"
+					projectUsers={project.users}
+					taskUsers={updatedTask.users}
+					updateUsers={updateTaskUsers}
+				/>
+			)}
 			<div className="mt-2">
 				<div className="flex items-center justify-between">
 					<div className="flex-1">
@@ -164,6 +190,19 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 											.join(", ")}
 									</div>
 								)}
+								<div className="ml-3">
+									<svg
+										className="h-5 w-5 text-gray-400"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fillRule="evenodd"
+											d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								</div>
 							</div>
 						</div>
 					</div>

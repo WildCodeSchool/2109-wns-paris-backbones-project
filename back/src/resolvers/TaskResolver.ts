@@ -5,10 +5,12 @@ import { errorHandler } from "../utils/errorHandler";
 import {
 	createNotification,
 	findSameTitle,
+	resolveNewUsersList,
 	resolveNotOnProject,
 } from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
 import { Project } from "../entities/Project";
+import { UserInput } from "../inputs/UserInput";
 
 @Resolver()
 export class TaskResolver {
@@ -103,9 +105,9 @@ export class TaskResolver {
 				);
 			}
 			const usersToNotify = input.users;
-			if (input.users) {
-				input.users = [...input.users, ...(await task?.users)];
-			}
+			const usersOnTask = await task?.users;
+			input.users = resolveNewUsersList(usersOnTask, input.users);
+
 			Object.assign(task, input);
 			await task.save();
 			console.log(`Task ${task.id} Updated: [project: ${project.title}]`);
