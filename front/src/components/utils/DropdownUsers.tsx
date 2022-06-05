@@ -21,13 +21,6 @@ const DropdownUsers = ({
 	updateUsers,
 	className,
 }: DropdownUsers) => {
-	const [selectedItem, setSelectedItem] = useState<BackBonesUser>(
-		taskUsers[0]
-	);
-	const [userToUpdate, setUserToUpdate] = useState<BackBonesUser | null>(
-		null
-	);
-
 	function classNames(...classes: string[]) {
 		return classes.filter(Boolean).join(" ");
 	}
@@ -40,16 +33,11 @@ const DropdownUsers = ({
 		}
 	}
 
-	useEffect(() => {
-		userToUpdate && updateUsers(selectedItem);
-	}, [userToUpdate]);
-
 	return (
 		<Listbox
-			value={selectedItem}
+			value={taskUsers[0]}
 			onChange={(user) => {
-				setSelectedItem(user);
-				setUserToUpdate(user);
+				updateUsers(user);
 			}}
 		>
 			{({ open }) => (
@@ -60,13 +48,8 @@ const DropdownUsers = ({
 					<div className="mt-1 relative">
 						<Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
 							<span className="flex items-center">
-								<img
-									src={selectedItem.avatar}
-									alt=""
-									className="flex-shrink-0 h-6 w-6 rounded-full"
-								/>
 								<span className="ml-3 block truncate text-dark-dark">
-									{selectedItem.firstName}
+									Select users to add
 								</span>
 							</span>
 							<span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">

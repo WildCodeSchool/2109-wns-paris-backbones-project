@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { BackBonesUser, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
@@ -28,13 +28,11 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 		effective_time,
 		users,
 	} = task;
-	const [updatedTask, setUpdatedTask] = React.useState(task);
 
 	const [updateTask] = useMutation(UPDATE_TASK);
 
 	const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
-		setUpdatedTask({ ...updatedTask, [name]: value });
 		await updateTask({
 			variables: {
 				TaskId: task.id,
@@ -45,15 +43,15 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 			onError: (error) => {
 				console.log(error);
 			},
+			onCompleted: (data) => {
+				console.log(data);
+			},
 			refetchQueries: ["GetAuthorizedUser"],
 		});
 	};
 
 	const updateTaskUsers = async (user: BackBonesUser) => {
-		setUpdatedTask({
-			...updatedTask,
-			users: [...updatedTask.users, user],
-		});
+		console.log("updateTaskUsers");
 		await updateTask({
 			variables: {
 				TaskId: task.id,
@@ -76,17 +74,17 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 			>
 				<input
 					onChange={handleChange}
-					value={updatedTask.title}
+					value={task.title}
 					name="title"
 					className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
 					placeholder="Title"
 				/>
 			</Dialog.Title>
-			{project.users && updatedTask.users && (
+			{project.users && task.users && (
 				<DropdownUsers
 					title="Add user"
 					projectUsers={project.users}
-					taskUsers={updatedTask.users}
+					taskUsers={task.users}
 					updateUsers={updateTaskUsers}
 				/>
 			)}

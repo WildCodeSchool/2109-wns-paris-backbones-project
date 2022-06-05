@@ -106,7 +106,9 @@ export class TaskResolver {
 			}
 			const usersToNotify = input.users;
 			const usersOnTask = await task?.users;
-			input.users = resolveNewUsersList(usersOnTask, input.users);
+			if (input.users) {
+				input.users = resolveNewUsersList(usersOnTask, input.users);
+			}
 
 			Object.assign(task, input);
 			await task.save();
