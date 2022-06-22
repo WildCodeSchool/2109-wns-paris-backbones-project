@@ -27,13 +27,16 @@ const colors = {
 module.exports = {
 	content: ["./src/**/*.{js,jsx,ts,tsx}", "./index.html"],
 	theme: {
+		fontFamily: {
+			sans: ['Roboto', 'sans-serif']
+		},
 		extend: {
 			colors,
 			fontFamily: {
-				"main-regular": "Roboto",
-				"main-bold": "Roboto Black",
-				"main-light": "Roboto Light",
-				"main-extralight": "Roboto Thin",
+				"main-regular": ["Roboto", "sans-serif"],
+				"main-bold": ["Roboto Black", "sans-serif"],
+				"main-light": ["Roboto Light", "sans-serif"],
+				"main-extralight": ["Roboto Thin", "sans-serif"],
 			},
 			fontSize: {
 				xxs: ".5rem",
