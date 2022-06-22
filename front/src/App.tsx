@@ -23,6 +23,25 @@ const GET_USER_DATA = gql`
 				id
 				title
 				description
+				effective_time
+				estimated_time
+				start_date
+				end_date
+				notifications {
+					id
+					title
+					description
+				}
+				project {
+					id
+					title
+					photo
+					users {
+						id
+						firstName
+						avatar
+					}
+				}
 				status {
 					id
 					title

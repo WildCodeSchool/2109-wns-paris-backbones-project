@@ -260,10 +260,12 @@ const runSeed = async () => {
 					t.description = myTasks[index].description;
 					t.status = projectStatuses[index];
 					t.project = project;
-					t.users = [
-						users[index],
-						users[index + 1] ? users[index + 1] : users[0],
-					];
+					if (project != projects[2]) {
+						t.users = [
+							users[index],
+							users[index + 1] ? users[index + 1] : users[0],
+						];
+					}
 					t.effective_time = myTasks[index].effective_time;
 					t.estimated_time = myTasks[index].estimated_time;
 					t.start_date = myTasks[index].start_date;

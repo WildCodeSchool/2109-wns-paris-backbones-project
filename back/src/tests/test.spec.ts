@@ -372,6 +372,18 @@ describe("test Resolvers", () => {
 			);
 			expect(response.errors).toBeTruthy();
 		});
+
+		it("test mutation updateTask expected user removed from task", async () => {
+			const response = await server.executeOperation(
+				UPDATE_TASK(2, "", [{ id: 3 }])
+			);
+			const updatedTask = await Task.findOne(2);
+			const taskUsers = await updatedTask?.users;
+			const result: any[] | undefined = taskUsers?.map((user) => {
+				return { id: user.id, firstName: user.firstName };
+			});
+			expect(response.data?.updateTask.users).toEqual(result);
+		});
 	});
 
 	describe("test ProjectResolver", () => {
