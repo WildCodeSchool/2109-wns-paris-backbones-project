@@ -6,5 +6,5 @@ export interface IState {
 
 export interface IAction {
 	type: typeof SET_USERID;
-	payload: string | number;
+	payload: number;
 }
