@@ -3,16 +3,16 @@ import React from "react";
 interface ButtonProps {
 	label: string;
 	state: "enabled" | "disabled" | "danger";
-	onClick: () => void;
+	onClick: (e?: any) => void | Promise<void>;
 }
 
 const Button = ({ label, state = "enabled", onClick }: ButtonProps) => {
 	let stateStyling;
 
 	const enabledStyling =
-		"bg-gradient-to-r from-primary-light to-primary-dark rounded hover:from-secondary-light hover:to-secondary-dark";
+		"bg-gradient-to-r from-primary-light to-primary-dark rounded hover:from-primary-medium hover:to-primary-darker";
 	const disabledStyling =
-		"bg-gradient-to-r from-gray-300 to-gray-400 rounded hover:bg-gray-600";
+		"bg-gradient-to-r from-gray-300 to-gray-400 rounded hover:bg-gray-600 pointer-events-none";
 	const dangerStyling =
 		"bg-gradient-to-r from-secondary-light to-secondary-dark rounded hover:bg-pink-700";
 

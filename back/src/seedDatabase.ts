@@ -250,10 +250,8 @@ const runSeed = async () => {
 			// CREATE TASKS
 			console.log("CREATE TASKS");
 			for (const project of projects) {
+				const projectStatuses = await project.statuses;
 				let i = 1;
-				const projectStatuses = statuses.filter(
-					async (status) => (await status?.project.id) === project.id
-				);
 				for (let index = 0; index < 5; index++) {
 					const t = new Task();
 					t.title = myTasks[index].title;

@@ -41,6 +41,10 @@ const GET_USER_DATA = gql`
 						firstName
 						avatar
 					}
+					statuses {
+						id
+						title
+					}
 				}
 				status {
 					id

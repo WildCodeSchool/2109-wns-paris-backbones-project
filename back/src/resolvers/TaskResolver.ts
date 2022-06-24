@@ -82,7 +82,9 @@ export class TaskResolver {
 	) {
 		try {
 			const task = await Task.findOneOrFail(taskId);
-			const project = await Project.findOneOrFail(task.project);
+			console.log(task);
+			const project = await task.project;
+			console.log(project);
 			const users = await project?.users;
 			const statuses = await project?.statuses;
 			const tasks = await project?.tasks;

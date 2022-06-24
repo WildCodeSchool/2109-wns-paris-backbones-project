@@ -1,8 +1,17 @@
-import React, { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { BackBonesUser, Task } from "../types";
+import React, {
+	ChangeEvent,
+	DOMElement,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
+import { BackBonesUser, Status, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
 import DropdownUsers from "../utils/DropdownUsers";
+import Button from "../utils/Button";
+import internal from "stream";
+import Dropdown from "../utils/Dropdown";
+import DropdownStatuses from "../utils/DropdownStatuses";
 
 const UPDATE_TASK = gql`
 	mutation UpdateTask($TaskId: Float!, $updateTaskInput: UpdateTaskInput) {
@@ -17,37 +26,52 @@ interface TaskDetailProps {
 }
 
 const TaskDetail = ({ task }: TaskDetailProps) => {
-	const {
-		title,
-		description,
-		project,
-		start_date,
-		end_date,
-		status,
-		estimated_time,
-		effective_time,
-		users,
-	} = task;
+	const [isModify, setIsModify] = useState(false);
+	const [taskToUpdate, setTaskToUpdate] = useState(task);
 
-	const [updateTask] = useMutation(UPDATE_TASK);
+	const [updateTask, { loading, error }] = useMutation(UPDATE_TASK);
 
-	const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
+	const handleUpdate = async () => {
 		await updateTask({
 			variables: {
-				TaskId: task.id,
+				TaskId: taskToUpdate.id,
 				updateTaskInput: {
-					[name]: value,
+					title: taskToUpdate.title,
+					description: taskToUpdate.description,
+					status: { id: taskToUpdate.status?.id },
+					start_date: taskToUpdate.start_date,
+					end_date: taskToUpdate.end_date,
+					estimated_time: taskToUpdate.estimated_time,
+					effective_time: taskToUpdate.effective_time,
 				},
 			},
+			refetchQueries: ["GetAuthorizedUser"],
 			onError: (error) => {
 				console.log(error);
 			},
-			onCompleted: (data) => {
-				console.log(data);
-			},
-			refetchQueries: ["GetAuthorizedUser"],
 		});
+	};
+
+	console.log(task);
+
+	const handleChange = (
+		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setTaskToUpdate({
+			...taskToUpdate,
+			[event.target.name]: event.target.value,
+		});
+		setIsModify(true);
+		console.log(taskToUpdate);
+	};
+
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log(isModify);
+		e.preventDefault();
+		if (isModify) {
+			await handleUpdate();
+			setIsModify(false);
+		}
 	};
 
 	const updateTaskUsers = async (user: BackBonesUser) => {
@@ -66,147 +90,92 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 		});
 	};
 
+	const updateStatus = async (status: Status) => {
+		console.log("updateStatus");
+		console.log(task.project?.id);
+		await updateTask({
+			variables: {
+				TaskId: task.id,
+				updateTaskInput: {
+					status: { id: status?.id },
+				},
+			},
+			onError: (error) => {
+				console.log(error);
+			},
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
+	console.log("task", task);
+
+	// @ts-ignore
+	// @ts-ignore
 	return (
-		<Dialog.Panel>
-			<Dialog.Title
-				as="h3"
-				className="text-lg font-medium leading-6 text-gray-900"
-			>
-				<input
-					onChange={handleChange}
-					value={task.title}
-					name="title"
-					className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal"
-					placeholder="Title"
+		<div>
+			<form onSubmit={handleSubmit}>
+				<div className="title-input">
+					<input
+						autoFocus={true}
+						type="text"
+						style={{
+							maxWidth: 0,
+							maxHeight: 0,
+							overflow: "hidden",
+						}}
+					/>
+					<input
+						id="title"
+						name="title"
+						type="text"
+						onChange={handleChange}
+						className="text-lg font-main-light text-dark-darker focus:outline-none w-full truncate"
+						value={taskToUpdate.title}
+					/>
+				</div>
+				<div className="description-input">
+					<textarea
+						id="description"
+						name="description"
+						onChange={handleChange}
+						className="text-sm font-main-light text-dark-darker outline-none focus:outline-primary-medium w-full h-24"
+						value={taskToUpdate.description}
+					/>
+				</div>
+			</form>
+			<div className="flex justify-end">
+				<div className="status-input">
+					{task.status && task.project.statuses && (
+						<DropdownStatuses
+							updateStatus={updateStatus}
+							title={"Statuses"}
+							projectStatuses={task.project.statuses}
+							taskStatus={task.status}
+						/>
+					)}
+				</div>
+				<div className="user-input text-sm">
+					{task.project.users && task.users ? (
+						<DropdownUsers
+							title="Assigned Users"
+							projectUsers={task.project?.users}
+							taskUsers={task.users}
+							updateUsers={updateTaskUsers}
+						/>
+					) : (
+						<div>No users</div>
+					)}
+				</div>
+			</div>
+			<div className="buttons">
+				<Button
+					label="Save"
+					state={isModify ? "enabled" : "disabled"}
+					onClick={(e: React.FormEvent<HTMLFormElement>) =>
+						handleSubmit(e)
+					}
 				/>
-			</Dialog.Title>
-			{project.users && task.users && (
-				<DropdownUsers
-					title="Add user"
-					projectUsers={project.users}
-					taskUsers={task.users}
-					updateUsers={updateTaskUsers}
-				/>
-			)}
-			<div className="mt-2">
-				<div className="flex items-center justify-between">
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<img
-									className="mt-2"
-									src={project.photo}
-									alt="Project picture"
-								/>
-								<div className="text-sm leading-5 text-gray-900">
-									{project.title}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
 			</div>
-			<div className="mt-2">
-				<p className="text-sm text-gray-500">{description}</p>
-			</div>
-			<div className="mt-2">
-				<div className="flex items-center">
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									Start date
-								</div>
-								<div className="text-sm leading-5 text-gray-900">
-									{start_date}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									End date
-								</div>
-								<div className="text-sm leading-5 text-gray-900">
-									{end_date}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									Status
-								</div>
-								<div className="text-sm leading-5 text-gray-900">
-									{status?.title}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									Estimated time
-								</div>
-								<div className="text-sm leading-5 text-gray-900">
-									{estimated_time}
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									Effective time
-								</div>
-								<div className="text-sm leading-5 text-gray-900">
-									{effective_time}
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className="mt-2">
-				<div className="flex items-center">
-					<div className="flex-1">
-						<div className="flex items-center">
-							<div className="ml-3">
-								<div className="text-sm leading-5 text-gray-900">
-									Users
-								</div>
-								{users && (
-									<div className="text-sm leading-5 text-gray-900">
-										{users
-											.map((user) => user.firstName)
-											.join(", ")}
-									</div>
-								)}
-								<div className="ml-3">
-									<svg
-										className="h-5 w-5 text-gray-400"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fillRule="evenodd"
-											d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-											clipRule="evenodd"
-										/>
-									</svg>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</Dialog.Panel>
+		</div>
 	);
 };
 

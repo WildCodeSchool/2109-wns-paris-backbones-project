@@ -84,9 +84,9 @@ const SignInForm = () => {
 					</div>
 					<div className="flex items-center justify-between">
 						<Button
-							onClick={async () => handleSignIn()}
 							label={"Sign in"}
 							state={"enabled"}
+							onClick={() => handleSignIn()}
 						/>
 					</div>
 				</form>
