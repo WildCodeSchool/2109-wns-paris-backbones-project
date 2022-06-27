@@ -1,16 +1,8 @@
-import React, {
-	ChangeEvent,
-	DOMElement,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import React, { useState } from "react";
 import { BackBonesUser, Status, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
 import DropdownUsers from "../utils/DropdownUsers";
 import Button from "../utils/Button";
-import internal from "stream";
-import Dropdown from "../utils/Dropdown";
 import DropdownStatuses from "../utils/DropdownStatuses";
 
 const UPDATE_TASK = gql`
@@ -108,8 +100,6 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	};
 	console.log("task", task);
 
-	// @ts-ignore
-	// @ts-ignore
 	return (
 		<div>
 			<form onSubmit={handleSubmit}>
@@ -131,6 +121,9 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 						className="text-lg font-main-light text-dark-darker focus:outline-none w-full truncate"
 						value={taskToUpdate.title}
 					/>
+					<span className="text-dark-darker">
+						{task.project.title}
+					</span>
 				</div>
 				<div className="description-input">
 					<textarea

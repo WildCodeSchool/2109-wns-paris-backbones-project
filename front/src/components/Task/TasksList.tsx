@@ -4,28 +4,28 @@ import TaskCard from "../Task/TaskCard";
 import Dropdown from "../utils/Dropdown";
 
 export const TasksList = ({ tasks }: { tasks: Task[] }) => {
-	const [statusList, setStatusList] = useState<string[]>([]);
-	const [selectedStatus, setSelectedStatus] = useState<string>("");
+	const [projectsList, setProjectsList] = useState<string[]>([]);
+	const [selectedProject, setSelectedProject] = useState<string>("");
 
 	useEffect(() => {
-		const statuses = tasks
-			.map((task) => task.status)
+		const projects = tasks
+			.map((task) => task.project)
 			.filter((value, index, self) => self.indexOf(value) === index);
-		let newStatuses = ["All"];
-		statuses.forEach((status) => {
-			if (status?.title) {
-				newStatuses.push(status.title);
+		let newProject = ["All"];
+		projects.forEach((project) => {
+			if (project?.title) {
+				newProject.push(project.title);
 			}
 		});
-		setStatusList(newStatuses);
+		setProjectsList(newProject);
 	}, [tasks]);
 
-	function filterTasksByStatus(option: string) {
+	function filterTasksByProject(option: string) {
 		return tasks.filter((task) => {
 			if (option === "All") {
 				return true;
-			} else if (task.status) {
-				return task.status.title === option;
+			} else if (task.project) {
+				return task.project?.title === option;
 			} else {
 				return false;
 			}
@@ -38,15 +38,15 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 			<div className="flex justify-center filter-container">
 				<Dropdown
 					className="w-2/12 filter-dropdown"
-					setSelectedStatus={setSelectedStatus}
-					title={"Status"}
-					options={statusList}
-					selected={statusList[0]}
+					setSelected={setSelectedProject}
+					title={"Project"}
+					options={projectsList}
+					selected={projectsList[0]}
 				/>
 			</div>
 			<div className="flex flex-col items-center justify-center">
 				<ul className="w-3/4">
-					{filterTasksByStatus(selectedStatus).map((task) => (
+					{filterTasksByProject(selectedProject).map((task) => (
 						<TaskCard key={task.id} task={task} />
 					))}
 				</ul>
