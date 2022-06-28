@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import NavLink from "../NavLink/NavLink";
-import HomeIcon from "@material-ui/icons/Home";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
+import NotificationIcon from "@material-ui/icons/Notifications";
 import { setUserId } from "../../state/actions";
 import { DispatchProvider } from "../../state/GlobalStateProvider";
 import { BackBonesUser } from "../types";
@@ -19,13 +19,8 @@ function Header({ user }: HeaderProps) {
 	const dispatch = useContext(DispatchProvider);
 	const routes = [
 		{
-			href: "/",
-			label: "Home",
-			icon: <HomeIcon />,
-		},
-		{
 			href: "/tasks",
-			label: "Tâches",
+			label: "Tasks",
 			icon: <CheckBoxIcon />,
 		},
 		{
@@ -33,12 +28,17 @@ function Header({ user }: HeaderProps) {
 			label: "Projects",
 			icon: <CreateNewFolderIcon />,
 		},
+		{
+			href: "/notifications",
+			label: "Notifications",
+			icon: <NotificationIcon />,
+		},
 	];
 
 	const handleLogout = async () => {
 		localStorage.removeItem("token");
 		dispatch(setUserId(0));
-		await client.resetStore();
+		await client.clearStore();
 	};
 
 	return (

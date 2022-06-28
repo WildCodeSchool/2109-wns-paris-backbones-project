@@ -66,11 +66,9 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 			[event.target.name]: event.target.value,
 		});
 		setIsModify(true);
-		console.log(taskToUpdate);
 	};
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		console.log(isModify);
 		e.preventDefault();
 		if (isModify) {
 			await handleUpdate();
@@ -79,7 +77,6 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	};
 
 	const updateTaskUsers = async (user: BackBonesUser) => {
-		console.log("updateTaskUsers");
 		await updateTask({
 			variables: {
 				TaskId: task.id,
@@ -95,7 +92,6 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	};
 
 	const updateStatus = async (status: Status) => {
-		console.log("updateStatus");
 		console.log(task.project?.id);
 		await updateTask({
 			variables: {

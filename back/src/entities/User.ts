@@ -6,8 +6,8 @@ import {
 	ManyToMany,
 	JoinTable,
 	BaseEntity,
-	ManyToOne,
 	DeleteDateColumn,
+	OneToMany,
 } from "typeorm";
 import { Project } from "./Project";
 import { Role } from "./Role";
@@ -69,7 +69,7 @@ export class BackBonesUser extends BaseEntity {
 	projects: Project[];
 
 	@Field(() => [Notification], { nullable: true })
-	@ManyToOne(() => Notification, (notification) => notification.user, {
+	@OneToMany(() => Notification, (notification) => notification.user, {
 		lazy: true,
 		nullable: true,
 		cascade: true,

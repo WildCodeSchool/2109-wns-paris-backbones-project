@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Tasks from "./pages/Tasks";
 import Projects from "./pages/Projects";
 import { StateProvider } from "./state/GlobalStateProvider";
 import SignInForm from "./components/Form/SignInForm";
 import { gql, useLazyQuery } from "@apollo/client";
 import Header from "./components/Header/Header";
-
 import { BackBonesUser } from "./components/types";
 import SignUpForm from "./components/Form/SignUpForm";
+import Notifications from "./pages/Notications";
 
 const GET_USER_DATA = gql`
 	query GetAuthorizedUser {
@@ -88,6 +87,22 @@ const GET_USER_DATA = gql`
 					avatar
 				}
 			}
+			notifications {
+				id
+				title
+				description
+				read
+				created_at
+				project {
+					id
+				}
+				task {
+					id
+				}
+				user {
+					id
+				}
+			}
 		}
 	}
 `;
@@ -124,25 +139,41 @@ function App() {
 						<SignUpForm />
 					</>
 				)}
-
-				{userData?.projects && userData?.tasks && (
-					<>
-						<Header user={userData} />
-						<Routes>
-							<Route path="/" element={<Home />} />
-							<Route
-								path="projects"
-								element={
-									<Projects projects={userData.projects} />
-								}
-							/>
-							<Route
-								path="tasks"
-								element={<Tasks tasks={userData.tasks} />}
-							/>
-						</Routes>
-					</>
-				)}
+				{userData?.projects &&
+					userData?.tasks &&
+					userData?.notifications && (
+						<>
+							<Header user={userData} />
+							<Routes>
+								<Route
+									path="/"
+									element={<Navigate to="/tasks" />}
+								/>
+								<Route
+									path="projects"
+									element={
+										<Projects
+											projects={userData.projects}
+										/>
+									}
+								/>
+								<Route
+									path="tasks"
+									element={<Tasks tasks={userData.tasks} />}
+								/>
+								<Route
+									path="notifications"
+									element={
+										<Notifications
+											notifications={
+												userData.notifications
+											}
+										/>
+									}
+								/>
+							</Routes>
+						</>
+					)}
 				{loading && <div>Loading, plz wait thanks :D</div>}
 				{error && <div>Oops, something went wrong :'(</div>}
 			</div>

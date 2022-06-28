@@ -274,7 +274,7 @@ const runSeed = async () => {
 					);
 					await createNotification(
 						`${project.title}: You have a new task: ${t.title}`,
-						await t?.users,
+						await createdTask.users,
 						createdTask
 					);
 					i++;
