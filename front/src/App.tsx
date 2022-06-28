@@ -9,6 +9,8 @@ import Header from "./components/Header/Header";
 import { BackBonesUser } from "./components/types";
 import SignUpForm from "./components/Form/SignUpForm";
 import Notifications from "./pages/Notications";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import { Audio } from "react-loader-spinner";
 
 const GET_USER_DATA = gql`
 	query GetAuthorizedUser {
@@ -174,7 +176,17 @@ function App() {
 							</Routes>
 						</>
 					)}
-				{loading && <div>Loading, plz wait thanks :D</div>}
+
+				{loading && (
+					<div className="absolute bg-dark-dark bg-opacity-50 inset-0 flex justify-center items-center w-screen h-screen z-50">
+						<Audio
+							height="200"
+							width="200"
+							color="green"
+							ariaLabel="loading"
+						/>
+					</div>
+				)}
 				{error && <div>Oops, something went wrong :'(</div>}
 			</div>
 		</>
