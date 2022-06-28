@@ -45,7 +45,7 @@ export const TasksList = ({ tasks }: { tasks: Task[] }) => {
 				/>
 			</div>
 			<div className="flex flex-col items-center justify-center">
-				<ul className="w-3/4">
+				<ul className="w-3/4 text-center">
 					{filterTasksByProject(selectedProject).map((task) => (
 						<TaskCard key={task.id} task={task} />
 					))}
