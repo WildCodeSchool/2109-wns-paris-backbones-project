@@ -1,12 +1,11 @@
-import React, { useEffect } from "react";
-import { Fragment, useState } from "react";
+import React from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import UnfoldMoreOutlinedIcon from "@material-ui/icons/UnfoldMoreOutlined";
 import { BackBonesUser } from "../types";
-import UserBadge from "../UserBadge/UserBadge";
 
-interface DropdownUsers {
+interface DropdownUsersProps {
 	updateUsers: (user: BackBonesUser) => void;
 	title: string;
 	projectUsers: BackBonesUser[];
@@ -20,7 +19,7 @@ const DropdownUsers = ({
 	taskUsers,
 	updateUsers,
 	className,
-}: DropdownUsers) => {
+}: DropdownUsersProps) => {
 	function classNames(...classes: string[]) {
 		return classes.filter(Boolean).join(" ");
 	}
@@ -42,7 +41,7 @@ const DropdownUsers = ({
 		>
 			{({ open }) => (
 				<>
-					<Listbox.Label className="block text-sm font-medium text-gray-700">
+					<Listbox.Label className="block text-sm font-medium">
 						{title}
 					</Listbox.Label>
 					<div className="mt-1 relative">

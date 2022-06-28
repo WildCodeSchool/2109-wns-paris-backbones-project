@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BackBonesUser, Status, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
-import DropdownUsers from "../utils/DropdownUsers";
+import DropdownUsers from "../utils/DropdownUsersProps";
 import Button from "../utils/Button";
 import DropdownStatuses from "../utils/DropdownStatuses";
 
@@ -126,19 +126,17 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 						name="title"
 						type="text"
 						onChange={handleChange}
-						className="text-lg font-main-light text-dark-darker focus:outline-none w-full truncate"
+						className="text-lg dark:bg-dark-dark font-main-bold focus:outline-none w-full truncate"
 						value={taskToUpdate.title}
 					/>
-					<span className="text-dark-darker">
-						{task.project.title}
-					</span>
+					<span>{task.project.title}</span>
 				</div>
 				<div className="description-input">
 					<textarea
 						id="description"
 						name="description"
 						onChange={handleChange}
-						className="text-sm font-main-light text-dark-darker outline-none focus:outline-primary-medium w-full h-24"
+						className="text-sm dark:bg-dark-dark font-main-light outline-none focus:outline-primary-medium w-full h-24"
 						value={taskToUpdate.description}
 					/>
 				</div>

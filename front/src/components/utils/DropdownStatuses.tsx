@@ -36,7 +36,7 @@ const DropdownStatuses = ({
 		>
 			{({ open }) => (
 				<>
-					<Listbox.Label className="block text-sm font-medium text-gray-700">
+					<Listbox.Label className="block text-sm font-medium">
 						{title}
 					</Listbox.Label>
 					<div className="mt-1 relative">

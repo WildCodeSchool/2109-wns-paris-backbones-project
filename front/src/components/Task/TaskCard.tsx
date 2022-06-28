@@ -72,7 +72,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-8/12 h-5/6 p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+								<Dialog.Panel className="w-8/12 h-5/6 p-6 overflow-hidden text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
 									<TaskDetail task={task} />
 								</Dialog.Panel>
 							</Transition.Child>
