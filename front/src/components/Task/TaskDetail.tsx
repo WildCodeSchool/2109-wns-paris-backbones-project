@@ -4,6 +4,11 @@ import { gql, useMutation } from "@apollo/client";
 import DropdownUsers from "../utils/DropdownUsers";
 import Button from "../utils/Button";
 import DropdownStatuses from "../utils/DropdownStatuses";
+const DELETE_TASK_MUTATION = gql`
+	mutation DeleteTask($taskId: Float!) {
+		deleteTask(taskId: $taskId)
+	}
+`;
 
 const UPDATE_TASK = gql`
 	mutation UpdateTask($TaskId: Float!, $updateTaskInput: UpdateTaskInput) {
@@ -21,7 +26,8 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	const [isModify, setIsModify] = useState(false);
 	const [taskToUpdate, setTaskToUpdate] = useState(task);
 
-	const [updateTask, { loading, error }] = useMutation(UPDATE_TASK);
+	const [updateTask] = useMutation(UPDATE_TASK);
+	const [deleteTask] = useMutation(DELETE_TASK_MUTATION);
 
 	const handleUpdate = async () => {
 		await updateTask({
@@ -44,7 +50,12 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 		});
 	};
 
-	console.log(task);
+	const handleDelete = async () => {
+		await deleteTask({
+			variables: { taskId: task.id },
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
 
 	const handleChange = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -167,6 +178,7 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 						handleSubmit(e)
 					}
 				/>
+				<Button label="Delete" state="danger" onClick={handleDelete} />
 			</div>
 		</div>
 	);
