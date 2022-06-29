@@ -10,7 +10,7 @@ interface TaskCardProps {
 
 const TaskCard = ({ task }: TaskCardProps) => {
 	const { title, users } = task;
-	let [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	function closeModal() {
 		setIsOpen(false);
@@ -25,7 +25,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 			<button
 				type="button"
 				onClick={openModal}
-				className="lg:w-8/12 w-full text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+				className="w-full text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 			>
 				<div className="flex flex-row items-center justify-center w-full px-2 py-1 my-2 task-holder bg-light-dark dark:bg-dark-dark rounded-3xl">
 					<div className="icon"></div>
