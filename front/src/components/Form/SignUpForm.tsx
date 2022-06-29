@@ -154,7 +154,7 @@ const SignUpForm = () => {
 					</div>
 					<div className="flex items-center justify-between">
 						<Button
-							onClick={async () => await handleSignUp}
+							onClick={() => handleSignUp()}
 							label={"Sign up"}
 							state={"enabled"}
 						/>
