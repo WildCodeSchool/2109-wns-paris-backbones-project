@@ -4,6 +4,7 @@ import FormTextInput from "./FormElements/FormTextInput";
 import DropdownStatuses from "../utils/DropdownStatuses";
 import { BackBonesUser, Project, Status, TaskInput } from "../types";
 import DropdownUsers from "../utils/DropdownUsers";
+import FormDateInput from "./FormElements/FormDateInput";
 
 interface AddTaskFormProps {
 	project: Project;
@@ -12,12 +13,21 @@ interface AddTaskFormProps {
 const AddTaskForm = ({ project }: AddTaskFormProps) => {
 	const [taskToAdd, setTaskToAdd] = useState<TaskInput>({});
 
-	const handleChange = (
+	console.log(taskToAdd);
+
+	const handleChangeInput = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 	) => {
 		setTaskToAdd({
 			...taskToAdd,
 			[event.target.name]: event.target.value,
+		});
+	};
+
+	const handleChangeDate = (date: Date) => {
+		setTaskToAdd({
+			...taskToAdd,
+			start_date: date,
 		});
 	};
 
@@ -49,11 +59,15 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 
 	return (
 		<div className="p-4 w-full">
-			<FormTitleInput label="Title" value="" onChange={handleChange} />
+			<FormTitleInput
+				label="Title"
+				value=""
+				onChange={handleChangeInput}
+			/>
 			<FormTextInput
 				label="Description"
 				value=""
-				onChange={handleChange}
+				onChange={handleChangeInput}
 			/>
 			{project.statuses && (
 				<DropdownStatuses
@@ -71,6 +85,7 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 					updateUsers={addUsers}
 				/>
 			)}
+			<FormDateInput label={"Start date"} onChange={handleChangeDate} />
 		</div>
 	);
 };
