@@ -30,10 +30,10 @@ module.exports = {
 		extend: {
 			colors,
 			fontFamily: {
-				"main-regular": "Roboto",
-				"main-bold": "Roboto Black",
-				"main-light": "Roboto Light",
-				"main-extralight": "Roboto Thin",
+				"main-regular": ["Roboto", "sans-serif"],
+				"main-bold": ["Roboto Bold", "sans-serif"],
+				"main-light": ["Roboto Light", "sans-serif"],
+				"main-extralight": ["Roboto Thin", "sans-serif"],
 			},
 			fontSize: {
 				xxs: ".5rem",
