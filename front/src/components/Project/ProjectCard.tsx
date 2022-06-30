@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Project } from "../types";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectDetail from "./ProjectDetail";
+import { Close, Settings } from "@material-ui/icons";
 
 interface ProjectCardProps {
 	project: Project;
@@ -75,11 +76,22 @@ function ProjectCard({ project }: ProjectCardProps) {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-8/12 h-5/6 p-6 overflow-hidden text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
-									<ProjectDetail
-										project={project}
-										close={closeModal}
-									/>
+								<Dialog.Panel className="relative w-8/12 h-5/6 px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
+									<div className="project-controls pt-6 pb-2 dark:bg-dark-dark flex sticky top-0 justify-between z-50">
+										<button className="project-settings">
+											<Settings className="text-primary-medium" />
+											<span className="font-main-extralight px-4">
+												Settings
+											</span>
+										</button>
+										<button
+											className="project-close"
+											onClick={closeModal}
+										>
+											<Close />
+										</button>
+									</div>
+									<ProjectDetail project={project} />
 								</Dialog.Panel>
 							</Transition.Child>
 						</div>

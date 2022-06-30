@@ -9,7 +9,7 @@ interface DropdownUsers {
 	updateStatus: (status: Status) => void;
 	title: string;
 	projectStatuses: Status[];
-	taskStatus: Status;
+	taskStatus?: Status | { id: number };
 	className?: string;
 }
 
@@ -24,31 +24,25 @@ const DropdownStatuses = ({
 		return classes.filter(Boolean).join(" ");
 	}
 
-	console.log("projectStauses", projectStatuses);
-	console.log("taskStatus", taskStatus);
-
 	return (
 		<Listbox
-			value={taskStatus}
-			onChange={(user) => {
-				updateStatus(user);
+			value={undefined}
+			onChange={(status) => {
+				status && updateStatus(status);
 			}}
 		>
 			{({ open }) => (
 				<>
-					<Listbox.Label className="block text-sm font-medium">
-						{title}
-					</Listbox.Label>
 					<div className="mt-1 relative">
-						<Listbox.Button className="relative w-full bg-white border border-gray-300 rounded-md shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+						<Listbox.Button className="relative w-full border dark:border-light-light rounded-2xl shadow-sm pl-3 pr-10 py-2 text-left cursor-default focus:outline-none focus:ring-1 sm:text-sm">
 							<span className="flex items-center">
-								<span className="ml-3 block truncate text-dark-dark">
-									Select a status
+								<span className="ml-1 block truncate">
+									{title}
 								</span>
 							</span>
 							<span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 								<UnfoldMoreOutlinedIcon
-									className="h-5 w-5 text-gray-400"
+									className="h-5 w-5 text-light-light"
 									aria-hidden="true"
 								/>
 							</span>
@@ -61,15 +55,15 @@ const DropdownStatuses = ({
 							leaveFrom="opacity-100"
 							leaveTo="opacity-0"
 						>
-							<Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+							<Listbox.Options className="absolute z-10 mt-1 w-full dark:bg-dark-medium  shadow-lg max-h-56 rounded-2xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
 								{projectStatuses.map((status: Status) => (
 									<Listbox.Option
 										key={status.id}
 										className={({ active }) =>
 											classNames(
 												active
-													? "text-white bg-indigo-600"
-													: "text-gray-900",
+													? "bg-primary-darker"
+													: "",
 												"cursor-default select-none relative py-2 pl-3 pr-9"
 											)
 										}
@@ -90,13 +84,13 @@ const DropdownStatuses = ({
 													</span>
 												</div>
 
-												{taskStatus.title ===
-												status.title ? (
+												{taskStatus &&
+												taskStatus.id === status.id ? (
 													<span
 														className={classNames(
 															active
-																? "text-white"
-																: "text-indigo-600",
+																? "text-light-light"
+																: "text-primary-darker",
 															"absolute inset-y-0 right-0 flex items-center pr-4"
 														)}
 													>

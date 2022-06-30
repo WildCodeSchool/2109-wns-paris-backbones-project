@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BackBonesUser, Status, Task } from "../types";
 import { gql, useMutation } from "@apollo/client";
-import DropdownUsers from "../utils/DropdownUsersProps";
+import DropdownUsers from "../utils/DropdownUsers";
 import Button from "../utils/Button";
 import DropdownStatuses from "../utils/DropdownStatuses";
 
@@ -106,7 +106,6 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 			refetchQueries: ["GetAuthorizedUser"],
 		});
 	};
-	console.log("task", task);
 
 	return (
 		<div>

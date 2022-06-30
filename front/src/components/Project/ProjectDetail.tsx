@@ -1,18 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Project } from "../types";
 import { Disclosure, Transition } from "@headlessui/react";
-import { Close, Settings } from "@material-ui/icons";
 import ProgressBar from "../utils/ProgressBar";
 import UserBadge from "../UserBadge/UserBadge";
 import { TasksList } from "../Task/TasksList";
 import AddOutlined from "@material-ui/icons/AddOutlined";
+import AddTaskForm from "../Form/AddTaskForm";
 
 interface ProjectDetailProps {
 	project: Project;
-	close: () => void;
 }
 
-const ProjectDetail = ({ project, close }: ProjectDetailProps) => {
+const ProjectDetail = ({ project }: ProjectDetailProps) => {
 	const [progress, setProgress] = useState(0);
 	const [buttonClicked, setButtonClicked] = useState(false);
 	const iconAddTask = useRef<HTMLDivElement>(null);
@@ -37,23 +36,11 @@ const ProjectDetail = ({ project, close }: ProjectDetailProps) => {
 	}, [buttonClicked]);
 
 	return (
-		<div className="project-detail-card p-4">
-			<div className="project-controls flex justify-between">
-				<button className="project-settings">
-					<Settings className="text-primary-medium" />
-					<span className="font-main-extralight px-4">Settings</span>
-				</button>
-				<button className="project-close" onClick={close}>
-					<Close />
-				</button>
-			</div>
+		<div className="project-detail-card px-3">
 			<div className="project-header w-full mt-3 justify-between">
 				<div className="project-header-title-progress flex justify-between">
 					<div className="project-title w-1/2">
-						<h1 className="font-main-bold text-xl">
-							{title} ouais ouais t’as vu super projet ouais ouais
-							t’as vu super projet
-						</h1>
+						<h1 className="font-main-bold text-xl">{title}</h1>
 					</div>
 					<div className="project-progress-bar">
 						<ProgressBar progress={progress} />
@@ -100,7 +87,7 @@ const ProjectDetail = ({ project, close }: ProjectDetailProps) => {
 						<div className="project-tasks-add flex items-center">
 							<div ref={iconAddTask}>
 								<AddOutlined
-									className="text-primary-medium"
+									className="text-primary-medium block"
 									fontSize="large"
 								/>
 							</div>
@@ -117,7 +104,9 @@ const ProjectDetail = ({ project, close }: ProjectDetailProps) => {
 						leaveFrom="transform scale-100 opacity-100"
 						leaveTo="transform scale-95 opacity-0"
 					>
-						<Disclosure.Panel>BLA BLA BLA BLA</Disclosure.Panel>
+						<Disclosure.Panel>
+							<AddTaskForm project={project} />
+						</Disclosure.Panel>
 					</Transition>
 				</Disclosure>
 				<div className="project-tasks-list bg-dark-darker rounded-2xl">

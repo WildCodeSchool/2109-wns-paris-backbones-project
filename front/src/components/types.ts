@@ -65,3 +65,14 @@ export interface Status {
 	tasks?: Task[];
 	project?: Project;
 }
+
+export interface TaskInput {
+	title?: string;
+	description?: string;
+	effective_time?: Date;
+	estimated_time?: Date;
+	start_date?: Date;
+	end_date?: Date;
+	status?: { id: number };
+	users?: { id: number }[];
+}

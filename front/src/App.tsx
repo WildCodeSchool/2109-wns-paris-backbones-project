@@ -92,6 +92,15 @@ const GET_USER_DATA = gql`
 						id
 						title
 						photo
+						statuses {
+							id
+							title
+						}
+						users {
+							id
+							firstName
+							avatar
+						}
 					}
 				}
 				users {
@@ -100,6 +109,14 @@ const GET_USER_DATA = gql`
 					lastName
 					email
 					avatar
+				}
+				statuses {
+					id
+					title
+				}
+				roles {
+					id
+					title
 				}
 			}
 			notifications {
