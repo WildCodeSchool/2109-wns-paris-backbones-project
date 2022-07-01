@@ -109,7 +109,6 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	};
 
 	const updateStatus = async (status: Status) => {
-		console.log(task.project?.id);
 		await updateTask({
 			variables: {
 				TaskId: task.id,

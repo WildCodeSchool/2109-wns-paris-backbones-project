@@ -13,7 +13,8 @@ interface FormDateInputProps {
 }
 
 const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
-	const [selectedDay, setSelectedDay] = useState<Date | undefined>(date);
+	const [selectedDay, setSelectedDay] = useState<Date>();
+	const [defaultDay, setDefaultDay] = useState<Date | undefined>(date);
 
 	useEffect(() => {
 		if (selectedDay) {
@@ -24,6 +25,8 @@ const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
 	function renderDate() {
 		if (selectedDay) {
 			return <span>{format(selectedDay, "PP")}</span>;
+		} else if (defaultDay) {
+			return <span>{format(defaultDay, "PP")}</span>;
 		}
 		return (
 			<span className="text-dark-light font-main-extralight">
@@ -48,6 +51,7 @@ const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
 								<span
 									className={`${
 										!selectedDay &&
+										!defaultDay &&
 										"text-dark-light font-main-extralight"
 									}`}
 								>
