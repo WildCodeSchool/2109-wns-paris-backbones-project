@@ -10,7 +10,7 @@ import {
 } from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
 import { Project } from "../entities/Project";
-import { UserInput } from "../inputs/UserInput";
+import { Status } from "../entities/Status";
 
 @Resolver()
 export class TaskResolver {
@@ -58,6 +58,7 @@ export class TaskResolver {
 					`Status with id ${statusNotOnProject[0].id} is not referenced on the project ${project.id}`
 				);
 			}
+
 			await task.save();
 			console.log(`Task ${task.id} Created: [project: ${project.title}]`);
 			if (input.users) {
@@ -82,9 +83,7 @@ export class TaskResolver {
 	) {
 		try {
 			const task = await Task.findOneOrFail(taskId);
-			console.log(task);
 			const project = await task.project;
-			console.log(project);
 			const users = await project?.users;
 			const statuses = await project?.statuses;
 			const tasks = await project?.tasks;
@@ -110,6 +109,17 @@ export class TaskResolver {
 			const usersOnTask = await task?.users;
 			if (input.users) {
 				input.users = resolveNewUsersList(usersOnTask, input.users);
+			}
+
+			const status = await Status.findOne(input.status);
+			if (status) {
+				if (status.title === "done") {
+					const timeSpent = Date.now() - task.start_date.getTime();
+					const daysSpent = Math.floor(
+						timeSpent / (1000 * 60 * 60 * 24)
+					);
+					input.effective_date = daysSpent;
+				}
 			}
 
 			Object.assign(task, input);

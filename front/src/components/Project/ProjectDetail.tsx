@@ -24,7 +24,7 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 			  ).length
 			: 0;
 		const tasksTotal = tasks ? tasks.length : 0;
-		setProgress((tasksDone / tasksTotal) * 100);
+		setProgress(Math.floor((tasksDone / tasksTotal) * 100));
 	}, [tasks]);
 
 	useEffect(() => {
@@ -68,10 +68,9 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 				<div className="project-members flex justify-end">
 					{users &&
 						users.map((user) => (
-							<div className="ml-2">
+							<div className="ml-2" key={user.id}>
 								<UserBadge
 									user={user}
-									key={user.id}
 									size="small"
 									withFirstName={false}
 								/>

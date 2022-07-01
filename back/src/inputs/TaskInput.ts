@@ -21,10 +21,10 @@ export class CreateTaskInput {
 	description: string;
 
 	@Field({ nullable: true })
-	effective_time: Date;
+	effective_time: string;
 
 	@Field({ nullable: true })
-	estimated_time: Date;
+	estimated_time: string;
 
 	@Field({ nullable: true })
 	start_date: Date;
@@ -51,16 +51,19 @@ export class UpdateTaskInput {
 	description: string;
 
 	@Field({ nullable: true })
-	effective_time: Date;
+	effective_time: string;
 
 	@Field({ nullable: true })
-	estimated_time: Date;
+	estimated_time: string;
 
 	@Field({ nullable: true })
 	start_date: Date;
 
 	@Field({ nullable: true })
 	end_date: Date;
+
+	@Field({ nullable: true })
+	effective_date: number;
 
 	@Field(() => StatusInput, { nullable: true })
 	status: Status;

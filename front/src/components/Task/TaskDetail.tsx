@@ -4,6 +4,8 @@ import { gql, useMutation } from "@apollo/client";
 import DropdownUsers from "../utils/DropdownUsers";
 import Button from "../utils/Button";
 import DropdownStatuses from "../utils/DropdownStatuses";
+import FormDateInput from "../Form/FormElements/FormDateInput";
+import Duration from "../utils/Duration";
 
 const DELETE_TASK_MUTATION = gql`
 	mutation DeleteTask($taskId: Float!) {
@@ -68,6 +70,21 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 		setIsModify(true);
 	};
 
+	const handleChangeDate = async (date: string, name: string) => {
+		await updateTask({
+			variables: {
+				TaskId: taskToUpdate.id,
+				updateTaskInput: {
+					[name]: date,
+				},
+			},
+			onError: (error) => {
+				console.log(error);
+			},
+			refetchQueries: ["GetAuthorizedUser"],
+		});
+	};
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (isModify) {
@@ -108,7 +125,7 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 	};
 
 	return (
-		<div>
+		<div className="card-detail flex flex-col">
 			<form onSubmit={handleSubmit}>
 				<div className="title-input">
 					<input
@@ -125,10 +142,12 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 						name="title"
 						type="text"
 						onChange={handleChange}
-						className="text-lg dark:bg-dark-dark font-main-bold focus:outline-none w-full truncate"
+						className="text-xl dark:bg-dark-dark font-main-bold focus:outline-none w-full truncate"
 						value={taskToUpdate.title}
 					/>
-					<span>{task.project.title}</span>
+					<span className="text-sm">
+						Project: {task.project.title}
+					</span>
 				</div>
 				<div className="description-input">
 					<textarea
@@ -140,31 +159,87 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 					/>
 				</div>
 			</form>
-			<div className="flex justify-end">
-				<div className="status-input">
-					{task.status && task.project.statuses && (
-						<DropdownStatuses
-							updateStatus={updateStatus}
-							title={"Statuses"}
-							projectStatuses={task.project.statuses}
-							taskStatus={task.status}
+			<div className="task-infos flex justify-between">
+				<div className="task-users-status w-1/3">
+					<div className="task-status">
+						Status: {task.status?.title}
+					</div>
+					<div className="status-input">
+						{task.status && task.project.statuses && (
+							<DropdownStatuses
+								updateStatus={updateStatus}
+								title={"Select a status"}
+								projectStatuses={task.project.statuses}
+								taskStatus={task.status}
+							/>
+						)}
+					</div>
+					<div className="task-users flex gap-4">
+						Users:
+						{task.users &&
+							task.users.length > 0 &&
+							task.users.map((user) => (
+								<span className="task-user" key={user.id}>
+									{user.firstName}
+								</span>
+							))}
+					</div>
+					<div className="user-input text-sm">
+						{task.project.users && task.users ? (
+							<DropdownUsers
+								title="Assigned Users"
+								projectUsers={task.project?.users}
+								taskUsers={task.users}
+								updateUsers={updateTaskUsers}
+							/>
+						) : (
+							<div>No users</div>
+						)}
+					</div>
+				</div>
+				<div className="task-dates">
+					<div className="task-start-date">
+						<FormDateInput
+							label={"Start Date"}
+							onChange={handleChangeDate}
+							name={"start_date"}
+							date={
+								taskToUpdate.start_date
+									? new Date(taskToUpdate.start_date)
+									: undefined
+							}
+						/>
+					</div>
+					<div className="task-end-date">
+						<FormDateInput
+							label={"End Date"}
+							onChange={handleChangeDate}
+							name={"end_date"}
+							date={
+								taskToUpdate.end_date
+									? new Date(taskToUpdate.end_date)
+									: undefined
+							}
+						/>
+					</div>
+				</div>
+				<div className="task-duration">
+					{task.start_date && task.end_date && (
+						<Duration
+							label={"Estimated Time"}
+							start={task.start_date}
+							end={task.end_date}
 						/>
 					)}
-				</div>
-				<div className="user-input text-sm">
-					{task.project.users && task.users ? (
-						<DropdownUsers
-							title="Assigned Users"
-							projectUsers={task.project?.users}
-							taskUsers={task.users}
-							updateUsers={updateTaskUsers}
+					{task.effective_date && (
+						<Duration
+							label={"Effective Time"}
+							fixValue={task.effective_date}
 						/>
-					) : (
-						<div>No users</div>
 					)}
 				</div>
 			</div>
-			<div className="buttons">
+			<div className="buttons flex justify-center gap-20">
 				<Button
 					label="Save"
 					state={isModify ? "enabled" : "disabled"}

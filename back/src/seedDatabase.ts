@@ -108,7 +108,7 @@ const myTasks = [
 			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
 		effective_time: new Date(),
 		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
-		start_date: new Date(),
+		start_date: new Date(2022, 3, 12, 15, 0, 0),
 		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 	{
@@ -117,7 +117,7 @@ const myTasks = [
 			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
 		effective_time: new Date(),
 		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
-		start_date: new Date(),
+		start_date: new Date(2022, 3, 12, 15, 0, 0),
 		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 	{
@@ -126,7 +126,7 @@ const myTasks = [
 			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
 		effective_time: new Date(),
 		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
-		start_date: new Date(),
+		start_date: new Date(2022, 3, 12, 15, 0, 0),
 		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 	{
@@ -135,7 +135,7 @@ const myTasks = [
 			"There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.",
 		effective_time: new Date(),
 		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
-		start_date: new Date(),
+		start_date: new Date(2022, 3, 12, 15, 0, 0),
 		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 	{
@@ -144,7 +144,7 @@ const myTasks = [
 			"In order to start making posters and advertise the campaign on and offline, we need to book a photoshoot Important: don’t forget to bring props (such as a Wild-flag banner, a crown, a 'foule en délire' background image, etc.)",
 		effective_time: new Date(),
 		estimated_time: new Date(2022, 4, 12, 15, 0, 0),
-		start_date: new Date(),
+		start_date: new Date(2022, 3, 12, 15, 0, 0),
 		end_date: new Date(2022, 4, 12, 15, 0, 0),
 	},
 ];
@@ -264,8 +264,8 @@ const runSeed = async () => {
 							users[index + 1] ? users[index + 1] : users[0],
 						];
 					}
-					t.effective_time = myTasks[index].effective_time;
-					t.estimated_time = myTasks[index].estimated_time;
+					t.effective_time = "2 months";
+					t.estimated_time = "1 week";
 					t.start_date = myTasks[index].start_date;
 					t.end_date = myTasks[index].end_date;
 					const createdTask = await connection.manager.save(t);

@@ -28,6 +28,7 @@ const GET_USER_DATA = gql`
 				estimated_time
 				start_date
 				end_date
+				effective_date
 				notifications {
 					id
 					title

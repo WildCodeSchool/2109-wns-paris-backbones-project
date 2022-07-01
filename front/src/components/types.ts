@@ -30,10 +30,11 @@ export interface Task {
 	id: number;
 	title: string;
 	description?: string;
-	effective_time?: Date;
-	estimated_time?: Date;
-	start_date?: Date;
-	end_date?: Date;
+	effective_time?: string;
+	estimated_time?: string;
+	start_date?: string;
+	end_date?: string;
+	effective_date?: number;
 	deletedDate?: Date;
 	status?: Status;
 	project: Project;
@@ -69,10 +70,10 @@ export interface Status {
 export interface TaskInput {
 	title?: string;
 	description?: string;
-	effective_time?: Date;
-	estimated_time?: Date;
-	start_date?: Date;
-	end_date?: Date;
+	effective_time?: string;
+	estimated_time?: string;
+	start_date?: string;
+	end_date?: string;
 	status?: { id: number };
 	users?: { id: number }[];
 }

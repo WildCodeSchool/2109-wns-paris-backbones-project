@@ -1,29 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { format } from "date-fns";
+import { format, formatISO } from "date-fns";
 import { Disclosure, Transition } from "@headlessui/react";
 import { CalendarToday } from "@material-ui/icons";
 
 interface FormDateInputProps {
 	label: string;
-	onChange: (date: Date) => void;
+	onChange: (date: string, name: string) => void;
+	name: string;
+	date?: Date;
 }
 
-const FormDateInput = ({ label, onChange }: FormDateInputProps) => {
-	const [selectedDay, setSelectedDay] = useState<Date>();
+const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
+	const [selectedDay, setSelectedDay] = useState<Date | undefined>(date);
 
 	useEffect(() => {
 		if (selectedDay) {
-			onChange(selectedDay);
+			onChange(formatISO(selectedDay), name);
 		}
 	}, [selectedDay]);
 
 	function renderDate() {
 		if (selectedDay) {
-			return format(selectedDay, "PP");
+			return <span>{format(selectedDay, "PP")}</span>;
 		}
-		return "";
+		return (
+			<span className="text-dark-light font-main-extralight">
+				Please enter a date
+			</span>
+		);
 	}
 	return (
 		<div className="date-input">
@@ -39,7 +45,14 @@ const FormDateInput = ({ label, onChange }: FormDateInputProps) => {
 								<span className="font-main-bold px-4">
 									{label}
 								</span>
-								<span>{renderDate()}</span>
+								<span
+									className={`${
+										!selectedDay &&
+										"text-dark-light font-main-extralight"
+									}`}
+								>
+									{renderDate()}
+								</span>
 							</div>
 						</Disclosure.Button>
 						<Transition

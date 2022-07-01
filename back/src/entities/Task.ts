@@ -31,11 +31,11 @@ export class Task extends BaseEntity {
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
-	effective_time: Date;
+	effective_time: string;
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
-	estimated_time: Date;
+	estimated_time: string;
 
 	@Field({ nullable: true })
 	@Column({ nullable: true })
@@ -44,6 +44,10 @@ export class Task extends BaseEntity {
 	@Field({ nullable: true })
 	@Column({ nullable: true })
 	end_date: Date;
+
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	effective_date: number;
 
 	@DeleteDateColumn()
 	deletedDate: Date;

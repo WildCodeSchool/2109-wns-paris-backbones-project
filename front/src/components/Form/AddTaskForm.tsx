@@ -5,6 +5,17 @@ import DropdownStatuses from "../utils/DropdownStatuses";
 import { BackBonesUser, Project, Status, TaskInput } from "../types";
 import DropdownUsers from "../utils/DropdownUsers";
 import FormDateInput from "./FormElements/FormDateInput";
+import Duration from "../utils/Duration";
+import Button from "../utils/Button";
+import { gql, useMutation } from "@apollo/client";
+
+const ADD_TASK = gql`
+	mutation AddTask($createTaskInput: CreateTaskInput!) {
+		addTask(createTaskInput: $createTaskInput) {
+			id
+		}
+	}
+`;
 
 interface AddTaskFormProps {
 	project: Project;
@@ -13,7 +24,29 @@ interface AddTaskFormProps {
 const AddTaskForm = ({ project }: AddTaskFormProps) => {
 	const [taskToAdd, setTaskToAdd] = useState<TaskInput>({});
 
-	console.log(taskToAdd);
+	const [addTask] = useMutation(ADD_TASK);
+
+	const handleAdd = async () => {
+		await addTask({
+			variables: {
+				createTaskInput: {
+					title: taskToAdd.title,
+					description: taskToAdd.description,
+					status: taskToAdd.status,
+					start_date: taskToAdd.start_date,
+					end_date: taskToAdd.end_date,
+					estimated_time: taskToAdd.estimated_time,
+					effective_time: taskToAdd.effective_time,
+					users: taskToAdd.users,
+					project: { id: project.id },
+				},
+			},
+			refetchQueries: ["GetAuthorizedUser"],
+			onError: (error) => {
+				console.log(error);
+			},
+		});
+	};
 
 	const handleChangeInput = (
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,10 +57,10 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 		});
 	};
 
-	const handleChangeDate = (date: Date) => {
+	const handleChangeDate = (date: string, name: string) => {
 		setTaskToAdd({
 			...taskToAdd,
-			start_date: date,
+			[name]: date,
 		});
 	};
 
@@ -69,23 +102,46 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 				value=""
 				onChange={handleChangeInput}
 			/>
-			{project.statuses && (
-				<DropdownStatuses
-					updateStatus={addStatus}
-					title="Add task status"
-					projectStatuses={project.statuses}
-					taskStatus={taskToAdd.status}
+			<div className="flex justify-between items-center">
+				<div className="w-1/3">
+					{project.statuses && (
+						<DropdownStatuses
+							updateStatus={addStatus}
+							title="Add task status"
+							projectStatuses={project.statuses}
+							taskStatus={taskToAdd.status}
+						/>
+					)}
+					{project.users && (
+						<DropdownUsers
+							title="Assign task to"
+							projectUsers={project.users}
+							taskUsers={taskToAdd.users}
+							updateUsers={addUsers}
+						/>
+					)}
+				</div>
+				<div className="flex flex-col h-auto justify-around">
+					<FormDateInput
+						label={"Start date"}
+						onChange={handleChangeDate}
+						name="start_date"
+					/>
+					<FormDateInput
+						label={"End date"}
+						onChange={handleChangeDate}
+						name="end_date"
+					/>
+				</div>
+				<Duration
+					start={taskToAdd.start_date}
+					end={taskToAdd.end_date}
+					label="Estimated time"
 				/>
-			)}
-			{project.users && (
-				<DropdownUsers
-					title="Assign task to"
-					projectUsers={project.users}
-					taskUsers={taskToAdd.users}
-					updateUsers={addUsers}
-				/>
-			)}
-			<FormDateInput label={"Start date"} onChange={handleChangeDate} />
+			</div>
+			<div className="buttons flex w-full justify-center">
+				<Button label={"Save"} state="enabled" onClick={handleAdd} />
+			</div>
 		</div>
 	);
 };

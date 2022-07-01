@@ -3,6 +3,7 @@ import { Task } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
 import { Dialog, Transition } from "@headlessui/react";
 import TaskDetail from "../Task/TaskDetail";
+import { Close } from "@material-ui/icons";
 
 interface TaskCardProps {
 	task: Task;
@@ -33,9 +34,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
 					{users && (
 						<ul className="flex flex-row ml-auto mr-2">
 							{users.map((user) => (
-								<li className="-ml-2">
+								<li className="-ml-2" key={user.id}>
 									<UserBadge
-										key={user.id}
 										user={user}
 										withFirstName={false}
 										size={"small"}
@@ -72,7 +72,15 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-8/12 h-5/6 p-6 overflow-hidden text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
+								<Dialog.Panel className="relative w-8/12 h-5/6 px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
+									<div className="task-controls pt-6 pb-2 dark:bg-dark-dark flex sticky top-0 justify-end z-50">
+										<button
+											className="project-close"
+											onClick={closeModal}
+										>
+											<Close />
+										</button>
+									</div>
 									<TaskDetail task={task} />
 								</Dialog.Panel>
 							</Transition.Child>
