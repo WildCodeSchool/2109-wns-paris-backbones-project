@@ -13,6 +13,7 @@ const initialDispatch: React.Dispatch<IAction> = () => {};
 export const DispatchProvider = React.createContext(initialDispatch);
 
 const GlobalState = () => {
+	// @ts-ignore
 	const [state, dispatch] = useReducer(reducer, initialState);
 	return (
 		<StateProvider.Provider value={state}>

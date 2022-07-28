@@ -56,7 +56,7 @@ function Header({ user }: HeaderProps) {
 						<div className={"flex gap-2"}>
 							<UserBadge user={user} />
 							<Button
-								label={"Logout"}
+								label={"Log Out"}
 								state={"danger"}
 								onClick={handleLogout}
 								className={"h-2/3 self-center"}
