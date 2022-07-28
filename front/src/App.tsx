@@ -158,7 +158,7 @@ function App() {
 			(async () => {
 				await getUserData();
 			})();
-		} else if (userId === 0) {
+		} else {
 			setUserData(null);
 		}
 	}, [userId]);

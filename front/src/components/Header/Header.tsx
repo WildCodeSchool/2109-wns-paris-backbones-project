@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavLink from "../NavLink/NavLink";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CreateNewFolderIcon from "@material-ui/icons/CreateNewFolder";
@@ -9,12 +9,15 @@ import { BackBonesUser } from "../types";
 import UserBadge from "../UserBadge/UserBadge";
 import { useApolloClient } from "@apollo/client";
 import Button from "../utils/Button";
+import Logo from "../Logo/Logo";
+import BurgerMenu from "../BurgerMenu/BurgerMenu";
 
 interface HeaderProps {
 	user: null | BackBonesUser;
 }
 
 function Header({ user }: HeaderProps) {
+	const [onMobile, setOnMobile] = useState(false);
 	const client = useApolloClient();
 	const dispatch = useContext(DispatchProvider);
 	const routes = [
@@ -35,39 +38,56 @@ function Header({ user }: HeaderProps) {
 		},
 	];
 
+	useEffect(() => {
+		window.innerWidth < 768 && setOnMobile(true);
+	}, []);
+
 	const handleLogout = async () => {
 		localStorage.removeItem("token");
-		dispatch(setUserId(0));
+		dispatch(setUserId(null));
 		await client.clearStore();
 	};
 
-	return (
-		<nav className="flex items-center justify-between p-4 mx-4 rounded-md dark:bg-dark-medium bg-light-light">
-			<div className="flex gap-4">
-				<CheckBoxIcon className="text-primary-medium" />
-				<article>
-					<p className="text-2xl font-bold text-primary-medium">
-						TicketApp
-					</p>
-					<p className="text-sm">Check your boxes</p>
-				</article>
-			</div>
-			<ul className="flex gap-10">
-				<NavLink route={routes[0]} />
-				<NavLink route={routes[1]} />
-				<NavLink route={routes[2]} />
+	return onMobile ? (
+		<div className={"flex justify-between"}>
+			<BurgerMenu className={"fixed top-3 right-3"}>
 				{user && (
 					<>
-						<UserBadge user={user} />
-						<Button
-							onClick={handleLogout}
-							state={"enabled"}
-							label={"Logout"}
-						/>
+						<div className={"flex gap-2"}>
+							<UserBadge user={user} />
+							<Button
+								label={"Logout"}
+								state={"danger"}
+								onClick={handleLogout}
+								className={"h-2/3 self-center"}
+							/>
+						</div>
+						{routes.map((route, index) => (
+							<NavLink route={route} key={index} />
+						))}
 					</>
 				)}
-			</ul>
-		</nav>
+			</BurgerMenu>
+			<Logo />
+		</div>
+	) : (
+		<div className={"flex justify-around pt-3 pb-3 bg-dark-dark"}>
+			<Logo />
+			{routes.map((route, index) => (
+				<NavLink route={route} key={index} />
+			))}
+			{user && (
+				<div className={"flex gap-3 flex-end"}>
+					<UserBadge user={user} />
+					<Button
+						label={"Logout"}
+						state={"danger"}
+						onClick={handleLogout}
+						className={"h-2/3 self-center"}
+					/>
+				</div>
+			)}
+		</div>
 	);
 }
 
