@@ -102,8 +102,8 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 				value=""
 				onChange={handleChangeInput}
 			/>
-			<div className="flex justify-between items-center">
-				<div className="w-1/3">
+			<div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2">
+				<div className="w-full lg:w-1/3 flex flex-col gap-2 lg:gap-1">
 					{project.statuses && (
 						<DropdownStatuses
 							updateStatus={addStatus}
@@ -121,7 +121,7 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 						/>
 					)}
 				</div>
-				<div className="flex flex-col h-auto justify-around">
+				<div className="flex flex-col h-auto justify-around gap-2 lg:gap-1">
 					<FormDateInput
 						label={"Start date"}
 						onChange={handleChangeDate}
@@ -139,7 +139,7 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 					label="Estimated time"
 				/>
 			</div>
-			<div className="buttons flex w-full justify-center">
+			<div className="buttons flex w-full justify-center mt-2">
 				<Button label={"Save"} state="enabled" onClick={handleAdd} />
 			</div>
 		</div>

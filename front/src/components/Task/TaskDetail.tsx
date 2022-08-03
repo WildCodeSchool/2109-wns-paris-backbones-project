@@ -125,7 +125,10 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 
 	return (
 		<div className="card-detail flex flex-col">
-			<form onSubmit={handleSubmit}>
+			<form
+				onSubmit={handleSubmit}
+				className={"flex flex-col gap-4 mb-4"}
+			>
 				<div className="title-input">
 					<input
 						autoFocus={true}
@@ -158,45 +161,52 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 					/>
 				</div>
 			</form>
-			<div className="task-infos flex justify-between">
-				<div className="task-users-status w-1/3">
-					<div className="task-status">
-						Status: {task.status?.title}
+			<div className="task-infos flex flex-col lg:flex-row gap-4 justify-between mb-4">
+				<div className="task-users-status flex flex-col lg:w-1/3 gap-4">
+					<div className="task-users flex flex-col gap-1">
+						<div className="task-status-title">
+							Status: {task.status?.title}
+						</div>
+						<div className="status-status-input">
+							{task.status && task.project.statuses && (
+								<DropdownStatuses
+									updateStatus={updateStatus}
+									title={"Select a status"}
+									projectStatuses={task.project.statuses}
+									taskStatus={task.status}
+								/>
+							)}
+						</div>
 					</div>
-					<div className="status-input">
-						{task.status && task.project.statuses && (
-							<DropdownStatuses
-								updateStatus={updateStatus}
-								title={"Select a status"}
-								projectStatuses={task.project.statuses}
-								taskStatus={task.status}
-							/>
-						)}
-					</div>
-					<div className="task-users flex gap-4">
-						Users:
-						{task.users &&
-							task.users.length > 0 &&
-							task.users.map((user) => (
-								<span className="task-user" key={user.id}>
-									{user.firstName}
-								</span>
-							))}
-					</div>
-					<div className="user-input text-sm">
-						{task.project.users && task.users ? (
-							<DropdownUsers
-								title="Assigned Users"
-								projectUsers={task.project?.users}
-								taskUsers={task.users}
-								updateUsers={updateTaskUsers}
-							/>
-						) : (
-							<div>No users</div>
-						)}
+					<div className="task-users flex flex-col gap-1">
+						<div className="task-users-firstname flex gap-4">
+							Users:
+							{task.users &&
+								task.users.length > 0 &&
+								task.users.map((user) => (
+									<span
+										className="task-user-firstname"
+										key={user.id}
+									>
+										{user.firstName}
+									</span>
+								))}
+						</div>
+						<div className="task-user-input text-sm">
+							{task.project.users && task.users ? (
+								<DropdownUsers
+									title="Assigned Users"
+									projectUsers={task.project?.users}
+									taskUsers={task.users}
+									updateUsers={updateTaskUsers}
+								/>
+							) : (
+								<div>No users</div>
+							)}
+						</div>
 					</div>
 				</div>
-				<div className="task-dates">
+				<div className="task-dates flex flex-col gap-4">
 					<div className="task-start-date">
 						<FormDateInput
 							label={"Start Date"}

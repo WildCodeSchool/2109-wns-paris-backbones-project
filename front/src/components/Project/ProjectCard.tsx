@@ -3,6 +3,7 @@ import { Project } from "../types";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectDetail from "./ProjectDetail";
 import { Close, Settings } from "@material-ui/icons";
+import Counter from "../utils/Counter";
 
 interface ProjectCardProps {
 	project: Project;
@@ -41,12 +42,8 @@ function ProjectCard({ project }: ProjectCardProps) {
 						{project.title}
 					</span>
 					<div className="pt-4 w-full flex justify-around text-sm font-main-extralight">
-						<span>
-							{taskCount} {taskCount > 1 ? "tasks" : "task"}
-						</span>
-						<span>
-							{userCount} {userCount > 1 ? "users" : "user"}
-						</span>
+						<Counter count={taskCount} unit={"task"} />
+						<Counter count={userCount} unit={"user"} />
 					</div>
 				</div>
 			</button>
@@ -76,7 +73,7 @@ function ProjectCard({ project }: ProjectCardProps) {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="relative w-8/12 h-5/6 px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
+								<Dialog.Panel className="relative w-screen h-screen lg:w-8/12 lg:h-5/6 px-3 lg:px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
 									<div className="project-controls pt-6 pb-2 dark:bg-dark-dark flex sticky top-0 justify-between z-50">
 										<button className="project-settings">
 											<Settings className="text-primary-medium" />

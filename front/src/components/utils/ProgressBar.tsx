@@ -12,7 +12,7 @@ const ProgressBar = ({ progress }: ProgressBarProps) => {
 			? "bg-gradient-to-r from-secondary-medium to-secondary-dark"
 			: "bg-gradient-to-r from-primary-dark to-primary-darker";
 	return (
-		<div className="flex">
+		<div className="flex flex-col">
 			<div
 				className={
 					"progress - bar - text font-main-extralight " + textColor
@@ -20,7 +20,7 @@ const ProgressBar = ({ progress }: ProgressBarProps) => {
 			>
 				{progress}% complete
 			</div>
-			<div className="ml-5 progress-bar w-56">
+			<div className="progress-bar w-full">
 				<div className="progress-bar-holder bg-light-light w-full h-5 rounded-2xl flex">
 					<div
 						className={

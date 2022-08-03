@@ -48,7 +48,7 @@ function Tasks({ tasks }: TasksProps) {
 					selected={projectsList[0]}
 				/>
 			</div>
-			<div className="w-8/12 self-center">
+			<div className="lg:w-8/12 self-center">
 				<TasksList tasks={filterTasksByProject(selectedProject)} />
 			</div>
 		</div>

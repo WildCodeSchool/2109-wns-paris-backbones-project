@@ -81,6 +81,7 @@ const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
 											width: "fit-content",
 											borderRadius: "20px",
 											padding: "10px",
+											margin: "0 auto",
 										}}
 										modifiersStyles={{
 											selected: {

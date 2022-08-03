@@ -30,7 +30,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
 			>
 				<div className="flex flex-row items-center justify-center w-full px-2 py-1 my-2 task-holder bg-light-dark dark:bg-dark-dark rounded-3xl">
 					<div className="icon"></div>
-					<span className="px-1 task-title">{title}</span>
+					<span className="px-1 task-title truncate mr-2">
+						{title}
+					</span>
 					{users && (
 						<ul className="flex flex-row ml-auto mr-2">
 							{users.map((user) => (
@@ -72,7 +74,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="relative w-8/12 h-5/6 px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
+								<Dialog.Panel className="relative w-screen h-screen lg:w-8/12 lg:h-5/6 px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
 									<div className="task-controls pt-6 pb-2 dark:bg-dark-dark flex sticky top-0 justify-end z-50">
 										<button
 											className="project-close"
