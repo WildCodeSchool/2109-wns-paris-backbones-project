@@ -76,4 +76,13 @@ export class Project extends BaseEntity {
 		cascade: true,
 	})
 	notifications: Notification[];
+
+	async createStatus(title: string, isDoneStatus: boolean) {
+		const status = new Status();
+		status.title = title;
+		status.isDoneStatus = isDoneStatus;
+		status.project = this;
+		await status.save();
+		return status;
+	}
 }

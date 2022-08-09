@@ -69,11 +69,11 @@ const usersName = [
 	},
 ];
 const statusName = [
-	"in progress",
-	"to do",
-	"done",
-	"dev in progress",
-	"to test",
+	{ title: "in progress", isDoneStatus: false },
+	{ title: "to do", isDoneStatus: false },
+	{ title: "done", isDoneStatus: true },
+	{ title: "Dev in progress", isDoneStatus: false },
+	{ title: "to test", isDoneStatus: false },
 ];
 const projectName = [
 	{
@@ -202,7 +202,8 @@ const runSeed = async () => {
 			console.log("CREATE STATUS");
 			for (const status of statusName) {
 				const s = new Status();
-				s.title = status;
+				s.title = status.title;
+				s.isDoneStatus = status.isDoneStatus;
 				s.project = projects[0];
 				await connection.manager.save(s);
 				console.log(
@@ -211,7 +212,8 @@ const runSeed = async () => {
 			}
 			for (const status of statusName) {
 				const s = new Status();
-				s.title = status;
+				s.title = status.title;
+				s.isDoneStatus = status.isDoneStatus;
 				s.project = projects[1];
 				await connection.manager.save(s);
 				console.log(

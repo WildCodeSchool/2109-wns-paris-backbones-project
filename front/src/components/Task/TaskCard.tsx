@@ -4,6 +4,7 @@ import UserBadge from "../UserBadge/UserBadge";
 import { Dialog, Transition } from "@headlessui/react";
 import TaskDetail from "../Task/TaskDetail";
 import { Close } from "@material-ui/icons";
+import StatusIcon from "../utils/StatusIcon";
 
 interface TaskCardProps {
 	task: Task;
@@ -21,6 +22,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
 		setIsOpen(true);
 	}
 
+	const isLate = () => {
+		if (task.end_date) {
+			const now = new Date();
+			const deadline = new Date(task.end_date);
+			return now > deadline;
+		} else {
+			return false;
+		}
+	};
+
 	return (
 		<>
 			<button
@@ -29,7 +40,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
 				className="w-full text-sm font-medium text-white bg-black rounded-md bg-opacity-20 hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
 			>
 				<div className="flex flex-row items-center justify-center w-full px-2 py-1 my-2 task-holder bg-light-dark dark:bg-dark-dark rounded-3xl">
-					<div className="icon"></div>
+					{task.status?.isDoneStatus && (
+						<StatusIcon
+							isDoneStatus={task.status.isDoneStatus}
+							isLate={isLate()}
+						/>
+					)}
 					<span className="px-1 task-title truncate mr-2">
 						{title}
 					</span>

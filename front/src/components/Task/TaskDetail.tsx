@@ -196,8 +196,8 @@ const TaskDetail = ({ task }: TaskDetailProps) => {
 							{task.project.users && task.users ? (
 								<DropdownUsers
 									title="Assigned Users"
-									projectUsers={task.project?.users}
-									taskUsers={task.users}
+									users={task.project?.users}
+									usersOnList={task.users}
 									updateUsers={updateTaskUsers}
 								/>
 							) : (

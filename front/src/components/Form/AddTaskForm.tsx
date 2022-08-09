@@ -95,6 +95,8 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 			<FormTitleInput
 				label="Title"
 				value=""
+				name="title"
+				placeholder="Enter title"
 				onChange={handleChangeInput}
 			/>
 			<FormTextInput
@@ -115,8 +117,8 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 					{project.users && (
 						<DropdownUsers
 							title="Assign task to"
-							projectUsers={project.users}
-							taskUsers={taskToAdd.users}
+							users={project.users}
+							usersOnList={taskToAdd.users}
 							updateUsers={addUsers}
 						/>
 					)}

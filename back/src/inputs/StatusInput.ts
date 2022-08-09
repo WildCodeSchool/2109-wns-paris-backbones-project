@@ -15,10 +15,13 @@ export class CreateStatusInput {
 	@Field()
 	title: string;
 
+	@Field()
+	isDoneStatus: boolean;
+
 	@Field(() => [TaskInput], { nullable: true })
 	tasks: Task[];
 
-	@Field(() => ProjectInput)
+	@Field(() => ProjectInput, { nullable: true })
 	project: Project;
 }
 
@@ -26,6 +29,9 @@ export class CreateStatusInput {
 export class UpdateStatusInput {
 	@Field({ nullable: true })
 	title: string;
+
+	@Field({ nullable: true })
+	isDoneStatus: boolean;
 
 	@Field(() => [TaskInput], { nullable: true })
 	tasks: Task[];

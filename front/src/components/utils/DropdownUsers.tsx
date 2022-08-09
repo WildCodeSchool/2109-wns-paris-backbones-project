@@ -8,15 +8,15 @@ import { BackBonesUser } from "../types";
 interface DropdownUsersProps {
 	updateUsers: (user: BackBonesUser) => void;
 	title: string;
-	projectUsers: BackBonesUser[];
-	taskUsers?: BackBonesUser[] | { id: number }[];
+	users: BackBonesUser[];
+	usersOnList?: BackBonesUser[] | { id: number }[];
 	className?: string;
 }
 
 const DropdownUsers = ({
 	title,
-	projectUsers,
-	taskUsers,
+	users,
+	usersOnList,
 	updateUsers,
 	className,
 }: DropdownUsersProps) => {
@@ -25,8 +25,8 @@ const DropdownUsers = ({
 	}
 
 	function isUserIsOnTask(user: BackBonesUser): boolean {
-		if (taskUsers) {
-			return taskUsers.find((u) => u.id === user.id) ? true : false;
+		if (usersOnList) {
+			return usersOnList.find((u) => u.id === user.id) ? true : false;
 		} else {
 			return false;
 		}
@@ -64,7 +64,7 @@ const DropdownUsers = ({
 							leaveTo="opacity-0"
 						>
 							<Listbox.Options className="absolute z-10 mt-1 w-full dark:bg-dark-medium  shadow-lg max-h-56 rounded-2xl py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-								{projectUsers.map((user: BackBonesUser) => (
+								{users.map((user: BackBonesUser) => (
 									<Listbox.Option
 										key={user.id}
 										className={({ active }) =>

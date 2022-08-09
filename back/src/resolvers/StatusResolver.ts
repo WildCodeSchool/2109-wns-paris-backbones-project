@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Status } from "../entities/Status";
 import { CreateStatusInput, UpdateStatusInput } from "../inputs/StatusInput";
 import { errorHandler } from "../utils/errorHandler";
@@ -8,6 +8,7 @@ import {
 	resolveNotOnProject,
 } from "../utils/resolverHelpers";
 import { Project } from "../entities/Project";
+import { Task } from "../entities/Task";
 
 @Resolver()
 export class StatusResolver {
@@ -27,8 +28,12 @@ export class StatusResolver {
 	}
 
 	//CREATE
+	@Authorized()
 	@Mutation(() => Status)
-	async addStatus(@Arg("createStatusInput") input: CreateStatusInput) {
+	async addStatus(
+		@Arg("createStatusInput") input: CreateStatusInput,
+		@Ctx() context: { userId: number }
+	) {
 		try {
 			const status = await Status.create(input);
 			const project = await Project.findOneOrFail(input.project);
@@ -50,25 +55,42 @@ export class StatusResolver {
 			console.log(
 				`Status ${status.id} Created: [project: ${project.title}]`
 			);
-			for (const task of tasks) {
-				const taskUsers = await task?.users;
-				await createNotification(
-					`${task.title}: status change to ${status.title}`,
-					taskUsers,
-					task
-				);
-			}
+			await this.notifyUsers(tasks, context, status);
 			return await Status.findOneOrFail(status.id);
 		} catch (error) {
 			throw error;
 		}
 	}
 
+	private async notifyUsers(
+		tasks: Task[] | undefined,
+		context: { userId: number },
+		status: Status
+	) {
+		if (tasks) {
+			for (const task of tasks) {
+				const taskUsers = await task?.users;
+				if (taskUsers) {
+					const users = taskUsers.filter(
+						(user) => user.id !== context.userId
+					);
+					await createNotification(
+						`${task.title}: status change to ${status.title}`,
+						users,
+						task
+					);
+				}
+			}
+		}
+	}
+
 	//UPDATE
+	@Authorized()
 	@Mutation(() => Status)
 	async updateStatus(
 		@Arg("statusId") statusId: number,
-		@Arg("updateStatusInput") input: UpdateStatusInput
+		@Arg("updateStatusInput") input: UpdateStatusInput,
+		@Ctx() context: { userId: number }
 	) {
 		try {
 			const status = await Status.findOneOrFail(statusId);
@@ -90,14 +112,7 @@ export class StatusResolver {
 			console.log(
 				`Status ${status.id} Updated: [project: ${project.title}]`
 			);
-			for (const task of tasks) {
-				const taskUsers = await task?.users;
-				await createNotification(
-					`${task.title}: status change to ${status.title}`,
-					taskUsers,
-					task
-				);
-			}
+			await this.notifyUsers(tasks, context, status);
 			return await Status.findOneOrFail(statusId);
 		} catch (error) {
 			throw error;

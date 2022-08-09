@@ -1,7 +1,8 @@
 import React from "react";
 import ProjectList from "../components/Project/ProjectList";
 import { Project } from "../components/types";
-import AddOutlined from "@material-ui/icons/AddOutlined";
+import AddAccordion from "../components/utils/AddAccordion";
+import AddProjectForm from "../components/Form/AddProjectForm";
 
 interface ProjectsProps {
 	projects: Project[];
@@ -9,10 +10,9 @@ interface ProjectsProps {
 function Projects({ projects }: ProjectsProps) {
 	return (
 		<>
-			<div className="flex justify-center">
-				<span className="text-2xl text-center">Projects</span>
-				<AddOutlined className="text-primary-dark" fontSize="large" />
-			</div>
+			<AddAccordion title={"Add Project"}>
+				<AddProjectForm />
+			</AddAccordion>
 
 			<ProjectList projects={projects} />
 		</>

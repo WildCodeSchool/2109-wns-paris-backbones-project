@@ -63,6 +63,7 @@ export interface Role {
 export interface Status {
 	id: number;
 	title: string;
+	isDoneStatus?: boolean;
 	tasks?: Task[];
 	project?: Project;
 }
@@ -76,4 +77,21 @@ export interface TaskInput {
 	end_date?: string;
 	status?: { id: number };
 	users?: { id: number }[];
+}
+
+export interface ProjectInput {
+	title?: string;
+	description?: string;
+	photo?: string;
+	start_date?: string;
+	end_date?: string;
+	users?: { id: number }[];
+	statuses?: StatusInput[];
+}
+
+export interface StatusInput {
+	title?: string;
+	isDoneStatus?: boolean;
+	project?: { id: number };
+	tasks?: { id: number }[];
 }

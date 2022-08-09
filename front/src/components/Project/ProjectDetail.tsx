@@ -3,9 +3,9 @@ import { Project } from "../types";
 import ProgressBar from "../utils/ProgressBar";
 import UserBadge from "../UserBadge/UserBadge";
 import { TasksList } from "../Task/TasksList";
-import AddTaskForm from "../Form/AddTaskForm";
 import AddAccordion from "../utils/AddAccordion";
 import Counter from "../utils/Counter";
+import AddTaskForm from "../Form/AddTaskForm";
 
 interface ProjectDetailProps {
 	project: Project;
@@ -17,9 +17,8 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 
 	useEffect(() => {
 		const tasksDone = tasks
-			? tasks.filter(
-					(task) => task.status && task.status.title === "done"
-			  ).length
+			? tasks.filter((task) => task.status && task.status.isDoneStatus)
+					.length
 			: 0;
 		const tasksTotal = tasks ? tasks.length : 0;
 		setProgress(Math.floor((tasksDone / tasksTotal) * 100));

@@ -21,6 +21,10 @@ export class Status extends BaseEntity {
 	@Column()
 	title: string;
 
+	@Field({ nullable: true })
+	@Column({ nullable: true })
+	isDoneStatus: boolean;
+
 	@Field(() => [Task], { nullable: true })
 	@OneToMany(() => Task, (task) => task.status, {
 		lazy: true,

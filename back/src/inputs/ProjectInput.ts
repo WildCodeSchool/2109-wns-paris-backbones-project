@@ -1,6 +1,7 @@
 import { BackBonesUser } from "../entities/User";
 import { InputType, Field } from "type-graphql";
 import { UserInput } from "./UserInput";
+import { CreateStatusInput } from "./StatusInput";
 
 @InputType()
 export class ProjectInput {
@@ -27,6 +28,9 @@ export class CreateProjectInput {
 
 	@Field(() => [UserInput], { nullable: true })
 	users: BackBonesUser[];
+
+	@Field(() => [CreateStatusInput], { nullable: true })
+	statuses: CreateStatusInput[];
 }
 
 @InputType()

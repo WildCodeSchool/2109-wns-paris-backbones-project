@@ -24,6 +24,11 @@ const GET_USER_DATA = gql`
 				id
 				title
 				description
+				status {
+					id
+					title
+					isDoneStatus
+				}
 				effective_time
 				estimated_time
 				start_date
@@ -45,12 +50,14 @@ const GET_USER_DATA = gql`
 					}
 					statuses {
 						id
+						isDoneStatus
 						title
 					}
 				}
 				status {
 					id
 					title
+					isDoneStatus
 				}
 				users {
 					id
@@ -82,6 +89,7 @@ const GET_USER_DATA = gql`
 					status {
 						id
 						title
+						isDoneStatus
 					}
 					users {
 						id
@@ -96,6 +104,7 @@ const GET_USER_DATA = gql`
 						statuses {
 							id
 							title
+							isDoneStatus
 						}
 						users {
 							id
@@ -114,6 +123,7 @@ const GET_USER_DATA = gql`
 				statuses {
 					id
 					title
+					isDoneStatus
 				}
 				roles {
 					id

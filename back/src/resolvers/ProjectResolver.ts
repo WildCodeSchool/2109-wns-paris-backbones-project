@@ -4,6 +4,7 @@ import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
 import { errorHandler } from "../utils/errorHandler";
 import { createNotification } from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
+import { Status } from "../entities/Status";
 
 @Resolver()
 export class ProjectResolver {
@@ -37,11 +38,19 @@ export class ProjectResolver {
 			if (!project.title) {
 				errorHandler("project title can't be null");
 			}
-
 			await project.save();
+			if (input.statuses) {
+				for (const status of input.statuses) {
+					const newStatus = new Status();
+					Object.assign(newStatus, status);
+					newStatus.project = project;
+					await newStatus.save();
+				}
+			}
 			console.log(
 				`Project ${project.id} Created: [title: ${project.title}]`
 			);
+
 			if (input.users) {
 				const users = await BackBonesUser.findByIds(input.users);
 				await createNotification(
