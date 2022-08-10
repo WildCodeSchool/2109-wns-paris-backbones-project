@@ -2,7 +2,10 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Project } from "../entities/Project";
 import { CreateProjectInput, UpdateProjectInput } from "../inputs/ProjectInput";
 import { errorHandler } from "../utils/errorHandler";
-import { createNotification } from "../utils/resolverHelpers";
+import {
+	createNotification,
+	resolveNotOnProject,
+} from "../utils/resolverHelpers";
 import { BackBonesUser } from "../entities/User";
 import { Status } from "../entities/Status";
 
@@ -93,6 +96,29 @@ export class ProjectResolver {
 				);
 			}
 			return Project.findOneOrFail(project.id);
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	//DELETE
+	@Authorized()
+	@Mutation(() => Boolean)
+	async deleteProject(
+		@Arg("projectId") projectId: number,
+		@Ctx() context: { userId: number }
+	) {
+		try {
+			//check if user is the owner of the project
+			const project = await Project.findOneOrFail(projectId);
+			const projectUsers = await project?.users;
+			const user = await BackBonesUser.findOneOrFail(context.userId);
+			if (resolveNotOnProject([user], projectUsers)) {
+				errorHandler("You can't delete this project");
+			}
+			await Project.softRemove(project);
+			console.log(`Project ${project.id} Deleted`);
+			return true;
 		} catch (error) {
 			throw error;
 		}

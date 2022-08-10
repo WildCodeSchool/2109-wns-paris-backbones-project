@@ -6,7 +6,7 @@ import {
 } from "@material-ui/icons";
 
 interface StatusIconProps {
-	isDoneStatus: boolean;
+	isDoneStatus: boolean | undefined;
 	isLate?: boolean;
 }
 

@@ -6,6 +6,7 @@ import {
 	ManyToMany,
 	OneToMany,
 	BaseEntity,
+	DeleteDateColumn,
 } from "typeorm";
 
 import { Status } from "./Status";
@@ -40,6 +41,9 @@ export class Project extends BaseEntity {
 	@Field({ nullable: true })
 	@Column({ nullable: true })
 	end_date: Date;
+
+	@DeleteDateColumn()
+	deletedDate: Date;
 
 	@Field(() => [Status], { nullable: true })
 	@OneToMany(() => Status, (status) => status.project, {
