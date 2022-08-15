@@ -6,6 +6,7 @@ import { DeleteOutline } from "@material-ui/icons";
 
 interface AddStatusFormProps {
 	addStatuses: (statuses: StatusInput[]) => void;
+	projectStatuses?: StatusInput[];
 }
 
 const defaultStatus: StatusInput[] = [
@@ -23,8 +24,13 @@ const defaultStatus: StatusInput[] = [
 	},
 ];
 
-const AddStatusForm = ({ addStatuses }: AddStatusFormProps) => {
-	const [statuses, setStatuses] = useState<StatusInput[]>(defaultStatus);
+const AddStatusForm = ({
+	addStatuses,
+	projectStatuses,
+}: AddStatusFormProps) => {
+	const [statuses, setStatuses] = useState<StatusInput[]>(
+		projectStatuses || defaultStatus
+	);
 	const [statusToAdd, setStatusToAdd] = useState<StatusInput>({
 		isDoneStatus: false,
 	});
@@ -36,8 +42,10 @@ const AddStatusForm = ({ addStatuses }: AddStatusFormProps) => {
 	};
 
 	const handleChangeIsDone = (value: boolean, index: number) => {
-		statuses[index].isDoneStatus = value;
-		setStatuses([...statuses]);
+		const newStatuses = [...statuses];
+		const newStatus = { ...newStatuses[index], isDoneStatus: value };
+		newStatuses[index] = newStatus;
+		setStatuses([...newStatuses]);
 	};
 
 	const handleAddStatus = async () => {

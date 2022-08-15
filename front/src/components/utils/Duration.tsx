@@ -10,7 +10,6 @@ interface DurationProps {
 
 const Duration = ({ label, start, end, fixValue }: DurationProps) => {
 	const [value, setValue] = useState("");
-	//compute duration
 
 	useEffect(() => {
 		if (start && end) {
@@ -22,7 +21,6 @@ const Duration = ({ label, start, end, fixValue }: DurationProps) => {
 			const hours = Math.floor(
 				(duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
 			);
-			console.log(weeks, days, hours);
 			if (days > 0) {
 				setValue(`${days} days`);
 			} else if (hours > 0) {

@@ -1,12 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Disclosure, Transition } from "@headlessui/react";
 import AddOutlined from "@material-ui/icons/AddOutlined";
+import { Settings } from "@material-ui/icons";
 
 interface AddAccordionProps {
 	title: string;
 	children?: React.ReactNode;
+	type?: "add" | "settings";
+	className?: string;
 }
-const AddAccordion = ({ title, children }: AddAccordionProps) => {
+const AddAccordion = ({
+	title,
+	children,
+	type = "add",
+	className,
+}: AddAccordionProps) => {
 	const [buttonClicked, setButtonClicked] = useState(false);
 	const iconAddTask = useRef<HTMLDivElement>(null);
 
@@ -21,12 +29,16 @@ const AddAccordion = ({ title, children }: AddAccordionProps) => {
 	return (
 		<Disclosure>
 			<Disclosure.Button onClick={() => setButtonClicked(!buttonClicked)}>
-				<div className="add-accordion flex items-center">
+				<div className={"add-accordion flex items-center "}>
 					<div ref={iconAddTask}>
-						<AddOutlined
-							className="text-primary-medium block"
-							fontSize="large"
-						/>
+						{type === "add" ? (
+							<AddOutlined
+								className="text-primary-medium block"
+								fontSize="large"
+							/>
+						) : (
+							<Settings className="text-primary-medium block" />
+						)}
 					</div>
 					<span className="font-main-bold px-4">{title}</span>
 				</div>

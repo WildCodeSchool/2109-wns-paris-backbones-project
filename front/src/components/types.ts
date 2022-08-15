@@ -3,8 +3,8 @@ export interface Project {
 	title: string;
 	description?: string;
 	photo?: string;
-	start_date?: Date;
-	end_date?: Date;
+	start_date?: string;
+	end_date?: string;
 	statuses?: Status[];
 	users?: BackBonesUser[];
 	tasks?: Task[];
@@ -90,8 +90,13 @@ export interface ProjectInput {
 }
 
 export interface StatusInput {
+	id?: number;
 	title?: string;
 	isDoneStatus?: boolean;
 	project?: { id: number };
 	tasks?: { id: number }[];
+}
+
+export interface Input {
+	id: number;
 }

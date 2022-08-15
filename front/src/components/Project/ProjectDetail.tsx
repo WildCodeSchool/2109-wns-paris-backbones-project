@@ -31,12 +31,6 @@ const UPDATE_PROJECT = gql`
 	}
 `;
 
-const DELETE_PROJECT = gql`
-	mutation DeleteProject($projectId: Float!) {
-		deleteProject(projectId: $projectId)
-	}
-`;
-
 const ProjectDetail = ({ project }: ProjectDetailProps) => {
 	const [isModify, setIsModify] = useState(false);
 	const [projectToUpdate, setProjectToUpdate] = useState(project);
@@ -44,7 +38,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 	const { tasks, users, title, description } = project;
 
 	const [updateProject] = useMutation(UPDATE_PROJECT);
-	const [deleteProject] = useMutation(DELETE_PROJECT);
 
 	useEffect(() => {
 		const tasksDone = tasks
@@ -66,16 +59,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 					description: projectToUpdate.description,
 				},
 			},
-			refetchQueries: ["GetAuthorizedUser"],
-			onError: (error) => {
-				console.log(error);
-			},
-		});
-	};
-
-	const handleDelete = async () => {
-		await deleteProject({
-			variables: { projectId: project.id },
 			refetchQueries: ["GetAuthorizedUser"],
 			onError: (error) => {
 				console.log(error);
@@ -156,11 +139,6 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 						onClick={(e: React.FormEvent<HTMLFormElement>) =>
 							handleSubmit(e)
 						}
-					/>
-					<Button
-						label="Delete"
-						state="danger"
-						onClick={handleDelete}
 					/>
 				</div>
 			</form>

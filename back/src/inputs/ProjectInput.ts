@@ -52,4 +52,7 @@ export class UpdateProjectInput {
 
 	@Field(() => [UserInput], { nullable: true })
 	users: BackBonesUser[];
+
+	@Field(() => [CreateStatusInput], { nullable: true })
+	statuses: CreateStatusInput[];
 }

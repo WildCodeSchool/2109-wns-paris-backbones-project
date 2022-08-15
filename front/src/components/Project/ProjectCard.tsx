@@ -2,8 +2,10 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Project } from "../types";
 import { Dialog, Transition } from "@headlessui/react";
 import ProjectDetail from "./ProjectDetail";
-import { Close, Settings } from "@material-ui/icons";
+import { Close } from "@material-ui/icons";
 import Counter from "../utils/Counter";
+import ProjectSettings from "./UpdateProjectForm";
+import AddAccordion from "../utils/AddAccordion";
 
 interface ProjectCardProps {
 	project: Project;
@@ -75,14 +77,21 @@ function ProjectCard({ project }: ProjectCardProps) {
 							>
 								<Dialog.Panel className="relative w-screen h-screen lg:w-8/12 lg:h-5/6 px-3 lg:px-6 overflow-auto text-left align-middle transition-all dark:bg-dark-dark  transform  shadow-xl rounded-2xl">
 									<div className="project-controls pt-6 pb-2 dark:bg-dark-dark flex sticky top-0 justify-between z-50">
-										<button className="project-settings">
-											<Settings className="text-primary-medium" />
-											<span className="font-main-extralight px-4">
-												Settings
-											</span>
-										</button>
+										<div className="flex flex-col">
+											<AddAccordion
+												title={"Settings"}
+												type={"settings"}
+												className={
+													"flex-col relative inset-0"
+												}
+											>
+												<ProjectSettings
+													project={project}
+												/>
+											</AddAccordion>
+										</div>
 										<button
-											className="project-close"
+											className="project-close self-start"
 											onClick={closeModal}
 										>
 											<Close />
