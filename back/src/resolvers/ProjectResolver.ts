@@ -78,8 +78,21 @@ export class ProjectResolver {
 		try {
 			const project = await Project.findOneOrFail(projectId);
 			const usersToNotify = input.users;
-			if (input.users) {
-				input.users = [...input?.users, ...(await project?.users)];
+			const removedUsers = await resolveNotOnProject(
+				await project?.users,
+				input.users
+			);
+			if (removedUsers) {
+				const projectTasks = await project?.tasks;
+				for (const task of projectTasks) {
+					const taskUsers = await task?.users;
+					const newUsers = await resolveNotOnProject(
+						taskUsers,
+						removedUsers
+					);
+					Object.assign(task, { users: newUsers });
+					await task.save();
+				}
 			}
 			Object.assign(project, input);
 			await Project.save(project);
@@ -91,6 +104,14 @@ export class ProjectResolver {
 				await createNotification(
 					`You've been added to the project ${project.title}! Keep calm and take your mark`,
 					users,
+					undefined,
+					project
+				);
+			}
+			if (removedUsers) {
+				await createNotification(
+					`You've been removed from the project ${project.title}`,
+					removedUsers,
 					undefined,
 					project
 				);

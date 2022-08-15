@@ -113,7 +113,7 @@ export class TaskResolver {
 
 			const status = await Status.findOne(input.status);
 			if (status) {
-				if (status.title === "done") {
+				if (status.isDoneStatus) {
 					const timeSpent = Date.now() - task.start_date.getTime();
 					const daysSpent = Math.floor(
 						timeSpent / (1000 * 60 * 60 * 24)
