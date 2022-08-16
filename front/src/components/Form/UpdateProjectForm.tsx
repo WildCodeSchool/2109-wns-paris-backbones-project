@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { BackBonesUser, Project, ProjectInput, StatusInput } from "../types";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Button from "../utils/Button";
-import FormTitleInput from "../Form/FormElements/FormTitleInput";
-import FormTextInput from "../Form/FormElements/FormTextInput";
+import FormTitleInput from "./FormElements/FormTitleInput";
+import FormTextInput from "./FormElements/FormTextInput";
 import DropdownUsers from "../utils/DropdownUsers";
-import AddStatusForm from "../Form/AddStatusForm";
-import FormDateInput from "../Form/FormElements/FormDateInput";
+import AddStatusForm from "./AddStatusForm";
+import FormDateInput from "./FormElements/FormDateInput";
 import Duration from "../utils/Duration";
 
 interface UpdateProjectFormProps {

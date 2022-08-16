@@ -37,8 +37,14 @@ const AddStatusForm = ({
 	const titleRef = useRef<HTMLInputElement>(null);
 
 	const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-		statuses[Number(e.target.id)].title = e.target.value;
-		setStatuses([...statuses]);
+		const newStatuses = [...statuses];
+		const newStatus = {
+			...newStatuses[Number(e.target.id)],
+			title: e.target.value,
+		};
+		newStatuses[Number(e.target.id)] = newStatus;
+		// statuses[Number(e.target.id)].title = e.target.value;
+		setStatuses([...newStatuses]);
 	};
 
 	const handleChangeIsDone = (value: boolean, index: number) => {

@@ -4,7 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import ProjectDetail from "./ProjectDetail";
 import { Close } from "@material-ui/icons";
 import Counter from "../utils/Counter";
-import ProjectSettings from "./UpdateProjectForm";
+import ProjectSettings from "../Form/UpdateProjectForm";
 import AddAccordion from "../utils/AddAccordion";
 
 interface ProjectCardProps {

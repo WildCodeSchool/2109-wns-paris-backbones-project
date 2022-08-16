@@ -46,7 +46,7 @@ const AddProjectForm = () => {
 	const handleAdd = async () => {
 		await addProject({
 			variables: {
-				updateProjectInput: {
+				createProjectInput: {
 					title: projectToAdd.title,
 					description: projectToAdd.description,
 					start_date: projectToAdd.start_date,
