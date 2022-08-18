@@ -257,7 +257,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect createdTask id equal to task with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_TASK("brand new task")
+				ADD_TASK("brand new task"),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			const createdTask = await Task.findOne(response.data?.addTask.id);
 			const id = createdTask?.id;
@@ -266,7 +267,9 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation addTask expect createdTask with no title throw an error", async () => {
-			const response = await server.executeOperation(ADD_TASK(""));
+			const response = await server.executeOperation(ADD_TASK(""), {
+				req: { headers: { authorization: userJwt.token } },
+			} as any);
 			expect(response.errors).toBeTruthy();
 		});
 
@@ -279,7 +282,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect addTask users return users added on a task", async () => {
 			const response = await server.executeOperation(
-				ADD_TASK("another new task for project 2", 2, 8, [{ id: 4 }])
+				ADD_TASK("another new task for project 2", 2, 8, [{ id: 4 }]),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			const newTask = await Task.findOne(response.data?.addTask.id);
 			const taskUsers = await newTask?.users;
@@ -297,7 +301,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addTask expect addTask users throw an error because one user is not on project 2", async () => {
 			const response = await server.executeOperation(
-				ADD_TASK("another new new task for project 2", 2, 4)
+				ADD_TASK("another new new task for project 2", 2, 4),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			expect(response.errors).toBeTruthy();
 		});
@@ -307,7 +312,8 @@ describe("test Resolvers", () => {
 				ADD_TASK("another brand new new task for project 2", 2, 3, [
 					{ id: 4 },
 					{ id: 6 },
-				])
+				]),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			expect(response.errors).toBeTruthy();
 		});
@@ -582,7 +588,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addStatus expect created Status id equal to status with same id", async () => {
 			const response = await server.executeOperation(
-				ADD_STATUS("brand new status", undefined)
+				ADD_STATUS("brand new status", undefined),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			const createdStatus = await Status.findOne(
 				response.data?.addStatus.id
@@ -593,7 +600,8 @@ describe("test Resolvers", () => {
 
 		it("test mutation addStatus expect created Status with no title throw an error", async () => {
 			const response = await server.executeOperation(
-				ADD_STATUS("", undefined)
+				ADD_STATUS("", undefined),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			expect(response.errors).toBeTruthy();
 		});
@@ -607,13 +615,16 @@ describe("test Resolvers", () => {
 
 		it("test mutation addStatus expect created Status with tasks not on throw an error", async () => {
 			const response = await server.executeOperation(
-				ADD_STATUS("new status", undefined, 7)
+				ADD_STATUS("new status", undefined, 7),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateStatus expect updatedStatus title equal to status title with same id", async () => {
-			const response = await server.executeOperation(UPDATE_STATUS(2));
+			const response = await server.executeOperation(UPDATE_STATUS(2), {
+				req: { headers: { authorization: userJwt.token } },
+			} as any);
 			const updatedStatus = await Status.findOne(
 				response.data?.updateStatus.id
 			);
@@ -623,19 +634,26 @@ describe("test Resolvers", () => {
 		});
 
 		it("test mutation updateStatus expect updatedStatus can't be updated because not found", async () => {
-			const response = await server.executeOperation(UPDATE_STATUS(1900));
+			const response = await server.executeOperation(
+				UPDATE_STATUS(1900),
+				{ req: { headers: { authorization: userJwt.token } } } as any
+			);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateStatus expect updatedStatus with same title throw an error", async () => {
-			const response = await server.executeOperation(UPDATE_STATUS(1));
+			const response = await server.executeOperation(UPDATE_STATUS(1), {
+				req: { headers: { authorization: userJwt.token } },
+			} as any);
 			expect(response.errors).toBeTruthy();
 		});
 
 		it("test mutation updateStatus expect updateStatus task throw an error because this task is not on the project", async () => {
 			const response = await server.executeOperation(
-				UPDATE_STATUS(5, [{ id: 8 }], "a new status again")
+				UPDATE_STATUS(5, [{ id: 8 }], "a new status again"),
+				{ req: { headers: { authorization: userJwt.token } } } as any
 			);
+			console.log(response);
 			expect(response.errors).toBeTruthy();
 		});
 	});

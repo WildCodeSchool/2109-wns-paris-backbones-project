@@ -421,6 +421,7 @@ export const ADD_STATUS = (
 		variables: {
 			createStatusInput: {
 				title: title,
+				isDoneStatus: false,
 				project: {
 					id: projectId,
 				},
@@ -458,6 +459,7 @@ export const UPDATE_STATUS = (
 		variables: {
 			updateStatusInput: {
 				title: title,
+				isDoneStatus: false,
 				tasks: tasks,
 			},
 			statusId: id,

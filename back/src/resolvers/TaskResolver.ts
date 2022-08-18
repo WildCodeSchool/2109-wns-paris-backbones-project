@@ -30,8 +30,12 @@ export class TaskResolver {
 	}
 
 	//CREATE
+	@Authorized()
 	@Mutation(() => Task)
-	async addTask(@Arg("createTaskInput") input: CreateTaskInput) {
+	async addTask(
+		@Arg("createTaskInput") input: CreateTaskInput,
+		@Ctx("userId") userId: number
+	) {
 		try {
 			const task = Task.create(input);
 			const project = await Project.findOneOrFail(input.project);
@@ -43,6 +47,12 @@ export class TaskResolver {
 				[input?.status],
 				statuses
 			);
+			const isUserOnProject = users.find((user) => user.id === userId);
+			if (!isUserOnProject) {
+				errorHandler(
+					`User with id ${userId} is not referenced on the project ${project.id}`
+				);
+			}
 			if (!task.title) {
 				errorHandler("task title can't be null");
 			} else if (findSameTitle(tasks, task.title)) {
