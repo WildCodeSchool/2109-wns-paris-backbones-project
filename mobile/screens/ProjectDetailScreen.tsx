@@ -10,6 +10,7 @@ import Accordion from "../components/Accordion";
 import { TaskListItem } from "../components/TaskListItem";
 import { gql, useQuery } from "@apollo/client";
 import { ProjectData } from "../customTypes";
+import AddTaskForm from "../components/AddTaskForm";
 
 export const GET_PROJECT_BY_ID = gql`
 	query GetProjectById($projectId: Float!) {
@@ -42,6 +43,7 @@ export const GET_PROJECT_BY_ID = gql`
 				status {
 					id
 					title
+					isDoneStatus
 				}
 				users {
 					id
@@ -52,6 +54,11 @@ export const GET_PROJECT_BY_ID = gql`
 			roles {
 				id
 				title
+			}
+			statuses {
+				id
+				title
+				isDoneStatus
 			}
 		}
 	}
@@ -95,7 +102,9 @@ const ProjectDetailScreen = ({
 		return (
 			<View>
 				<View style={tw`mt-9`}>
-					<View style={tw`h-auto mx-2 bg-light-dark dark:bg-dark-dark rounded-2xl `}>
+					<View
+						style={tw`h-auto mx-2 bg-light-dark dark:bg-dark-dark rounded-2xl `}
+					>
 						<View style={tw`flex-row justify-around`}>
 							<Text
 								style={tw`text-lg text-center font-main-bold pt-7`}
@@ -134,6 +143,9 @@ const ProjectDetailScreen = ({
 					/>
 				</View>
 				<View style={tw`items-center`}>
+					<Accordion title={"Add Task"}>
+						<AddTaskForm project={project} />
+					</Accordion>
 					<Accordion title={"My Tasks"}>
 						<FlatList
 							data={userTasks}

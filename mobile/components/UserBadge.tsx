@@ -1,11 +1,11 @@
 import { Text, View } from "./Themed";
-import { UserData } from "../customTypes";
+import { BackBonesUser, UserData } from "../customTypes";
 import { Image, TouchableOpacity } from "react-native";
 import tw from "../lib/tailwind";
 import { useState } from "react";
 
 interface IProps {
-	user: UserData;
+	user: BackBonesUser | UserData;
 	withFirstName?: boolean;
 	size?: number;
 }
@@ -20,7 +20,6 @@ const UserBadge = ({ user, withFirstName = true, size = 10 }: IProps) => {
 				);
 				setClicked(!clicked);
 			}}
-			
 		>
 			<View style={tw`bg-transparent`}>
 				<Image
