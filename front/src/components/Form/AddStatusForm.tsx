@@ -76,8 +76,9 @@ const AddStatusForm = ({
 	}, [statuses]);
 
 	const handleDeleteStatus = (index: number) => {
-		statuses.splice(index, 1);
-		setStatuses([...statuses]);
+		const newStatuses = [...statuses];
+		newStatuses.splice(index, 1);
+		setStatuses([...newStatuses]);
 	};
 
 	return (

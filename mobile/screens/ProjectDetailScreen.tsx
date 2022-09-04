@@ -107,7 +107,8 @@ const ProjectDetailScreen = ({
 					>
 						<View style={tw`flex-row justify-around`}>
 							<Text
-								style={tw`text-lg text-center font-main-bold pt-7`}
+								numberOfLines={1}
+								style={tw`text-lg text-center font-main-bold pt-7 w-2/3 truncate`}
 							>
 								{project.title}
 							</Text>

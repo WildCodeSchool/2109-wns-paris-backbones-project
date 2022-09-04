@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { TextInput, View, Text, ScrollView } from "react-native";
+import { TextInput, View, Text, Button } from "react-native";
 import tw from "../lib/tailwind";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { BackBonesUser, Project, Status, TaskInput } from "../customTypes";
@@ -77,7 +77,7 @@ export default function AddTaskForm({ project }: AddTaskFormProps) {
 						setTaskToAdd({ ...taskToAdd, title: text })
 					}
 				/>
-				<Text style={tw`text-light-light ml-3 mt-4`}>Title</Text>
+				<Text style={tw`text-light-light ml-3 mt-4`}>Description</Text>
 				<TextInput
 					style={tw`w-full dark:text-dark-dark bg-light-light p-3 rounded-2xl`}
 					placeholder="Enter description"
@@ -142,6 +142,9 @@ export default function AddTaskForm({ project }: AddTaskFormProps) {
 						/>
 					</View>
 				)}
+			</View>
+			<View>
+				<Button title="Add Task" onPress={handleAdd} />
 			</View>
 		</View>
 	);

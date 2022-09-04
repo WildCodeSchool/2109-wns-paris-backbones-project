@@ -146,11 +146,21 @@ const AddProjectForm = () => {
 						label={"Start date"}
 						onChange={handleChangeDate}
 						name="start_date"
+						date={
+							projectToAdd.start_date
+								? new Date(projectToAdd.start_date)
+								: undefined
+						}
 					/>
 					<FormDateInput
 						label={"End date"}
 						onChange={handleChangeDate}
 						name="end_date"
+						date={
+							projectToAdd.end_date
+								? new Date(projectToAdd.end_date)
+								: undefined
+						}
 					/>
 				</div>
 				<Duration

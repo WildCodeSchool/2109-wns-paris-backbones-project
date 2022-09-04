@@ -94,7 +94,8 @@ export class StatusResolver {
 	) {
 		try {
 			const status = await Status.findOneOrFail(statusId);
-			const project = await Project.findOneOrFail(status.project);
+			//const project = await Project.findOneOrFail(await status.project);
+			const project = await status?.project;
 			const statuses = await project?.statuses;
 			const tasks = await project?.tasks;
 			const taskNotOnProject = resolveNotOnProject(input.tasks, tasks);
@@ -114,6 +115,38 @@ export class StatusResolver {
 			);
 			await this.notifyUsers(tasks, context, status);
 			return await Status.findOneOrFail(statusId);
+		} catch (error) {
+			throw error;
+		}
+	}
+
+	//DELETE
+	@Authorized()
+	@Mutation(() => Boolean)
+	async deleteStatus(
+		@Arg("statusId") statusId: number,
+		@Ctx() context: { userId: number }
+	) {
+		try {
+			const status = await Status.findOneOrFail(statusId);
+			const project = await Project.findOneOrFail(await status.project);
+			//check if status is on tasks
+			const tasks = await project?.tasks;
+			// change status on tasks to default status
+			for (const task of tasks) {
+				const taskStatus = await task?.status;
+				if (taskStatus?.id === statusId) {
+					task.status = await Status.findOne({
+						where: { project: project.id, title: "to do" },
+					});
+					await task.save();
+				}
+			}
+			await Status.delete(statusId);
+			console.log(
+				`Status ${status.id} Deleted: [project: ${project.title}]`
+			);
+			return true;
 		} catch (error) {
 			throw error;
 		}

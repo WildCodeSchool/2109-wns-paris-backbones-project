@@ -8,6 +8,7 @@ import DropdownUsers from "../utils/DropdownUsers";
 import AddStatusForm from "./AddStatusForm";
 import FormDateInput from "./FormElements/FormDateInput";
 import Duration from "../utils/Duration";
+import { getStatusesToRemove } from "../utils/helper";
 
 interface UpdateProjectFormProps {
 	project: Project;
@@ -71,12 +72,19 @@ const DELETE_PROJECT = gql`
 	}
 `;
 
+const DELETE_STATUS = gql`
+	mutation DeleteStatus($statusId: Float!) {
+		deleteStatus(statusId: $statusId)
+	}
+`;
+
 const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 	const [projectToUpdate, setProjectToUpdate] = useState(
 		project as ProjectInput
 	);
 	const [users, setUsers] = useState<BackBonesUser[]>([]);
 	const [deleteProject] = useMutation(DELETE_PROJECT);
+	const [deleteStatus] = useMutation(DELETE_STATUS);
 	const [updateProject] = useMutation(UPDATE_PROJECT);
 	const [addStatus] = useMutation(ADD_STATUS);
 	const [updateStatus] = useMutation(UPDATE_STATUS);
@@ -110,6 +118,20 @@ const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 				console.log(error);
 			},
 		});
+		const statusesToRemove = getStatusesToRemove(
+			project.statuses,
+			projectToUpdate.statuses
+		);
+		if (statusesToRemove) {
+			statusesToRemove.forEach((status) => {
+				deleteStatus({
+					variables: {
+						statusId: status.id,
+					},
+					refetchQueries: ["GetAuthorizedUser"],
+				});
+			});
+		}
 	};
 
 	const handleChangeInput = (
@@ -171,14 +193,16 @@ const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 					onError: (error) => {
 						console.log(error);
 					},
+				}).then((res) => {
+					status.id = res.data.addStatus.id;
 				});
 			} else if (project.statuses) {
-				// check if status is updated
 				const originalStatus = project.statuses.find(
 					(s) => s.id === status.id
 				);
 				if (originalStatus) {
 					if (originalStatus.title !== status.title) {
+						console.log("status update title", status);
 						await updateStatus({
 							variables: {
 								updateStatusInput: {
@@ -194,6 +218,7 @@ const UpdateProjectForm = ({ project }: UpdateProjectFormProps) => {
 					} else if (
 						originalStatus.isDoneStatus !== status.isDoneStatus
 					) {
+						console.log("staus update isDoneStatus", status);
 						await updateStatus({
 							variables: {
 								updateStatusInput: {

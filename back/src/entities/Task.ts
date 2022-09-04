@@ -57,7 +57,7 @@ export class Task extends BaseEntity {
 		lazy: true,
 		nullable: true,
 	})
-	status: Status;
+	status: Status | undefined;
 
 	@Field(() => [BackBonesUser], { nullable: true })
 	@ManyToMany(() => BackBonesUser, (user) => user.tasks, {

@@ -86,9 +86,9 @@ describe("test data base", () => {
 		const user = await BackBonesUser.findOne(1);
 		expect(user?.firstName).toBe("Myriam");
 	});
-	it("task with id 1 is 'Create campaign posters'", async () => {
+	it("task with id 1 is 'AEM (CMS: Java, Javascript, HTL, CSS)'", async () => {
 		const task = await Task.findOne(1);
-		expect(task?.title).toBe("Create campaign posters");
+		expect(task?.title).toBe("AEM (CMS: Java, Javascript, HTL, CSS)");
 	});
 	it("role with id 1 is 'CTO'", async () => {
 		const role = await Role.findOne(1);
@@ -98,9 +98,9 @@ describe("test data base", () => {
 		const status = await Status.findOne(1);
 		expect(status?.title).toBe("in progress");
 	});
-	it("project with id 1 is 'Karim Président'", async () => {
+	it("project with id 1 is 'Accor'", async () => {
 		const project = await Project.findOne(1);
-		await expect(project?.title).toBe("Karim Président");
+		await expect(project?.title).toBe("Accor");
 	});
 });
 
@@ -342,7 +342,7 @@ describe("test Resolvers", () => {
 
 		it("test mutation Update Task expect updatedTask with same title on a project throw an error", async () => {
 			const response = await server.executeOperation(
-				UPDATE_TASK(2, "Create campaign posters")
+				UPDATE_TASK(2, "AEM (CMS: Java, Javascript, HTL, CSS)")
 			);
 			expect(response.errors).toBeTruthy();
 		});

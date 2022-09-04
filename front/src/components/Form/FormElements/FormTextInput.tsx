@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface FormTextInputProps {
 	label: string;
@@ -12,6 +12,10 @@ const FormTextInput = ({ label, value, onChange }: FormTextInputProps) => {
 		setDescription(e.target.value);
 		onChange(e);
 	};
+
+	useEffect(() => {
+		setDescription(value);
+	}, [value]);
 
 	return (
 		<div className="description-input mt-4">

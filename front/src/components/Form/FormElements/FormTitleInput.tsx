@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface FormTitleInputProps {
 	label: string;
@@ -20,6 +20,10 @@ const FormTitleInput = ({
 		setTitle(e.target.value);
 		onChange(e);
 	};
+
+	useEffect(() => {
+		setTitle(value);
+	}, [value]);
 
 	return (
 		<div className="title-input">

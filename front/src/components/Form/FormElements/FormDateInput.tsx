@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { format, formatISO } from "date-fns";
@@ -13,26 +13,20 @@ interface FormDateInputProps {
 }
 
 const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
-	const [selectedDay, setSelectedDay] = useState<Date>();
-	const [defaultDay, setDefaultDay] = useState<Date | undefined>(date);
-
-	useEffect(() => {
-		if (selectedDay) {
-			onChange(formatISO(selectedDay), name);
-		}
-	}, [selectedDay]);
+	const handleSelect = (day: Date) => {
+		onChange(formatISO(day), name);
+	};
 
 	function renderDate() {
-		if (selectedDay) {
-			return <span>{format(selectedDay, "PP")}</span>;
-		} else if (defaultDay) {
-			return <span>{format(defaultDay, "PP")}</span>;
+		if (date) {
+			return <span>{format(date, "PP")}</span>;
+		} else {
+			return (
+				<span className="text-dark-light font-main-extralight">
+					Please enter a date
+				</span>
+			);
 		}
-		return (
-			<span className="text-dark-light font-main-extralight">
-				Please enter a date
-			</span>
-		);
 	}
 	return (
 		<div className="date-input">
@@ -50,8 +44,7 @@ const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
 								</span>
 								<span
 									className={`${
-										!selectedDay &&
-										!defaultDay &&
+										!date &&
 										"text-dark-light font-main-extralight"
 									}`}
 								>
@@ -71,9 +64,9 @@ const FormDateInput = ({ label, onChange, name, date }: FormDateInputProps) => {
 								<Disclosure.Panel>
 									<DayPicker
 										mode="single"
-										selected={selectedDay}
-										onSelect={setSelectedDay}
-										onDayClick={() => {
+										selected={date}
+										onDayClick={(day) => {
+											handleSelect(day);
 											close();
 										}}
 										style={{

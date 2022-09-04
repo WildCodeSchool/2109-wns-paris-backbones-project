@@ -133,13 +133,15 @@ const ProjectDetail = ({ project }: ProjectDetailProps) => {
 						))}
 				</div>
 				<div className="buttons flex justify-center gap-20">
-					<Button
-						label="Save"
-						state={isModify ? "enabled" : "disabled"}
-						onClick={(e: React.FormEvent<HTMLFormElement>) =>
-							handleSubmit(e)
-						}
-					/>
+					{isModify && (
+						<Button
+							label="Save"
+							state="enabled"
+							onClick={(e: React.FormEvent<HTMLFormElement>) =>
+								handleSubmit(e)
+							}
+						/>
+					)}
 				</div>
 			</form>
 			<div className="project-tasks">
