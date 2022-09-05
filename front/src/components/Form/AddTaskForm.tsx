@@ -104,9 +104,9 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 				<div className="w-full lg:w-1/3 flex flex-col gap-2 lg:gap-1">
 					<div className="task-users flex flex-col gap-1">
 						<div className="task-status-title">
-							{taskToAdd.status && project.statuses && (
-								<span className="flex gap-4">
-									Status:{" "}
+							<span className="flex gap-4">
+								Status:
+								{taskToAdd.status && project.statuses && (
 									<span>
 										{
 											project.statuses.find(
@@ -116,8 +116,8 @@ const AddTaskForm = ({ project }: AddTaskFormProps) => {
 											)?.title
 										}
 									</span>
-								</span>
-							)}
+								)}
+							</span>
 						</div>
 						{project.statuses && (
 							<DropdownStatuses
