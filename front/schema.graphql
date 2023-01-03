@@ -1,0 +1,264 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+interface IAuthorizedUser {
+    token: String!
+    userId: Float!
+}
+
+type AuthorizedUser implements IAuthorizedUser {
+    token: String!
+    userId: Float!
+}
+
+type BackBonesUser {
+    avatar: String
+    email: String!
+    firstName: String!
+    id: Float!
+    lastName: String!
+    notifications: [Notification!]
+    password: String
+    projects: [Project!]
+    roles: [Role!]
+    tasks: [Task!]
+}
+
+type Mutation {
+    addNotification(createNotificationInput: CreateNotificationInput!): Notification!
+    addProject(createProjectInput: CreateProjectInput!): Project!
+    addRole(createRoleInput: CreateRoleInput!): Role!
+    addStatus(createStatusInput: CreateStatusInput!): Status!
+    addTask(createTaskInput: CreateTaskInput!): Task!
+    addUser(createUserInput: CreateUserInput!): BackBonesUser!
+    deleteProject(projectId: Float!): Boolean!
+    deleteStatus(statusId: Float!): Boolean!
+    deleteTask(taskId: Float!): Boolean!
+    deleteUser(userId: Float!): [BackBonesUser!]!
+    signIn(signInInput: SignInInput!): AuthorizedUser
+    signUp(SignUpInput: SignUpInput!): AuthorizedUser
+    updateNotification(notificationId: Float!, updateNotificationInput: UpdateNotificationInput): Notification!
+    updateProject(projectId: Float!, updateProjectInput: UpdateProjectInput!): Project!
+    updateRole(roleId: Float!, updateRoleInput: UpdateRoleInput): Role!
+    updateStatus(statusId: Float!, updateStatusInput: UpdateStatusInput!): Status!
+    updateTask(taskId: Float!, updateTaskInput: UpdateTaskInput): Task!
+    updateUser(updateUserInput: UpdateUserInput!, userId: Float!): BackBonesUser!
+}
+
+type Notification {
+    created_at: DateTime
+    description: String
+    id: Float!
+    project: Project
+    read: Boolean
+    task: Task
+    title: String!
+    user: BackBonesUser!
+}
+
+type Project {
+    description: String
+    end_date: DateTime
+    id: Float!
+    notifications: [Notification!]
+    photo: String
+    roles: [Role!]
+    start_date: DateTime
+    statuses: [Status!]
+    tasks: [Task!]
+    title: String!
+    users: [BackBonesUser!]
+}
+
+type Query {
+    getAuthorizedUser: BackBonesUser!
+    getNotifications: [Notification!]!
+    getNotificationsById(notificationId: Float!): Notification!
+    getProjectById(projectId: Float!): Project!
+    getProjects: [Project!]!
+    getRoleById(roleId: Float!): Status!
+    getRoles: [Role!]!
+    getStatusById(statusId: Float!): Status!
+    getStatuses: [Status!]!
+    getTaskById(taskId: Float!): Task!
+    getTasks: [Task!]!
+    getUserById(userId: Float!): BackBonesUser!
+    getUsers: [BackBonesUser!]!
+}
+
+type Role {
+    id: Float!
+    project: Project
+    title: String!
+    users: [BackBonesUser!]
+}
+
+type Status {
+    id: Float!
+    isDoneStatus: Boolean
+    project: Project
+    tasks: [Task!]
+    title: String!
+}
+
+type Task {
+    description: String
+    effective_date: Float
+    effective_time: String
+    end_date: DateTime
+    estimated_time: String
+    id: Float!
+    notifications: [Notification!]
+    project: Project
+    start_date: DateTime
+    status: Status
+    title: String!
+    users: [BackBonesUser!]
+}
+
+"The javascript `Date` as string. Type represents date and time as the ISO Date string."
+scalar DateTime
+
+input CreateNotificationInput {
+    created_at: DateTime
+    description: String
+    project: ProjectInput
+    read: Boolean
+    task: TaskInput
+    title: String!
+    user: UserInput!
+}
+
+input CreateProjectInput {
+    description: String
+    end_date: DateTime
+    photo: String
+    start_date: DateTime
+    statuses: [CreateStatusInput!]
+    title: String!
+    users: [UserInput!]
+}
+
+input CreateRoleInput {
+    project: ProjectInput!
+    title: String!
+    users: [UserInput!]
+}
+
+input CreateStatusInput {
+    isDoneStatus: Boolean!
+    project: ProjectInput
+    tasks: [TaskInput!]
+    title: String!
+}
+
+input CreateTaskInput {
+    description: String
+    effective_time: String
+    end_date: DateTime
+    estimated_time: String
+    project: ProjectInput!
+    start_date: DateTime
+    status: StatusInput
+    title: String!
+    users: [UserInput!]
+}
+
+input CreateUserInput {
+    avatar: String
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+    projects: [ProjectInput!]
+    roles: [RoleInput!]
+    tasks: [TaskInput!]
+}
+
+input ProjectInput {
+    id: Float!
+}
+
+input RoleInput {
+    id: Float!
+}
+
+input SignInInput {
+    email: String!
+    password: String!
+}
+
+input SignUpInput {
+    avatar: String
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+}
+
+input StatusInput {
+    id: Float!
+}
+
+input TaskInput {
+    id: Float!
+}
+
+input UpdateNotificationInput {
+    created_at: DateTime
+    description: String
+    read: Boolean
+    title: String
+}
+
+input UpdateProjectInput {
+    description: String
+    end_date: DateTime
+    photo: String
+    start_date: DateTime
+    statuses: [CreateStatusInput!]
+    title: String
+    users: [UserInput!]
+}
+
+input UpdateRoleInput {
+    title: String
+    users: [UserInput!]
+}
+
+input UpdateStatusInput {
+    isDoneStatus: Boolean
+    tasks: [TaskInput!]
+    title: String
+}
+
+input UpdateTaskInput {
+    description: String
+    effective_date: Float
+    effective_time: String
+    end_date: DateTime
+    estimated_time: String
+    start_date: DateTime
+    status: StatusInput
+    title: String
+    users: [UserInput!]
+}
+
+input UpdateUserInput {
+    avatar: String
+    email: String
+    firstName: String
+    lastName: String
+    password: String
+    projects: [ProjectInput!]
+    roles: [RoleInput!]
+    tasks: [TaskInput!]
+}
+
+input UserInput {
+    id: Float!
+}
