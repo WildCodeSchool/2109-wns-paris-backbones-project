@@ -24,9 +24,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = createHttpLink({
-	uri: "/graphql",
+	//uri: "/graphql",
 	//in dev mode use localhost:4000
-	//uri: "http://localhost:4000/graphql",
+	uri: "http://localhost:4000/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

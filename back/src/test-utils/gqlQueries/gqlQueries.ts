@@ -254,12 +254,17 @@ export const ADD_PROJECT = (title: String) => {
 			createProjectInput: {
 				title: title,
 				description: "woooow what a project !!!",
+				users: [
+					{
+						id: 5,
+					}
+				],
 			},
 		},
 	};
 };
 
-export const UPDATE_PROJECT = (id: Number) => {
+export const UPDATE_PROJECT = (id: Number, users? : UserInput[]) => {
 	const mutationUpdateProject: DocumentNode = gql`
 		mutation UpdateProject(
 			$updateProjectInput: UpdateProjectInput!
@@ -271,6 +276,11 @@ export const UPDATE_PROJECT = (id: Number) => {
 			) {
 				id
 				title
+				users {
+					id
+					firstName
+					lastName
+				}
 			}
 		}
 	`;
@@ -279,6 +289,7 @@ export const UPDATE_PROJECT = (id: Number) => {
 		variables: {
 			updateProjectInput: {
 				title: "brand new project name",
+				users: users,
 			},
 			projectId: id,
 		},
@@ -468,7 +479,7 @@ export const UPDATE_STATUS = (
 };
 
 export const SIGNIN = (email: String, password: String) => {
-	const mutationSignin: DocumentNode = gql`
+	const mutationSignIn: DocumentNode = gql`
 		mutation SignIn($signInInput: SignInInput!) {
 			signIn(signInInput: $signInInput) {
 				token
@@ -477,7 +488,7 @@ export const SIGNIN = (email: String, password: String) => {
 		}
 	`;
 	return {
-		query: mutationSignin,
+		query: mutationSignIn,
 		variables: {
 			signInInput: {
 				email: email,
@@ -486,3 +497,46 @@ export const SIGNIN = (email: String, password: String) => {
 		},
 	};
 };
+
+export const SIGNUP = (
+	email: String,
+	firstName: String,
+	lastName: String,
+	avatar: String,
+	password: String
+) => {
+	const mutationSignup: DocumentNode = gql`
+		mutation SignUp($signUpInput: SignUpInput!) {
+			signUp(signUpInput: $signUpInput) {
+				token
+				userId
+			}
+		}
+	`;
+	return {
+		query: mutationSignup,
+		variables: {
+			signUpInput: {
+				email: email,
+				password: password,
+				avatar: avatar,
+				firstName: firstName,
+				lastName: lastName,
+			},
+		},
+	};
+}
+
+export const DELETE_PROJECT = (id: Number) => {
+	const mutationDeleteProject: DocumentNode = gql`
+		mutation DeleteProject($projectId: Float!) {
+			deleteProject(projectId: $projectId)
+		}
+	`;
+	return {
+		query: mutationDeleteProject,
+		variables: {
+			projectId: id,
+		},
+	};
+}

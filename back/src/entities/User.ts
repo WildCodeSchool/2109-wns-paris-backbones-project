@@ -13,6 +13,7 @@ import { Project } from "./Project";
 import { Role } from "./Role";
 import { Task } from "./Task";
 import { Notification } from "./Notification";
+import {IsEmail, IsNotEmpty} from "class-validator";
 
 @Entity()
 @ObjectType()
@@ -29,10 +30,6 @@ export class BackBonesUser extends BaseEntity {
 	@Column()
 	lastName: string;
 
-	@Field()
-	@Column({ unique: true })
-	email: string;
-
 	@Field({ nullable: true })
 	@Column({ nullable: true })
 	avatar: string;
@@ -43,6 +40,12 @@ export class BackBonesUser extends BaseEntity {
 
 	@DeleteDateColumn()
 	deletedDate: Date;
+
+	@Field()
+	@Column({ unique: true })
+	@IsEmail()
+	@IsNotEmpty()
+	email: string;
 
 	@Field(() => [Role], { nullable: true })
 	@ManyToMany(() => Role, (role) => role.users, {

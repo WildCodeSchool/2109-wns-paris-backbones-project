@@ -40,7 +40,7 @@ type Mutation {
     deleteTask(taskId: Float!): Boolean!
     deleteUser(userId: Float!): [BackBonesUser!]!
     signIn(signInInput: SignInInput!): AuthorizedUser
-    signUp(SignUpInput: SignUpInput!): AuthorizedUser
+    signUp(signUpInput: SignUpInput!): AuthorizedUser
     updateNotification(notificationId: Float!, updateNotificationInput: UpdateNotificationInput): Notification!
     updateProject(projectId: Float!, updateProjectInput: UpdateProjectInput!): Project!
     updateRole(roleId: Float!, updateRoleInput: UpdateRoleInput): Role!

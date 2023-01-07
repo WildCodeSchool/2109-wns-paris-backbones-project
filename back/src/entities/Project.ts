@@ -14,6 +14,7 @@ import { Task } from "./Task";
 import { BackBonesUser } from "./User";
 import { Role } from "./Role";
 import { Notification } from "./Notification";
+import {IsNotEmpty, IsString} from "class-validator";
 
 @Entity()
 @ObjectType()
@@ -24,6 +25,8 @@ export class Project extends BaseEntity {
 
 	@Field()
 	@Column()
+	@IsString()
+	@IsNotEmpty()
 	title: string;
 
 	@Field({ nullable: true })

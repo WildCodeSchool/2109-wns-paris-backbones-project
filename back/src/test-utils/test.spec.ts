@@ -32,7 +32,7 @@ import {
   GET_STATUS_BY_ID,
   ADD_STATUS,
   UPDATE_STATUS,
-  SIGNIN,
+  SIGNIN, SIGNUP, DELETE_PROJECT,
 } from "./gqlQueries/gqlQueries";
 import {AuthResolver} from "../resolvers/AuthResolver";
 import {customAuthChecker} from "../auth";
@@ -113,7 +113,45 @@ describe("test Resolvers", () => {
         );
         expect(response.data?.signIn).toBeDefined();
       });
+      it('should throw an error if user not in db', async () => {
+        const response = await server.executeOperation(SIGNIN("nope@gmail.com", 'nope'))
+        expect(response.errors).toBeTruthy()
+      })
+      it('should throw an error if password is wrong', async () => {
+        const response = await server.executeOperation(SIGNIN("thomas@gmail.com", 'nope'))
+        expect(response.errors).toBeTruthy()
+      })
+      it('should throw an error if something bad happen', async () => {
+        //mock bcrypt.compare to throw error
+        const response = await server.executeOperation(SIGNIN("", 'azerty'))
+        expect(response.errors).toBeTruthy()
+      })
     });
+    describe("test signUp", () => {
+      it("should return token for new user", async () => {
+        const response = await server.executeOperation(
+          SIGNUP("new@gmail.com", "azerty", "new", "new", "new")
+        );
+        expect(response.data?.signUp).toBeDefined();
+      });
+      it('should throw an error if user already in db', async () => {
+        const response = await server.executeOperation(SIGNUP("thomas@gmail.com", "azerty", "new", "new", "new"))
+        expect(response.errors).toBeTruthy()
+      })
+      it('should throw an error if email is not valid', async () => {
+        const response = await server.executeOperation(SIGNUP("hololol", "azerty", "new", "new", "new"))
+        expect(response.errors).toBeTruthy()
+      })
+      it('should throw an error if record in db failed', async function () {
+        //mock BackboneUser.create to throw error
+        const mockedCreate = jest.spyOn(BackBonesUser, 'create')
+        mockedCreate.mockImplementationOnce(() => {
+          throw new Error()
+        })
+        const response = await server.executeOperation(SIGNUP("hello@gmail.com", "azerty", "new", "new", "new"))
+        expect(response.errors).toBeTruthy()
+      });
+    })
   });
 
   describe("test UserResolver", () => {
@@ -445,7 +483,7 @@ describe("test Resolvers", () => {
           response.data?.addProject.id
         );
         const id = createdProject?.id;
-        await createdProject?.remove();
+        //await createdProject?.remove();
         expect(response.data?.addProject.id).toBe(id);
       });
 
@@ -466,6 +504,20 @@ describe("test Resolvers", () => {
         expect(response.data?.updateProject.title).toBe(title);
       });
 
+      it('should update users on project', async () => {
+        const response = await server.executeOperation(
+          UPDATE_PROJECT(4, [{id: 1}, {id: 2}, {id: 3}, {id: 5}, {id: 6}])
+        );
+        const updatedProject = await Project.findOne(
+          response.data?.updateProject.id
+        );
+        const users = await updatedProject?.users;
+        const result: any[] | undefined = users?.map((user) => {
+          return {id: user.id, firstName: user.firstName, lastName: user.lastName};
+        });
+        expect(response.data?.updateProject.users).toEqual(result);
+      });
+
       it("test mutation updateProject expect updatedProject can't be updated because not found", async () => {
         const response = await server.executeOperation(
           UPDATE_PROJECT(1900)
@@ -474,6 +526,35 @@ describe("test Resolvers", () => {
         expect(response.errors).toBeTruthy();
       });
     });
+    describe("test mutation deleteProject", () => {
+      it("delete project", async () => {
+        const response = await server.executeOperation(
+          DELETE_PROJECT(7),
+          {req: {headers: {authorization: userJwt.token}}} as any
+        );
+
+        expect(response.data?.deleteProject).toBe(true);
+      });
+      it("test mutation deleteProject expect deletedProject can't be deleted because not found", async () => {
+        const response = await server.executeOperation(
+          DELETE_PROJECT(1900),
+          {req: {headers: {authorization: userJwt.token}}} as any
+        );
+
+        expect(response.errors).toBeTruthy();
+      });
+      it('should failed because user is not on project', async function () {
+        const project = await Project.create({
+          title: 'test',
+          users: [{id: 1}, {id: 2}]
+        }).save();
+        const response = await server.executeOperation(
+          DELETE_PROJECT(project.id),
+          {req: {headers: {authorization: userJwt.token}}} as any
+        );
+        expect(response.errors).toBeTruthy();
+      });
+    })
   });
 
   describe("test RoleResolver", () => {
