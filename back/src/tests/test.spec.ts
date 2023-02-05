@@ -11,32 +11,15 @@ import {Task} from "../entities/Task";
 import {Role} from "../entities/Role";
 import {Status} from "../entities/Status";
 import {Project} from "../entities/Project";
-import {
-  ADD_PROJECT,
-  ADD_TASK,
-  ADD_USER,
-  GET_PROJECTS,
-  GET_PROJECT_BY_ID,
-  GET_ROLES,
-  GET_STATUSES,
-  GET_TASKS,
-  GET_TASK_BY_ID,
-  GET_USERS,
-  GET_USER_BY_ID,
-  UPDATE_PROJECT,
-  UPDATE_TASK,
-  UPDATE_USER,
-  GET_ROLE_BY_ID,
-  ADD_ROLE,
-  UPDATE_ROLE,
-  GET_STATUS_BY_ID,
-  ADD_STATUS,
-  UPDATE_STATUS,
-  SIGNIN, SIGNUP, DELETE_PROJECT,
-} from "./gqlQueries/gqlQueries";
 import {AuthResolver} from "../resolvers/AuthResolver";
 import {customAuthChecker} from "../auth";
 import {config} from "dotenv";
+import {SIGNIN, SIGNUP} from "./gqlQueries/auth.query";
+import {ADD_USER, GET_USER_BY_ID, GET_USERS, UPDATE_USER} from "./gqlQueries/user.query";
+import {ADD_TASK, GET_TASK_BY_ID, GET_TASKS, UPDATE_TASK} from "./gqlQueries/task.query";
+import {ADD_PROJECT, DELETE_PROJECT, GET_PROJECT_BY_ID, GET_PROJECTS, UPDATE_PROJECT} from "./gqlQueries/project.query";
+import {ADD_ROLE, GET_ROLE_BY_ID, GET_ROLES, UPDATE_ROLE} from "./gqlQueries/role.query";
+import {ADD_STATUS, GET_STATUS_BY_ID, GET_STATUSES, UPDATE_STATUS} from "./gqlQueries/status.query";
 
 interface IuserJwt {
   token: string;

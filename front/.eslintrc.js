@@ -1,3 +1,6 @@
 module.exports = {
-	extends: ["react-app", "react-app/jest"],
-};
+    extends: [
+        'plugin:react/recommended',
+        'plugin:react/jsx-runtime',
+    ]
+}
