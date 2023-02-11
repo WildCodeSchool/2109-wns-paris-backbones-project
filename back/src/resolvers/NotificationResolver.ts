@@ -96,4 +96,5 @@ export class NotificationResolver {
 			throw error;
 		}
 	}
+	//testons un peu de la merde
 }
