@@ -1,25 +1,16 @@
 import {ApolloServer} from "apollo-server";
-import {createConnection, getConnectionOptions} from "typeorm";
-import {UserResolver} from "../resolvers/UserResolver";
-import {TaskResolver} from "../resolvers/TaskResolver";
-import {StatusResolver} from "../resolvers/StatusResolver";
-import {RoleResolver} from "../resolvers/RoleResolver";
-import {ProjectResolver} from "../resolvers/ProjectResolver";
-import {buildSchema} from "type-graphql";
 import {BackBonesUser} from "../entities/User";
 import {Task} from "../entities/Task";
 import {Role} from "../entities/Role";
 import {Status} from "../entities/Status";
 import {Project} from "../entities/Project";
-import {AuthResolver} from "../resolvers/AuthResolver";
-import {customAuthChecker} from "../auth";
-import {config} from "dotenv";
 import {SIGNIN, SIGNUP} from "./gqlQueries/auth.query";
 import {ADD_USER, GET_USER_BY_ID, GET_USERS, UPDATE_USER} from "./gqlQueries/user.query";
 import {ADD_TASK, GET_TASK_BY_ID, GET_TASKS, UPDATE_TASK} from "./gqlQueries/task.query";
 import {ADD_PROJECT, DELETE_PROJECT, GET_PROJECT_BY_ID, GET_PROJECTS, UPDATE_PROJECT} from "./gqlQueries/project.query";
 import {ADD_ROLE, GET_ROLE_BY_ID, GET_ROLES, UPDATE_ROLE} from "./gqlQueries/role.query";
 import {ADD_STATUS, GET_STATUS_BY_ID, GET_STATUSES, UPDATE_STATUS} from "./gqlQueries/status.query";
+import {testServer} from "./test-server";
 
 interface IuserJwt {
   token: string;
@@ -30,30 +21,7 @@ let server: ApolloServer;
 let userJwt: IuserJwt;
 
 beforeAll(async () => {
-  config({path: `.env.${process.env.NODE_ENV}`});
-  const connectionOptions = await getConnectionOptions("test");
-  await createConnection({...connectionOptions, name: "default"});
-  const schema = await buildSchema({
-    resolvers: [
-      UserResolver,
-      TaskResolver,
-      StatusResolver,
-      RoleResolver,
-      ProjectResolver,
-      AuthResolver,
-    ],
-    authChecker: customAuthChecker,
-  });
-  server = new ApolloServer({
-    schema,
-    context: ({req}) => {
-      return {token: req?.headers.authorization, userId: null};
-    },
-  });
-  await server.listen(9000);
-  console.log(
-    "Apollo Server Test has started! visit: http://localhost:9000/"
-  );
+  server = await testServer();
   const response = await server.executeOperation(
     SIGNIN("thomas@gmail.com", "azerty")
   );

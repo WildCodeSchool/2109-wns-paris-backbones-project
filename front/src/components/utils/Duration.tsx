@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { HourglassEmpty } from "@material-ui/icons";
+import { differenceInDays } from "date-fns";
 
 interface DurationProps {
 	label: string;
@@ -8,43 +9,17 @@ interface DurationProps {
 	fixValue?: number;
 }
 
-const Duration = ({ label, start, end, fixValue }: DurationProps) => {
-	const [value, setValue] = useState("");
-
-	useEffect(() => {
-		if (start && end) {
-			const startDate = new Date(start);
-			const endDate = new Date(end);
-			const duration = endDate.getTime() - startDate.getTime();
-			const weeks = Math.floor(duration / (1000 * 60 * 60 * 24 * 7));
-			const days = Math.floor(duration / (1000 * 60 * 60 * 24));
-			const hours = Math.floor(
-				(duration % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-			);
-			if (days > 0) {
-				setValue(`${days} days`);
-			} else if (hours > 0) {
-				setValue(`${hours} hours`);
-			}
-		} else if (fixValue) {
-			setValue(`${fixValue} days`);
-		}
-	}, [start, end, fixValue]);
+const Duration = ({ label, start, end, fixValue = 0 }: DurationProps) => {
+	const duration = start && end ? differenceInDays(new Date(end), new Date(start)) + 1 : fixValue;
+	const value = duration > 0 ? `${duration} days` : "";
 
 	return (
-		<div className="flex flex-raw">
-			<HourglassEmpty
-				fontSize={"medium"}
-				className={"text-light-light"}
-			/>
+		<div className="flex items-center">
+			<HourglassEmpty fontSize={"medium"} className={"text-light-light"} />
 			<span className="font-main-bold px-4">{label}</span>
-			<span
-				className={`${
-					!value && "text-dark-light font-main-extralight"
-				}`}
-			>
-				{value ? value : "Not set"}
-			</span>
+			<span className={value ? '' : 'text-dark-light font-main-extralight'}>
+        {value ? value : "Not set"}
+      </span>
 		</div>
 	);
 };
